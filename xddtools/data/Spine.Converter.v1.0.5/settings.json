@@ -1,0 +1,11 @@
+{
+	"skinnedMeshesExperimental" : true,
+	"severalAnimations" : true,
+	"autoRename" : false,
+	"addEmptyAnimations" : true,
+	"fixMeshes" : true,
+	"filePath": "",
+	"dumpSkelData": false,
+	"preserveDBJson": false,
+	"fixDataFromSkel": true
+}

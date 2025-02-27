@@ -1,0 +1,13 @@
+
+remilia_scarlet.sprite.skill_bark.png
+size: 586,112
+format: RGBA8888
+filter: Linear,Linear
+repeat: none
+VoiceText
+  rotate: false
+  xy: 1, 1
+  size: 583, 109
+  orig: 619, 136
+  offset: 18, 14
+  index: -1
