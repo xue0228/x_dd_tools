@@ -4,5 +4,5 @@
 
 xhunter：https://steamcommunity.com/sharedfiles/filedetails/?id=2402990562
 
-xlove_token: https://steamcommunity.com/sharedfiles/filedetails/?id=2455714793
+xlove_token：https://steamcommunity.com/sharedfiles/filedetails/?id=2455714793
  
