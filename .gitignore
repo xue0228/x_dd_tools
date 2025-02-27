@@ -1,8 +1,8 @@
 /*.png
 /*.txt
-xhunter/xhunter/
-xlove_token/xlove_token/
-others/
-tools/
-.idea/
+/xhunter/xhunter/
+/xlove_token/xlove_token/
+/others/
+/tools/
+/.idea/
 __pycache__/
