@@ -6,6 +6,6 @@
 /tools/
 /.idea/
 __pycache__/
-xhunter/trinket/
-xlove_token/estate/
-xlove_token/overlays/
+/examples/xhunter/trinket/*
+/examples/xlove_token/estate/*
+/examples/xlove_token/overlays/*
