@@ -5,3 +5,4 @@ xlove_token/xlove_token/
 others/
 tools/
 .idea/
+__pycache__/
