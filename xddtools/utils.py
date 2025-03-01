@@ -216,10 +216,31 @@ def overlay_images(
     return os.path.normpath(output_path)
 
 
+def int_to_alpha_str(n):
+    result = ''
+    while n >= 0:
+        n, remainder = divmod(n, 26)
+        result = chr(65 + remainder) + result
+        if n == 0:
+            break
+        elif n == 1:
+            # 特殊处理n=1的情况，因为下一个循环会使得n变为0并跳出循环
+            result = 'A' + result
+            break
+        n -= 1
+    return result.lower()
+
+
 if __name__ == '__main__':
-    resize_image("test.png", "test1.png")
-    resize_image_keep_ratio("test.png", "test2.png")
-    overlay_images("test.png", "test.png", "test3.png")
+    print(int_to_alpha_str(0))
+    print(int_to_alpha_str(1))
+    print(int_to_alpha_str(10))
+    print(int_to_alpha_str(27))
+    print(int_to_alpha_str(100))
+
+    # resize_image("test.png", "test1.png")
+    # resize_image_keep_ratio("test.png", "test2.png")
+    # overlay_images("test.png", "test.png", "test3.png")
 
     # print(str_or_none_to_short_form_str("riposte_on_hit_chance_"))
     # print(str_or_none_to_short_form_str("_"))

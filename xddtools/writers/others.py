@@ -4,15 +4,16 @@ from typing import Tuple, Optional, Iterable, Dict, List
 
 from xddtools.base import BaseWriter, BaseJsonData, LocalizationWriter
 from xddtools.buffs import Buff
+from xddtools.camping_skills import CampingSkill
 from xddtools.colour import Colour, bleed, stress, heal_hp, blight
 from xddtools.effects import Effect
-from xddtools.enums import ItemType
+from xddtools.enums import ItemType, CampingSkillEffectType
 from xddtools.items import Item
 from xddtools.loot import LootTable, LootItemEntry
 from xddtools.path import BUFF_SAVE_DIR, BUFF_FILE_EXTENSION, \
     EFFECT_SAVE_DIR, EFFECT_FILE_EXTENSION, COLOUR_SAVE_DIR, COLOUR_FILE_EXTENSION, ITEM_SAVE_DIR, \
     ITEM_FILE_EXTENSION, QUIRK_LIBRARY_FILE_EXTENSION, QUIRK_SAVE_DIR, QUIRK_ACTOUT_FILE_EXTENSION, \
-    LOOT_TABLE_SAVE_DIR, LOOT_TABLE_FILE_EXTENSION
+    LOOT_TABLE_SAVE_DIR, LOOT_TABLE_FILE_EXTENSION, CAMPING_SKILL_SAVE_DIR, CAMPING_SKILL_FILE_EXTENSION
 from xddtools.quirks import Quirk
 from xddtools.utils import make_dirs
 
@@ -290,6 +291,55 @@ class LootTableWriter(BaseJsonData, BaseWriter):
 
     def dict(self) -> dict:
         return {"loot_tables": [table.dict() for table in self._items]}
+
+
+class CampingSkillWriter(BaseJsonData, BaseWriter):
+    def __init__(
+            self,
+            name: str,
+            class_specific_number_of_classes_threshold: int = 4,
+            camping_skills: Optional[Iterable[CampingSkill]] = None,
+            table_writer: Optional[LootTableWriter] = None,
+            localization_writer: Optional[LocalizationWriter] = None,
+    ):
+        self._class_specific_number_of_classes_threshold = class_specific_number_of_classes_threshold
+        self._table_writer = table_writer
+        self._localization_writer = localization_writer
+        super().__init__(
+            name=name,
+            items=camping_skills,
+            relative_save_dir=CAMPING_SKILL_SAVE_DIR,
+            extension=CAMPING_SKILL_FILE_EXTENSION,
+            localization_writer=localization_writer,
+        )
+
+    def add_item(
+            self,
+            item: CampingSkill
+    ):
+        if self._table_writer is not None:
+            for effect in item.effects:
+                if effect.effect_type == CampingSkillEffectType.LOOT and isinstance(effect.sub_type, LootTable):
+                    self._table_writer.add_item(effect.sub_type)
+        return super().add_item(item)
+
+    def dict(self) -> dict:
+        return {
+            "configuration": {
+                "class_specific_number_of_classes_threshold": self._class_specific_number_of_classes_threshold
+            },
+            "skills": [skill.dict() for skill in self._items]
+        }
+
+    def export(self, root_dir: Optional[str] = None) -> Tuple[str, ...]:
+        res = []
+        for item in self._items:
+            if item.image_path is not None:
+                res.append(
+                    item.export_image(root_dir)
+                )
+        res.append(super().export(root_dir))
+        return tuple(res)
 
 
 def get_base_colour_writer(

@@ -62,6 +62,12 @@ class AutoNameBase:
 
     def index_quirk(self, idx: int) -> str: ...
 
+    def new_camping_skill(self) -> str: ...
+
+    def last_camping_skill(self) -> str: ...
+
+    def index_camping_skill(self, idx: int) -> str: ...
+
     def new_(self) -> str: ...
 
     def last_(self) -> str: ...
@@ -79,7 +85,7 @@ class AutoName(AutoNameBase):
         self._categories = (
             "buff", "effect", "colour", "skill",
             "anim", "rarity", "trinket", "item",
-            "loot", "quirk"
+            "loot", "quirk", "camping_skill"
         )
         for category in self._categories:
             # 动态生成并绑定方法

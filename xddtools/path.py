@@ -43,6 +43,10 @@ ITEM_IMAGE_SAVE_DIR = "panels/icons_equip"
 LOOT_TABLE_SAVE_DIR = "loot"
 LOOT_TABLE_FILE_EXTENSION = ".loot.json"
 
+CAMPING_SKILL_SAVE_DIR = os.path.join("raid", "camping")
+CAMPING_SKILL_FILE_EXTENSION = ".camping_skills.json"
+CAMPING_SKILL_IMAGE_SAVE_DIR = os.path.join(CAMPING_SKILL_SAVE_DIR, "skill_icons")
+
 
 if __name__ == '__main__':
     print(BUFF_SAVE_DIR)

@@ -2,6 +2,7 @@ from typing import Any, Iterable, Optional, Tuple, Union
 
 from xddtools.base import LocalizationWriter, get_base_localization_writer
 from xddtools.buffs import Buff
+from xddtools.camping_skills import CampingSkill
 from xddtools.colour import Colour
 from xddtools.effects import Effect
 from xddtools.enums import LocalizationLanguage, ProjectVisibility, ProjectUploadMode, ProjectTag
@@ -11,7 +12,7 @@ from xddtools.quirks import Quirk
 from xddtools.trinket import TrinketEntry
 from xddtools.writers.mod import ProjectWriter
 from xddtools.writers.others import ColourWriter, BuffWriter, EffectWriter, ItemWriter, QuirkWriter, LootTableWriter, \
-    get_base_colour_writer
+    get_base_colour_writer, CampingSkillWriter
 from xddtools.writers.trinket import Trinket
 
 
@@ -75,6 +76,11 @@ class DDWriter:
             localization_writer=localization_writer,
             is_test=False
         )
+        camping_skill_writer = CampingSkillWriter(
+            name=name,
+            table_writer=loot_writer,
+            localization_writer=localization_writer
+        )
 
         self._writers = {
             Colour: colour_writer,
@@ -84,6 +90,7 @@ class DDWriter:
             Quirk: quirk_writer,
             LootTable: loot_writer,
             TrinketEntry: trinket_writer,
+            CampingSkill: camping_skill_writer
         }
         self._localization_writer = localization_writer
 
