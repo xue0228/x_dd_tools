@@ -16,7 +16,7 @@ class Trait(BaseJsonData, BaseLocalization):
             curio_tag_chance: float = 0.5,
             keep_loot: bool = False,
             generate_chance_modifier: float = 0.0,
-            buff_ids: Optional[Iterable[Buff, str]] = None,
+            buff_ids: Optional[Iterable[Union[Buff, str]]] = None,
             combat_start_turn_act_outs: Optional[Iterable[CombatStartTurn]] = None,
             reaction_act_outs: Optional[Iterable[Reaction]] = None,
             localization: Union[Tuple[str, ...], str, None] = None,
