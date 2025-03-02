@@ -13,8 +13,10 @@ from xddtools.loot import LootTable, LootItemEntry
 from xddtools.path import BUFF_SAVE_DIR, BUFF_FILE_EXTENSION, \
     EFFECT_SAVE_DIR, EFFECT_FILE_EXTENSION, COLOUR_SAVE_DIR, COLOUR_FILE_EXTENSION, ITEM_SAVE_DIR, \
     ITEM_FILE_EXTENSION, QUIRK_LIBRARY_FILE_EXTENSION, QUIRK_SAVE_DIR, QUIRK_ACTOUT_FILE_EXTENSION, \
-    LOOT_TABLE_SAVE_DIR, LOOT_TABLE_FILE_EXTENSION, CAMPING_SKILL_SAVE_DIR, CAMPING_SKILL_FILE_EXTENSION
+    LOOT_TABLE_SAVE_DIR, LOOT_TABLE_FILE_EXTENSION, CAMPING_SKILL_SAVE_DIR, CAMPING_SKILL_FILE_EXTENSION, \
+    TRAIT_SAVE_DIR, TRAIT_FILE_EXTENSION
 from xddtools.quirks import Quirk
+from xddtools.traits import Trait
 from xddtools.utils import make_dirs
 
 
@@ -340,6 +342,49 @@ class CampingSkillWriter(BaseJsonData, BaseWriter):
                 )
         res.append(super().export(root_dir))
         return tuple(res)
+
+
+class TraitWriter(BaseJsonData, BaseWriter):
+    def __init__(
+            self,
+            name: str,
+            traits: Optional[Iterable[Trait]] = None,
+            buff_writer: Optional[BuffWriter] = None,
+            effect_writer: Optional[EffectWriter] = None,
+            localization_writer: Optional[LocalizationWriter] = None
+    ):
+        self.buff_writer = buff_writer
+        self.effect_writer = effect_writer
+        super().__init__(
+            name=name,
+            items=traits,
+            relative_save_dir=TRAIT_SAVE_DIR,
+            extension=TRAIT_FILE_EXTENSION,
+            localization_writer=localization_writer,
+        )
+
+    def add_item(
+            self,
+            item: Trait
+    ):
+        if self.buff_writer is not None and item.buff_ids is not None:
+            for buff in item.buff_ids:
+                if isinstance(buff, Buff):
+                    self.buff_writer.add_item(buff)
+
+        if self.effect_writer is not None and item.combat_start_turn_act_outs is not None:
+            for act_out in item.combat_start_turn_act_outs:
+                if isinstance(act_out.string_value, Effect):
+                    self.effect_writer.add_item(act_out.string_value)
+        if self.effect_writer is not None and item.reaction_act_outs is not None:
+            for act_out in item.reaction_act_outs:
+                if isinstance(act_out.effect, Effect):
+                    self.effect_writer.add_item(act_out.effect)
+
+        return super().add_item(item)
+
+    def dict(self) -> dict:
+        return {"traits": [trait.dict() for trait in self._items]}
 
 
 def get_base_colour_writer(

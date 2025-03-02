@@ -9,7 +9,7 @@ QUIRK_LIBRARY_FILE_EXTENSION = ".quirk_library.json"
 QUIRK_ACTOUT_FILE_EXTENSION = ".quirk_act_outs.json"
 
 TRAIT_SAVE_DIR = os.path.join("shared", "trait")
-TRAIT_LIBRARY_FILE_EXTENSION = ".trait_library.json"
+TRAIT_FILE_EXTENSION = ".trait_library.json"
 
 HERO_SAVE_DIR = "heroes"
 

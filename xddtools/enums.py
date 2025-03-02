@@ -1563,6 +1563,7 @@ class QuirkClassification(Enum):
 
 class CurioTag(Enum):
     # 本体
+    NONE = "None"
     FOOD = "Food"
     UNHOLY = "Unholy"
     WORSHIP = "Worship"

@@ -1,4 +1,4 @@
-from typing import Optional, Iterable, Union, Tuple, List, Any, Dict
+from typing import Optional, Iterable, Union, Tuple, Dict
 
 from xddtools.base import BaseJsonData, BaseLocalization
 from xddtools.effects import Effect
@@ -37,7 +37,7 @@ class CombatStartTurn(BaseLocalization, BaseJsonData):
             elif self.number_value < 0:
                 res = [(item[0].replace("str_change_pos_", "str_change_pos_fwd_"), item[1]) for item in res]
             else:
-                tem = res
+                tem: list = res
                 res = [(item[0].replace("str_change_pos_", "str_change_pos_back_"), item[1]) for item in res]
                 res.extend(
                     [(item[0].replace("str_change_pos_", "str_change_pos_fwd_"), item[1]) for item in tem]
@@ -88,7 +88,6 @@ class Reaction(BaseLocalization, BaseJsonData):
             "chance": self.chance,
         }
         return res
-
 
 # class CombatStartTurnActOut(BaseJsonData):
 #     def __init__(
