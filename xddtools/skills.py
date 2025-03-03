@@ -1,13 +1,14 @@
+import os
 from enum import Enum
 from typing import Optional, Tuple, Union, Iterable, List
 
 from xddtools.animation import Animation
 from xddtools.base import BaseID
-from xddtools.core import Mode
+from xddtools.hero import Mode
 from xddtools.effects import Effect
 from xddtools.enums import SkillHeadType, Level, SkillType, MonsterClass, HeroClass, InnerFx
 from xddtools.target import Target, SELF, LAUNCH_ANY
-from xddtools.utils import is_zero, float_to_percent_int, bool_to_lower_str
+from xddtools.utils import is_zero, float_to_percent_int, bool_to_lower_str, is_image, resize_image
 
 
 class Skill(BaseID):
@@ -96,8 +97,17 @@ class Skill(BaseID):
 
             condensed_tooltip_effects_per_line: Optional[int] = None,
 
-            can_display_performer_selection_after_turn: Optional[bool] = None
+            can_display_performer_selection_after_turn: Optional[bool] = None,
+
+            image_path: Optional[str] = None,
+            localization: Optional[str] = None,
     ):
+        if image_path is not None:
+            if not is_image(image_path):
+                raise ValueError(f"{image_path} is not an image")
+        self.image_path = image_path
+        self.localization = localization
+
         if target is None:
             target = SELF
         if launch is None:
@@ -357,6 +367,8 @@ class Skill(BaseID):
                     res.append(f'.{k} "{v.value}"')
                 else:
                     res.append(f'.{k} "{v}"')
+            elif k == "icon":
+                res.append(f'.{k} "{self.id}"')
 
         none_tuple_float = {
             "area_pos_offset": self.area_pos_offset,

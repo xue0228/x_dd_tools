@@ -168,7 +168,10 @@ class Animation(BaseID):
             res.append(self.copy_and_rename_atlas(anim_dir_path, new_name))
 
             if hero_sub_type is None:
-                png_dir_path = [os.path.join(dir_path, f"{hero_name}_{item}", "anim") for item in ["A", "B", "C", "D"]]
+                png_dir_path = [os.path.join(dir_path, f"{hero_name}_{item}", "anim") for item in [
+                    "A",
+                    # "B", "C", "D"
+                ]]
             else:
                 png_dir_path = [os.path.join(dir_path, f"{hero_name}_{hero_sub_type.upper()}", "anim")]
             for item in png_dir_path:

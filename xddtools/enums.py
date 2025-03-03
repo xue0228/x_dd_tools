@@ -1376,6 +1376,7 @@ class TagID(Enum):
     HOUSE_OF_THE_YELLOW_HAND = "house_of_the_yellow_hand"
     TRAINING_RING = "training_ring"
     LIBRARY = "library"
+    OUTSIDERS_BONFIRE = "outsiders_bonfire"
 
 
 class DeathFx(Enum):

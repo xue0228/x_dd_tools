@@ -3,7 +3,7 @@ import os
 import shutil
 import time
 from decimal import Decimal, ROUND_HALF_UP
-from typing import Optional, Tuple
+from typing import Optional, Tuple, List, Any
 
 from PIL import Image
 from PIL.Image import Resampling
@@ -229,6 +229,11 @@ def int_to_alpha_str(n):
             break
         n -= 1
     return result.lower()
+
+
+def split_list(big_list: List, chunk_size: int=8) -> List[List[Any]]:
+    # 使用列表推导式来生成分割后的子列表
+    return [big_list[i:i + chunk_size] for i in range(0, len(big_list), chunk_size)]
 
 
 if __name__ == '__main__':
