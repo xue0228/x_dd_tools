@@ -1,0 +1,20 @@
+
+remilia_scarlet.sprite.attack_remi_Fate.png
+size: 711,687
+format: RGBA8888
+filter: Linear,Linear
+repeat: none
+shadow
+  rotate: false
+  xy: 2, 615
+  size: 386, 67
+  orig: 386, 67
+  offset: 0, 0
+  index: -1
+s6
+  rotate: false
+  xy: 2, 2
+  size: 704, 608
+  orig: 704, 608
+  offset: 0, 0
+  index: -1

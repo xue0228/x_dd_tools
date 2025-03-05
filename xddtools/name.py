@@ -74,6 +74,12 @@ class AutoNameBase:
 
     def index_trait(self, idx: int) -> str: ...
 
+    def new_mode(self) -> str: ...
+
+    def last_mode(self) -> str: ...
+
+    def index_mode(self, idx: int) -> str: ...
+
     def new_(self) -> str: ...
 
     def last_(self) -> str: ...
@@ -91,7 +97,8 @@ class AutoName(AutoNameBase):
         self._categories = (
             "buff", "effect", "colour", "skill",
             "anim", "rarity", "trinket", "item",
-            "loot", "quirk", "camping_skill", "trait"
+            "loot", "quirk", "camping_skill", "trait",
+            "mode"
         )
         for category in self._categories:
             # 动态生成并绑定方法

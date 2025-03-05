@@ -1,6 +1,6 @@
 from typing import Any, Iterable, Optional, Tuple, Union
 
-from xddtools.base import get_base_localization_writer
+from xddtools.base import get_base_localization_writer, LocalizationWriter
 from xddtools.buffs import Buff
 from xddtools.camping_skills import CampingSkill
 from xddtools.colour import Colour
@@ -13,7 +13,7 @@ from xddtools.traits import Trait
 from xddtools.trinket import TrinketEntry
 from xddtools.writers.mod import ProjectWriter
 from xddtools.writers.others import BuffWriter, EffectWriter, ItemWriter, QuirkWriter, LootTableWriter, \
-    get_base_colour_writer, CampingSkillWriter, TraitWriter
+    get_base_colour_writer, CampingSkillWriter, TraitWriter, ColourWriter
 from xddtools.writers.trinket import Trinket
 
 
@@ -101,6 +101,50 @@ class DDWriter:
             Trait: trait_writer
         }
         self._localization_writer = localization_writer
+
+    @property
+    def colour_writer(self) -> ColourWriter:
+        return self._writers[Colour]
+
+    @property
+    def buff_writer(self) -> BuffWriter:
+        return self._writers[Buff]
+
+    @property
+    def effect_writer(self) -> EffectWriter:
+        return self._writers[Effect]
+
+    @property
+    def item_writer(self) -> ItemWriter:
+        return self._writers[Item]
+
+    @property
+    def quirk_writer(self) -> QuirkWriter:
+        return self._writers[Quirk]
+
+    @property
+    def loot_writer(self) -> LootTableWriter:
+        return self._writers[LootTable]
+
+    @property
+    def trinket_writer(self) -> Trinket:
+        return self._writers[TrinketEntry]
+
+    @property
+    def camping_skill_writer(self) -> CampingSkillWriter:
+        return self._writers[CampingSkill]
+
+    @property
+    def trait_writer(self) -> TraitWriter:
+        return self._writers[Trait]
+
+    @property
+    def localization_writer(self) -> LocalizationWriter:
+        return self._localization_writer
+
+    @property
+    def project_writer(self) -> ProjectWriter:
+        return self._project_writer
 
     def add_item(self, item: Any):
         if type(item) in self._writers:

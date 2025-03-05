@@ -368,7 +368,17 @@ class Skill(BaseID):
                 else:
                     res.append(f'.{k} "{v}"')
             elif k == "icon":
+                # if self.skill_head_type == SkillHeadType.COMBAT_MOVE_SKILL:
+                #     res.append(f'.{k} "generic_move"')
                 res.append(f'.{k} "{self.id}"')
+            elif k == "anim":
+                if self.skill_head_type == SkillHeadType.RIPOSTE_SKILL:
+                    res.append(f'.{k} "riposte"')
+                elif self.skill_head_type == SkillHeadType.COMBAT_MOVE_SKILL:
+                    res.append(f'.{k} "idle"')
+            # elif k == "targfx":
+            #     if self.skill_head_type == SkillHeadType.RIPOSTE_SKILL:
+            #         res.append(f'.{k} "blood_splatter"')
 
         none_tuple_float = {
             "area_pos_offset": self.area_pos_offset,

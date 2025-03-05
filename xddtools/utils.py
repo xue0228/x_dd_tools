@@ -3,7 +3,7 @@ import os
 import shutil
 import time
 from decimal import Decimal, ROUND_HALF_UP
-from typing import Optional, Tuple, List, Any
+from typing import Optional, Tuple, List, Any, Callable
 
 from PIL import Image
 from PIL.Image import Resampling
@@ -234,6 +234,19 @@ def int_to_alpha_str(n):
 def split_list(big_list: List, chunk_size: int=8) -> List[List[Any]]:
     # 使用列表推导式来生成分割后的子列表
     return [big_list[i:i + chunk_size] for i in range(0, len(big_list), chunk_size)]
+
+
+def get_rename_skel_dict_func(new_name: str) -> Callable[[dict], dict]:
+    def rename_skel_dict(skel_dict: dict) -> dict:
+        if len(skel_dict["animations"]) > 1:
+            raise ValueError("Only one animation is allowed in the skel dict.")
+        if new_name in skel_dict["animations"].keys():
+            return skel_dict
+        target = list(skel_dict["animations"].keys())[0]
+        skel_dict["animations"][new_name] = skel_dict["animations"][target]
+        del skel_dict["animations"][target]
+        return skel_dict
+    return rename_skel_dict
 
 
 if __name__ == '__main__':

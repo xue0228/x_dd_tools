@@ -1,0 +1,34 @@
+
+remilia_scarlet.sprite.attack_remi_Extension.png
+size: 1535,996
+format: RGBA8888
+filter: Linear,Linear
+repeat: none
+shadow
+  rotate: false
+  xy: 2, 924
+  size: 386, 67
+  orig: 386, 67
+  offset: 0, 0
+  index: -1
+countess/attack
+  rotate: false
+  xy: 694, 2
+  size: 609, 332
+  orig: 609, 332
+  offset: 0, 0
+  index: -1
+countess/body
+  rotate: false
+  xy: 2, 2
+  size: 687, 917
+  orig: 687, 917
+  offset: 0, 0
+  index: -1
+countess/light
+  rotate: false
+  xy: 1308, 2
+  size: 222, 186
+  orig: 222, 186
+  offset: 0, 0
+  index: -1

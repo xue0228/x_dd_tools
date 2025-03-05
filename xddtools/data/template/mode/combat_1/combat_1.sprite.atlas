@@ -1,0 +1,223 @@
+
+combat_1.sprite.png
+size: 2035,2048
+format: RGBA8888
+filter: Linear,Linear
+repeat: none
+shadow
+  rotate: false
+  xy: 956, 1310
+  size: 386, 67
+  orig: 386, 67
+  offset: 0, 0
+  index: -1
+countess/moon1
+  rotate: false
+  xy: 482, 897
+  size: 469, 503
+  orig: 469, 503
+  offset: 0, 0
+  index: -1
+006
+  rotate: false
+  xy: 1044, 2
+  size: 670, 460
+  orig: 670, 460
+  offset: 0, 0
+  index: -1
+w4
+  rotate: false
+  xy: 482, 1405
+  size: 367, 566
+  orig: 367, 566
+  offset: 0, 0
+  index: -1
+07
+  rotate: false
+  xy: 1044, 467
+  size: 670, 460
+  orig: 670, 460
+  offset: 0, 0
+  index: -1
+w3
+  rotate: false
+  xy: 2, 897
+  size: 475, 542
+  orig: 475, 542
+  offset: 0, 0
+  index: -1
+w1
+  rotate: false
+  xy: 2, 1444
+  size: 418, 315
+  orig: 418, 315
+  offset: 0, 0
+  index: -1
+w2
+  rotate: false
+  xy: 1287, 932
+  size: 347, 323
+  orig: 347, 323
+  offset: 0, 0
+  index: -1
+1
+  rotate: false
+  xy: 1840, 831
+  size: 92, 90
+  orig: 92, 90
+  offset: 0, 0
+  index: -1
+2
+  rotate: false
+  xy: 1866, 730
+  size: 123, 96
+  orig: 123, 96
+  offset: 0, 0
+  index: -1
+3
+  rotate: false
+  xy: 1719, 665
+  size: 142, 95
+  orig: 142, 95
+  offset: 0, 0
+  index: -1
+4
+  rotate: false
+  xy: 1919, 601
+  size: 96, 124
+  orig: 96, 124
+  offset: 0, 0
+  index: -1
+5
+  rotate: false
+  xy: 1437, 1260
+  size: 188, 410
+  orig: 188, 410
+  offset: 0, 0
+  index: -1
+6
+  rotate: false
+  xy: 1921, 2
+  size: 90, 463
+  orig: 90, 463
+  offset: 0, 0
+  index: -1
+7
+  rotate: false
+  xy: 854, 1405
+  size: 578, 355
+  orig: 578, 355
+  offset: 0, 0
+  index: -1
+8
+  rotate: false
+  xy: 1639, 932
+  size: 277, 382
+  orig: 277, 382
+  offset: 0, 0
+  index: -1
+9
+  rotate: false
+  xy: 1719, 470
+  size: 195, 190
+  orig: 195, 190
+  offset: 0, 0
+  index: -1
+10
+  rotate: false
+  xy: 956, 932
+  size: 326, 373
+  orig: 326, 373
+  offset: 0, 0
+  index: -1
+11
+  rotate: false
+  xy: 1719, 765
+  size: 116, 100
+  orig: 116, 100
+  offset: 0, 0
+  index: -1
+12
+  rotate: false
+  xy: 1287, 1260
+  size: 102, 43
+  orig: 102, 43
+  offset: 0, 0
+  index: -1
+13
+  rotate: false
+  xy: 773, 512
+  size: 235, 201
+  orig: 235, 201
+  offset: 0, 0
+  index: -1
+14
+  rotate: false
+  xy: 286, 1959
+  size: 95, 84
+  orig: 95, 84
+  offset: 0, 0
+  index: -1
+15
+  rotate: false
+  xy: 286, 1764
+  size: 91, 190
+  orig: 91, 190
+  offset: 0, 0
+  index: -1
+16
+  rotate: false
+  xy: 773, 718
+  size: 175, 120
+  orig: 175, 120
+  offset: 0, 0
+  index: -1
+17
+  rotate: false
+  xy: 2, 1764
+  size: 279, 209
+  orig: 279, 209
+  offset: 0, 0
+  index: -1
+18
+  rotate: false
+  xy: 1919, 470
+  size: 111, 126
+  orig: 111, 126
+  offset: 0, 0
+  index: -1
+19
+  rotate: false
+  xy: 1719, 2
+  size: 96, 78
+  orig: 96, 78
+  offset: 0, 0
+  index: -1
+21
+  rotate: false
+  xy: 1719, 870
+  size: 87, 29
+  orig: 87, 29
+  offset: 0, 0
+  index: -1
+22
+  rotate: false
+  xy: 1719, 904
+  size: 28, 10
+  orig: 28, 10
+  offset: 0, 0
+  index: -1
+23
+  rotate: false
+  xy: 2, 2
+  size: 1037, 505
+  orig: 1037, 505
+  offset: 0, 0
+  index: -1
+24
+  rotate: false
+  xy: 2, 512
+  size: 766, 380
+  orig: 766, 380
+  offset: 0, 0
+  index: -1

@@ -2,7 +2,7 @@
 	"skinnedMeshesExperimental" : true,
 	"severalAnimations" : true,
 	"autoRename" : false,
-	"addEmptyAnimations" : true,
+	"addEmptyAnimations" : false,
 	"fixMeshes" : true,
 	"filePath": "",
 	"dumpSkelData": false,

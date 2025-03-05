@@ -1,0 +1,20 @@
+
+remilia_scarlet.sprite.attack_remi_FateFXA.png
+size: 512,256
+format: RGBA8888
+filter: Linear,Linear
+repeat: none
+HeartOfGold Ally BottomLayer
+  rotate: false
+  xy: 2, 2
+  size: 207, 196
+  orig: 207, 196
+  offset: 0, 0
+  index: -1
+HeartOfGold Ally TopLayer
+  rotate: false
+  xy: 211, 2
+  size: 207, 196
+  orig: 207, 196
+  offset: 0, 0
+  index: -1

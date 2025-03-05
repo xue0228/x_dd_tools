@@ -1,0 +1,20 @@
+
+riposte_1.sprite.png
+size: 914,880
+format: RGBA8888
+filter: Linear,Linear
+repeat: none
+shadow
+  rotate: false
+  xy: 2, 808
+  size: 386, 67
+  orig: 386, 67
+  offset: 0, 0
+  index: -1
+s5
+  rotate: false
+  xy: 2, 2
+  size: 907, 801
+  orig: 907, 801
+  offset: 0, 0
+  index: -1

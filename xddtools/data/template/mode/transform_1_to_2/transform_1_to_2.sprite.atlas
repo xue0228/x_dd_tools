@@ -1,0 +1,62 @@
+
+transform_1_to_2.sprite.png
+size: 1984,2145
+format: RGBA8888
+filter: Linear,Linear
+repeat: none
+shadow
+  rotate: false
+  xy: 1570, 1463
+  size: 386, 67
+  orig: 386, 67
+  offset: 0, 0
+  index: -1
+remilia_scarlet/full_moon
+  rotate: false
+  xy: 2, 1620
+  size: 524, 520
+  orig: 524, 520
+  offset: 0, 0
+  index: -1
+countess/warrior
+  rotate: false
+  xy: 2, 2
+  size: 915, 848
+  orig: 915, 848
+  offset: 0, 0
+  index: -1
+23
+  rotate: false
+  xy: 799, 857
+  size: 1037, 505
+  orig: 1037, 505
+  offset: 0, 0
+  index: -1
+24
+  rotate: false
+  xy: 799, 1367
+  size: 766, 380
+  orig: 766, 380
+  offset: 0, 0
+  index: -1
+countess/warrior_shadwo
+  rotate: false
+  xy: 922, 2
+  size: 895, 850
+  orig: 895, 850
+  offset: 0, 0
+  index: -1
+countess/blood_shadow
+  rotate: false
+  xy: 1570, 1367
+  size: 409, 91
+  orig: 409, 91
+  offset: 0, 0
+  index: -1
+remilia_scarlet/berserker
+  rotate: false
+  xy: 2, 855
+  size: 792, 760
+  orig: 792, 760
+  offset: 0, 0
+  index: -1

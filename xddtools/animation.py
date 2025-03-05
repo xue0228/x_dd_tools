@@ -193,12 +193,37 @@ class Animation(BaseID):
 
 
 if __name__ == '__main__':
-    pass
+    # pass
     # print(CONVERTER_PATH)
     #
-    # a = Animation(
-    #     os.path.join(DATA_PATH, "template/anim/walk")
+    from xddtools.path import DATA_PATH
+
+    name = "riposte_2"
+
+    def func(d: dict) -> dict:
+        keys = list(d["animations"].keys())
+        d["animations"][name] = d["animations"]["riposte_remi_blood_moon"]
+        for key in keys:
+            del d["animations"][key]
+        return d
+
+    a = Animation(
+        r"D:\Users\Desktop\x_dd_tools\xddtools\data\template\skill\enemy_2\targheadfx",
+        name
+    )
+    print(a.animations)
+    # a.copy_and_rename_animation(
+    #     os.path.join(DATA_PATH, "template", "anim"),
+    #     name,
+    #     is_global=True,
+    #     dict_func=func
     # )
+    # b = Animation(
+    #     os.path.join(r"D:\Users\Desktop\x_dd_tools\xddtools\data\template\anim\fx", name),
+    #     name
+    # )
+    # print(b.animations)
+
     # a.copy_and_rename_animation(os.path.join(DATA_PATH, "mod_test"), "combat", is_fx=True, hero_name="yiwei")
 
     # a.copy_and_rename_animation(os.path.join(DATA_PATH, "mod_test"), "yiwei", is_global=True)
