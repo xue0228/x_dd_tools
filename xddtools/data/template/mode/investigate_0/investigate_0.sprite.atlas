@@ -1,0 +1,27 @@
+
+investigate_0.sprite.png
+size: 1025,1424
+format: RGBA8888
+filter: Linear,Linear
+repeat: none
+shadow
+  rotate: false
+  xy: 579, 764
+  size: 441, 77
+  orig: 441, 77
+  offset: 0, 0
+  index: -1
+n212
+  rotate: false
+  xy: 2, 764
+  size: 572, 655
+  orig: 572, 655
+  offset: 0, 0
+  index: -1
+armatureName
+  rotate: false
+  xy: 2, 2
+  size: 871, 757
+  orig: 871, 757
+  offset: 0, 0
+  index: -1

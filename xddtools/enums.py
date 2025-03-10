@@ -1734,4 +1734,4 @@ class CampingSkillSelection(Enum):
 
 
 if __name__ == '__main__':
-    print(isinstance(STCombatStatMultiply.MAX_HP, Enum))
+    print(Level(2))

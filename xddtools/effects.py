@@ -678,13 +678,13 @@ class Effect(BaseID):
                        f'{self.buff_sub_type.value if isinstance(self.buff_sub_type, Enum) else self.buff_sub_type}'
             if self.buff_amount is not None:
                 res += f' .buff_amount {self.buff_amount}'
-            if self.buff_duration_type is not None:
-                res += f' .buff_duration_type {self.buff_duration_type.value}'
-            if self.key_status is not None:
-                res += f' .keyStatus {self.key_status.value}'
-            if self.monster_type is not None:
-                res += f' .monsterType ' \
-                       f'{self.monster_type.value if isinstance(self.monster_type, MonsterType) else self.monster_type}'
+        if self.buff_duration_type is not None:
+            res += f' .buff_duration_type {self.buff_duration_type.value}'
+        if self.key_status is not None:
+            res += f' .keyStatus {self.key_status.value}'
+        if self.monster_type is not None:
+            res += f' .monsterType ' \
+                   f'{self.monster_type.value if isinstance(self.monster_type, MonsterType) else self.monster_type}'
 
         if self.buff_source_type is not None:
             res += f' .buff_source_type {self.buff_source_type.value}'
@@ -841,8 +841,36 @@ class SkillBarkEffect(Effect):
         image.save(image_path)
 
 
+class TooltipEffect(Effect):
+    def __init__(
+            self,
+            effect_name: str,
+            buff_name: str,
+            tooltip_text: str,
+            sub_name: Optional[str] = None,
+    ):
+        if sub_name is None:
+            sub_name = buff_name
+        buff = Buff(
+            buff_name=buff_name,
+            stat_type=BuffType.UPGRADE_DISCOUNT,
+            stat_sub_type=sub_name,
+            localization=tooltip_text
+        )
+        super().__init__(
+            effect_name=effect_name,
+            target=EffectTarget.PERFORMER,
+            chance=1,
+            buff_ids=(buff,),
+            on_miss=True,
+            skill_instant=True,
+            apply_once=True,
+        )
+
+
 if __name__ == '__main__':
-    eft = SkillBarkEffect(bark_text="树干猛击")
-    eft.add_skill_id("xue_yi_wei")
-    print(eft)
-    print(eft.buff_ids[0])
+    pass
+    # eft = SkillBarkEffect(bark_text="树干猛击")
+    # eft.add_skill_id("xue_yi_wei")
+    # print(eft)
+    # print(eft.buff_ids[0])

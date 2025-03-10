@@ -1,0 +1,27 @@
+
+arch_wizard.sprite.afflicted.png
+size: 3181,2052
+format: RGBA8888
+filter: Linear,Linear
+repeat: none
+afflicted
+  rotate: false
+  xy: 2, 2
+  size: 2048, 2048
+  orig: 2048, 2048
+  offset: 0, 0
+  index: -1
+background
+  rotate: true
+  xy: 2052, 712
+  size: 1338, 1127
+  orig: 1338, 1127
+  offset: 0, 0
+  index: -1
+crown
+  rotate: false
+  xy: 2052, 345
+  size: 288, 365
+  orig: 288, 365
+  offset: 0, 0
+  index: -1

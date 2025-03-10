@@ -1,0 +1,160 @@
+
+arch_wizard.sprite.combat.png
+size: 1170,448
+format: RGBA8888
+filter: Linear,Linear
+repeat: none
+armleft
+  rotate: true
+  xy: 905, 253
+  size: 63, 100
+  orig: 63, 100
+  offset: 0, 0
+  index: -1
+armright
+  rotate: false
+  xy: 1020, 199
+  size: 68, 94
+  orig: 68, 94
+  offset: 0, 0
+  index: -1
+bang
+  rotate: true
+  xy: 790, 131
+  size: 156, 113
+  orig: 156, 113
+  offset: 0, 0
+  index: -1
+buckle
+  rotate: false
+  xy: 1009, 392
+  size: 117, 54
+  orig: 117, 54
+  offset: 0, 0
+  index: -1
+face
+  rotate: false
+  xy: 1009, 295
+  size: 116, 95
+  orig: 116, 95
+  offset: 0, 0
+  index: -1
+footleft
+  rotate: false
+  xy: 924, 356
+  size: 79, 90
+  orig: 79, 90
+  offset: 0, 0
+  index: -1
+footright
+  rotate: false
+  xy: 1106, 197
+  size: 62, 96
+  orig: 62, 96
+  offset: 0, 0
+  index: -1
+hairback
+  rotate: false
+  xy: 1009, 25
+  size: 95, 110
+  orig: 95, 110
+  offset: 0, 0
+  index: -1
+handleft
+  rotate: true
+  xy: 1106, 130
+  size: 65, 59
+  orig: 65, 59
+  offset: 0, 0
+  index: -1
+handright
+  rotate: true
+  xy: 1020, 137
+  size: 58, 54
+  orig: 58, 54
+  offset: 0, 0
+  index: -1
+hat
+  rotate: true
+  xy: 619, 143
+  size: 303, 169
+  orig: 303, 169
+  offset: 0, 0
+  index: -1
+kneeleft
+  rotate: false
+  xy: 1106, 28
+  size: 54, 100
+  orig: 54, 100
+  offset: 0, 0
+  index: -1
+kneeright
+  rotate: true
+  xy: 619, 92
+  size: 49, 143
+  orig: 49, 143
+  offset: 0, 0
+  index: -1
+legleft
+  rotate: true
+  xy: 659, 2
+  size: 88, 135
+  orig: 88, 135
+  offset: 0, 0
+  index: -1
+legright
+  rotate: false
+  xy: 863, 318
+  size: 59, 128
+  orig: 59, 128
+  offset: 0, 0
+  index: -1
+shadow
+  rotate: true
+  xy: 554, 91
+  size: 355, 63
+  orig: 355, 63
+  offset: 0, 0
+  index: -1
+shirt
+  rotate: true
+  xy: 905, 137
+  size: 114, 113
+  orig: 114, 113
+  offset: 0, 0
+  index: -1
+shoulderleft
+  rotate: true
+  xy: 796, 4
+  size: 125, 100
+  orig: 125, 100
+  offset: 0, 0
+  index: -1
+shoulderright
+  rotate: true
+  xy: 554, 6
+  size: 83, 103
+  orig: 83, 103
+  offset: 0, 0
+  index: -1
+skirt
+  rotate: true
+  xy: 790, 289
+  size: 157, 71
+  orig: 157, 71
+  offset: 0, 0
+  index: -1
+staff
+  rotate: true
+  xy: 2, 13
+  size: 433, 550
+  orig: 433, 550
+  offset: 0, 0
+  index: -1
+torso
+  rotate: true
+  xy: 898, 12
+  size: 117, 109
+  orig: 117, 109
+  offset: 0, 0
+  index: -1

@@ -1,0 +1,69 @@
+
+arch_wizard.sprite.explosion.png
+size: 764,424
+format: RGBA8888
+filter: Linear,Linear
+repeat: none
+boom
+  rotate: false
+  xy: 2, 5
+  size: 506, 417
+  orig: 506, 417
+  offset: 0, 0
+  index: -1
+crackle
+  rotate: false
+  xy: 510, 172
+  size: 252, 250
+  orig: 252, 250
+  offset: 0, 0
+  index: -1
+debris1
+  rotate: false
+  xy: 710, 88
+  size: 30, 82
+  orig: 30, 82
+  offset: 0, 0
+  index: -1
+debris2
+  rotate: true
+  xy: 510, 2
+  size: 53, 69
+  orig: 53, 69
+  offset: 0, 0
+  index: -1
+debris3
+  rotate: false
+  xy: 689, 35
+  size: 36, 44
+  orig: 36, 44
+  offset: 0, 0
+  index: -1
+debris4
+  rotate: false
+  xy: 643, 20
+  size: 44, 59
+  orig: 44, 59
+  offset: 0, 0
+  index: -1
+debris5
+  rotate: true
+  xy: 581, 4
+  size: 51, 60
+  orig: 51, 60
+  offset: 0, 0
+  index: -1
+debris6
+  rotate: false
+  xy: 622, 81
+  size: 86, 89
+  orig: 86, 89
+  offset: 0, 0
+  index: -1
+star
+  rotate: false
+  xy: 510, 57
+  size: 110, 113
+  orig: 110, 113
+  offset: 0, 0
+  index: -1

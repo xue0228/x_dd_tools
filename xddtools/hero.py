@@ -1,22 +1,19 @@
 import math
 import os
 from dataclasses import dataclass
-from typing import Optional, Iterable, Dict, Tuple, Union, List
+from typing import Union, Iterable, Optional, Dict, List, Tuple
 
 import numpy as np
 
-from xddtools.base import BaseID, LocalizationWriter
-from xddtools.buffs import Buff
-from xddtools.effects import Effect
-from xddtools.enums import Level, UpgradeRequirementCode, TagID, TownActivityType, DeathFx, ItemType
+from xddtools.animation import Animation
+from xddtools.base import BaseID, BaseLocalization
+from xddtools.enums import ItemType, TownActivityType, UpgradeRequirementCode, Level
 from xddtools.items import Item
 from xddtools.loot import LootTable
-from xddtools.path import HERO_SAVE_DIR, DATA_PATH
-from xddtools.quirks import Quirk
+from xddtools.path import HERO_SAVE_DIR
 from xddtools.skills import Skill
 from xddtools.traits import Trait
-from xddtools.utils import float_to_percent_str, bool_to_lower_str, clamp_string, is_image, resize_image, split_list
-from xddtools.writers import BuffWriter, EffectWriter
+from xddtools.utils import float_to_percent_str, is_image, resize_image, bool_to_lower_str
 
 
 class Resistance:
@@ -292,6 +289,10 @@ class WeaponGroup(BaseID):
             image_paths: Optional[Iterable[str]] = None,
             # localization: Optional[Union[Tuple[str, ...], str]] = None,
     ):
+        super().__init__(
+            name=hero_name,
+        )
+
         if image_paths is not None:
             images = []
             for image in image_paths:
@@ -311,18 +312,6 @@ class WeaponGroup(BaseID):
         }
         if weapons is not None:
             self.add_weapons(weapons)
-        super().__init__(
-            name=hero_name,
-            # localization=localization,
-            # entry_id_prefix=(
-            #     f"upgrade_tree_name_{hero_name}.weapon"
-            #     f"{hero_name}_weapon_0",
-            #     f"{hero_name}_weapon_1",
-            #     f"{hero_name}_weapon_2",
-            #     f"{hero_name}_weapon_3",
-            #     f"{hero_name}_weapon_4",
-            # ),
-        )
 
     def add_weapon(self, weapon: Weapon):
         # weapon = deepcopy(weapon)
@@ -406,6 +395,10 @@ class ArmourGroup(BaseID):
             image_paths: Optional[Iterable[str]] = None,
             # localization: Optional[Union[Tuple[str, ...], str]] = None,
     ):
+        super().__init__(
+            name=hero_name,
+        )
+
         if image_paths is not None:
             images = []
             for image in image_paths:
@@ -425,18 +418,6 @@ class ArmourGroup(BaseID):
         }
         if armours is not None:
             self.add_armours(armours)
-        super().__init__(
-            name=hero_name,
-            # localization=localization,
-            # entry_id_prefix=(
-            #     f"upgrade_tree_name_{hero_name}.armour"
-            #     f"{hero_name}_armour_0",
-            #     f"{hero_name}_armour_1",
-            #     f"{hero_name}_armour_2",
-            #     f"{hero_name}_armour_3",
-            #     f"{hero_name}_armour_4",
-            # ),
-        )
 
     def add_armour(self, armour: Armour):
         # armour = deepcopy(armour)
@@ -509,7 +490,7 @@ class ArmourGroup(BaseID):
         return tuple(res)
 
 
-class Mode:
+class Mode(BaseLocalization):
     """
     变身英雄或怪物的模式，不同模式下有不同的技能组
     """
@@ -523,9 +504,20 @@ class Mode:
             keep_rounds_in_ranks: bool = False,
             stress_damage_per_turn: int = 0,
             is_bark_override: bool = False,
-            affliction_combat_skill_id: Optional[str] = None,
-            battle_complete_combat_skill_id: Optional[str] = None,
-            prefix: Optional[str] = None,
+            affliction_combat_skill_id: Union[Skill, str, None] = None,
+            battle_complete_combat_skill_id: Union[Skill, str, None] = None,
+            localization: Union[Tuple[str, ...], str, None] = None,
+
+            afflicted: Union[Animation, str, None] = None,
+            camp: Union[Animation, str, None] = None,
+            combat: Union[Animation, str, None] = None,
+            death: Union[Animation, str, None] = None,
+            defend: Union[Animation, str, None] = None,
+            heroic: Union[Animation, str, None] = None,
+            idle: Union[Animation, str, None] = None,
+            investigate: Union[Animation, str, None] = None,
+            riposte: Union[Animation, str, None] = None,
+            walk: Union[Animation, str, None] = None,
     ):
         """
         初始化
@@ -538,9 +530,7 @@ class Mode:
         :param is_bark_override: 是否有变身文本
         :param affliction_combat_skill_id: 进入折磨时会使用的技能
         :param battle_complete_combat_skill_id: 战斗结束后会使用的技能
-        :param prefix: 前缀，与 mode_name 一起组成 id
         """
-        self.mode_name = mode_name
         self.is_raid_default = is_raid_default
         self.always_guard_actor_base_class_ids = always_guard_actor_base_class_ids
         self.is_targetable = is_targetable
@@ -549,13 +539,26 @@ class Mode:
         self.is_bark_override = is_bark_override
         self.affliction_combat_skill_id = affliction_combat_skill_id
         self.battle_complete_combat_skill_id = battle_complete_combat_skill_id
-        self.prefix = prefix
 
-    @property
-    def id(self):
-        if self.prefix is not None:
-            return f"{self.prefix}_{self.mode_name}"
-        return clamp_string(self.mode_name)
+        self.afflicted = afflicted
+        self.camp = camp
+        self.combat = combat
+        self.death = death
+        self.defend = defend
+        self.heroic = heroic
+        self.idle = idle
+        self.investigate = investigate
+        self.riposte = riposte
+        self.walk = walk
+
+        super().__init__(
+            name=mode_name,
+            localization=localization,
+            entry_id_prefix=(
+                "actor_mode_name_",
+                "str_skill_mode_info_"
+            )
+        )
 
     @property
     def bark_override_id(self):
@@ -576,9 +579,13 @@ class Mode:
         if self.is_bark_override:
             res += f" .bark_override_id {self.bark_override_id}"
         if self.affliction_combat_skill_id is not None:
-            res += f" .affliction_combat_skill_id {self.affliction_combat_skill_id}"
+            affliction_combat_skill_id = self.affliction_combat_skill_id.id \
+                if isinstance(self.affliction_combat_skill_id, Skill) else self.affliction_combat_skill_id
+            res += f" .affliction_combat_skill_id {affliction_combat_skill_id}"
         if self.battle_complete_combat_skill_id is not None:
-            res += f" .battle_complete_combat_skill_id {self.battle_complete_combat_skill_id}"
+            battle_complete_combat_skill_id = self.battle_complete_combat_skill_id.id \
+                if isinstance(self.battle_complete_combat_skill_id, Skill) else self.battle_complete_combat_skill_id
+            res += f" .battle_complete_combat_skill_id {battle_complete_combat_skill_id}"
         if self.stress_damage_per_turn != 0:
             res += f" .stress_damage_per_turn {self.stress_damage_per_turn}"
         return res + "\n"
@@ -659,9 +666,9 @@ class Generation:
 class ActoutDisplay:
     def __init__(
             self,
-            attack_friendly_anim: Optional[str] = None,
-            attack_friendly_fx: Optional[str] = None,
-            attack_friendly_targchestfx: Optional[str] = None,
+            attack_friendly_anim: Union[Animation, str, None] = None,
+            attack_friendly_fx: Union[Animation, str, None] = None,
+            attack_friendly_targchestfx: Union[Animation, str, None] = None,
             attack_friendly_sfx: Optional[str] = None,
     ):
         self.attack_friendly_anim = attack_friendly_anim
@@ -679,6 +686,7 @@ class ActoutDisplay:
         }
         for k, v in none_str.items():
             if v is not None:
+                v = v.id if isinstance(v, Animation) else v
                 res.append(f'.{k} "{v}"')
 
         return " ".join(res) + "\n"
@@ -724,12 +732,19 @@ class ExtraStackLimit:
 
 @dataclass(frozen=True)
 class HeroLocalization:
+    hero_class_name: str
+
+    blacksmith_verbose: str
+    guild_verbose: str
+    camping_verbose: str
+
     weapon_upgrade: str
     weapon_0: str
     weapon_1: str
     weapon_2: str
     weapon_3: str
     weapon_4: str
+
     armour_upgrade: str
     armour_0: str
     armour_1: str
@@ -737,250 +752,26 @@ class HeroLocalization:
     armour_3: str
     armour_4: str
 
+    def get_entries(self, hero_name: str) -> Tuple[Tuple[str, str]]:
+        res: List[Tuple[str, str]] = [
+            (f"hero_class_name_{hero_name}", self.hero_class_name),
 
-class Hero(BaseID):
-    def __init__(
-            self,
-            hero_name: str,
-            id_index: int,
-            resistances: Resistance,
-            crit_effects: Iterable[Union[Effect, str]],
-            skills: Iterable[Skill],
-            target_rank: int,
-            weapons: Iterable[Weapon],
-            armours: Iterable[Armour],
-            weapon_image_path: Optional[str] = None,
-            armour_image_path: Optional[str] = None,
-            weapon_golds: Tuple[int, int, int, int] = (750, 1750, 3000, 6000),
-            armour_golds: Tuple[int, int, int, int] = (750, 1750, 3000, 6000),
-            combat_skill_golds: Tuple[int, int, int, int, int] = (1000, 250, 750, 1250, 2500),
-            tags: Optional[Iterable[Union[TagID, str]]] = None,
-            overstressed_modifier: Optional[Iterable[OverstressedModify]] = None,
-            deaths_door_buffs: Optional[Iterable[Union[Buff, str]]] = None,
-            recovery_buffs: Optional[Iterable[Union[Buff, str]]] = None,
-            recovery_heart_attack_buffs: Optional[Iterable[Union[Buff, str]]] = None,
-            can_select_combat_skills: bool = True,
-            number_of_selected_combat_skills_max: int = 4,
-            can_self_party: bool = True,
-            generation: Optional[Generation] = None,
-            activity_modifier: Optional[ActivityModify] = None,
-            quirk_modifier: Optional[Iterable[Union[Quirk, str]]] = None,
-            extra_battle_loot: Optional[ExtraLoot] = None,
-            extra_curio_loot: Optional[ExtraLoot] = None,
-            extra_stack_limit: Optional[Iterable[ExtraStackLimit]] = None,
-            extra_shard_bonus: Optional[float] = None,
-            death_fx: Union[DeathFx, str] = DeathFx.DEATH_MEDIUM,
-            auto_display: Optional[ActoutDisplay] = None,
-            hero_localization: Optional[HeroLocalization] = None,
+            (f"action_verbose_body_blacksmith_{hero_name}", self.blacksmith_verbose),
+            (f"action_verbose_body_guild_{hero_name}", self.guild_verbose),
+            (f"action_verbose_body_camping_trainer_{hero_name}", self.camping_verbose),
 
-            buff_writer: Optional[BuffWriter] = None,
-            effect_writer: Optional[EffectWriter] = None,
-            localization_writer: Optional[LocalizationWriter] = None,
-    ):
-        if id_index <= 17:
-            raise ValueError("id_index must be greater than 17")
+            (f"upgrade_tree_name_{hero_name}.weapon", self.weapon_upgrade),
+            (f"{hero_name}_weapon_0", self.weapon_0),
+            (f"{hero_name}_weapon_1", self.weapon_1),
+            (f"{hero_name}_weapon_2", self.weapon_2),
+            (f"{hero_name}_weapon_3", self.weapon_3),
+            (f"{hero_name}_weapon_4", self.weapon_4),
 
-        if target_rank < 1 or target_rank > 4:
-            raise ValueError("target_rank must be in range [1, 4]")
-
-        if tags is None:
-            tags = (TagID.LIGHT, TagID.NON_RELIGIOUS, TagID.OUTSIDERS_BONFIRE)
-
-        eqp_dir = os.path.join(DATA_PATH, "template", "icons_equip")
-        if weapon_image_path is None:
-            weapon_image_path = (
-                os.path.join(eqp_dir, "eqp_weapon_0.png"),
-                os.path.join(eqp_dir, "eqp_weapon_1.png"),
-                os.path.join(eqp_dir, "eqp_weapon_2.png"),
-                os.path.join(eqp_dir, "eqp_weapon_3.png"),
-                os.path.join(eqp_dir, "eqp_weapon_4.png"),
-            )
-        if armour_image_path is None:
-            armour_image_path = (
-                os.path.join(eqp_dir, "eqp_armour_0.png"),
-                os.path.join(eqp_dir, "eqp_armour_1.png"),
-                os.path.join(eqp_dir, "eqp_armour_2.png"),
-                os.path.join(eqp_dir, "eqp_armour_3.png"),
-                os.path.join(eqp_dir, "eqp_armour_4.png"),
-            )
-
-        if deaths_door_buffs is None:
-            deaths_door_buffs = (
-                "deathsdoorACCDebuff",
-                "deathsdoorDMGLowDebuff",
-                "deathsdoorDMGHighDebuff",
-                "deathsdoorSPDDebuff",
-                "deathsdoorSRDebuff",
-            )
-        if recovery_buffs is None:
-            recovery_buffs = (
-                "mortalityACCDebuff",
-                "mortalityDMGLowDebuff",
-                "mortalityDMGHighDebuff",
-                "mortalitySPDDebuff",
-                "mortalitySRDebuff",
-            )
-        if recovery_heart_attack_buffs is None:
-            recovery_heart_attack_buffs = (
-                "heartattackACCDebuff",
-                "heartattackDMGLowDebuff",
-                "heartattackDMGHighDebuff",
-                "heartattackSPDDebuff",
-                "heartattackSRDebuff",
-            )
-
-        if generation is None:
-            generation = Generation()
-
-        self.id_index = id_index
-        self.resistances = resistances
-        self.crit_effects = crit_effects
-        # self.weapons = weapons
-        # self.armours = armours
-        # self.weapon_image_path = weapon_image_path
-        # self.armour_image_path = armour_image_path
-        self.skills = skills
-        self.target_rank = target_rank
-        self.tags = tags
-        self.overstressed_modifier = overstressed_modifier
-        self.deaths_door_buffs = deaths_door_buffs
-        self.recovery_buffs = recovery_buffs
-        self.recovery_heart_attack_buffs = recovery_heart_attack_buffs
-        self.can_select_combat_skills = can_select_combat_skills
-        self.number_of_selected_combat_skills_max = number_of_selected_combat_skills_max
-        self.can_self_party = can_self_party
-        self.generation = generation
-        self.activity_modifier = activity_modifier
-        self.quirk_modifier = quirk_modifier
-        self.extra_battle_loot = extra_battle_loot
-        self.extra_curio_loot = extra_curio_loot
-        self.extra_stack_limit = extra_stack_limit
-        self.extra_shard_bonus = extra_shard_bonus
-        self.death_fx = death_fx
-        self.auto_display = auto_display
-        self.hero_localization = hero_localization
-
-        self._weapon_group = WeaponGroup(
-            hero_name=hero_name,
-            weapons=weapons,
-            image_paths=weapon_image_path,
-            # localization=(
-            #     hero_localization.weapon_upgrade,
-            #     hero_localization.weapon_0,
-            #     hero_localization.weapon_1,
-            #     hero_localization.weapon_2,
-            #     hero_localization.weapon_3,
-            #     hero_localization.weapon_4,
-            # ) if hero_localization is not None else None
-        )
-        self._weapon_group.autocomplete()
-        self._armour_group = ArmourGroup(
-            hero_name=hero_name,
-            armours=armours,
-            image_paths=armour_image_path,
-            # localization=(
-            #     hero_localization.armour_upgrade,
-            #     hero_localization.armour_0,
-            #     hero_localization.armour_1,
-            #     hero_localization.armour_2,
-            #     hero_localization.armour_3,
-            #     hero_localization.armour_4,
-            # ) if hero_localization is not None else None
-        )
-        self._armour_group.autocomplete()
-
-        self._buff_writer = buff_writer
-        self._effect_writer = effect_writer
-        self._localization_writer = localization_writer
-
-        super().__init__(hero_name)
-
-    def info(self) -> str:
-        res = [str(self.resistances)]
-
-        effects = [effect.id if isinstance(effect, Effect) else effect for effect in self.crit_effects]
-        effects = " ".join([f'"{effect}"' for effect in effects])
-        res.append(f'crit: .effects: {effects}\n')
-
-        res.append(str(self._weapon_group))
-        res.append(str(self._armour_group))
-
-        for skill in self.skills:
-            res.append(skill.info)
-
-        for tag in self.tags:
-            tag = tag.value if isinstance(tag, TagID) else tag
-            res.append(f'tag: .id "{tag}"\n')
-
-        if self.overstressed_modifier is not None:
-            for modify in self.overstressed_modifier:
-                trait_id = modify.trait_id.id if isinstance(modify.trait_id, Trait) else modify.trait_id
-                res.append(f'overstressed_modifier: .override_trait_type_ids {trait_id} '
-                           f'.override_trait_type_chances {modify.chance}\n')
-
-        if self.activity_modifier is not None:
-            activity_ids = " ".join([activity.value for activity in self.activity_modifier.activity_ids])
-            res.append(f'activity_modifier: .override_valid_activity_ids {activity_ids} '
-                       f'.override_stress_removal_amount_low {self.activity_modifier.stress_removal_amount_low} '
-                       f'.override_stress_removal_amount_high {self.activity_modifier.stress_removal_amount_high}\n')
-
-        if self.quirk_modifier is not None:
-            quirks = [quirk.id if isinstance(quirk, Quirk) else quirk for quirk in self.quirk_modifier]
-            quirks = split_list(quirks, 8)
-            for quirk in quirks:
-                res.append(f'quirk_modifier: .incompatible_class_ids {" ".join(quirk)}\n')
-
-        tem = []
-        for buff in self.deaths_door_buffs:
-            buff = buff.id if isinstance(buff, Buff) else buff
-            tem.append(buff)
-        res.append(f'deaths_door: .buffs {" ".join(tem)}\n')
-
-        res.append(f'controlled: .target_rank {self.target_rank}\n')
-        res.append(f'id_index: .index {self.id_index}\n')
-
-        res.append(f'skill_selection: .can_select_combat_skills {bool_to_lower_str(self.can_select_combat_skills)} '
-                   f'.number_of_selected_combat_skills_max {self.number_of_selected_combat_skills_max}\n')
-
-        if self.can_self_party:
-            res.append(f'incompatible_party_member: .id {self.id}_limit .hero_tag {self.id}\n')
-
-        if self.extra_battle_loot is not None:
-            code = self.extra_battle_loot.code.id \
-                if isinstance(self.extra_battle_loot.code, LootTable) else self.extra_battle_loot.code
-            res.append(f'extra_battle_loot: .code "{code}" .count {self.extra_battle_loot.count}\n')
-
-        if self.extra_curio_loot is not None:
-            code = self.extra_curio_loot.code.id \
-                if isinstance(self.extra_curio_loot.code, LootTable) else self.extra_curio_loot.code
-            res.append(f'extra_curio_loot: .code "{code}" .count {self.extra_curio_loot.count}\n')
-
-        if self.extra_stack_limit is not None:
-            for limit in self.extra_stack_limit:
-                res.append(f'extra_stack_limit: .id {limit.id}\n')
-
-        if self.extra_shard_bonus is not None:
-            res.append(f'extra_shard_bonus: .amount {self.extra_shard_bonus}\n')
-
-        res.append(str(self.generation))
-
-        return "".join(res)
-
-    def art(self) -> str:
-        res = [f'commonfx: .deathfx {self.death_fx.value}\n']
-
-        weapon = "".join(f'weapon: .name "{self.id}_weapon_{i}" .icon "eqp_weapon_{i}.png"\n' for i in range(5))
-        armour = "".join(f'armour: .name "{self.id}_armour_{i}" .icon "eqp_armour_{i}.png"\n' for i in range(5))
-        res.append(weapon)
-        res.append(armour)
-
-        skill = "".join([item.art for item in self.skills])
-        res.append(skill)
-
-        if self.auto_display is not None:
-            res.append(str(self.auto_display))
-
-        return "\n".join(res)
-
-    def __str__(self):
-        return "\n".join([self.info(), self.art()])
+            (f"upgrade_tree_name_{hero_name}.armour", self.armour_upgrade),
+            (f"{hero_name}_armour_0", self.armour_0),
+            (f"{hero_name}_armour_1", self.armour_1),
+            (f"{hero_name}_armour_2", self.armour_2),
+            (f"{hero_name}_armour_3", self.armour_3),
+            (f"{hero_name}_armour_4", self.armour_4),
+        ]
+        return tuple(res)

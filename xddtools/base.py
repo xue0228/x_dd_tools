@@ -124,6 +124,7 @@ class LocalizationWriter(BaseID):
             entry = doc.createElement("entry")
             entry.setAttribute("id", entry_id)
             # 手动构建CDATA部分并设置为元素的文本内容
+            entry_text = entry_text.replace("}\n", "} \n")
             entry_text_with_cdata = f"<![CDATA[{entry_text}]]>"
             text_node = doc.createTextNode(entry_text_with_cdata)
             entry.appendChild(text_node)

@@ -1,0 +1,27 @@
+
+arch_wizard.sprite.investigate.png
+size: 1178,437
+format: RGBA8888
+filter: Linear,Linear
+repeat: none
+investigate
+  rotate: true
+  xy: 554, 107
+  size: 328, 622
+  orig: 328, 622
+  offset: 0, 0
+  index: -1
+shadow
+  rotate: false
+  xy: 554, 42
+  size: 357, 63
+  orig: 357, 63
+  offset: 0, 0
+  index: -1
+staff
+  rotate: true
+  xy: 2, 2
+  size: 433, 550
+  orig: 433, 550
+  offset: 0, 0
+  index: -1

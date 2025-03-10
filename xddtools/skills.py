@@ -1,14 +1,12 @@
-import os
 from enum import Enum
 from typing import Optional, Tuple, Union, Iterable, List
 
 from xddtools.animation import Animation
 from xddtools.base import BaseID
-from xddtools.hero import Mode
 from xddtools.effects import Effect
 from xddtools.enums import SkillHeadType, Level, SkillType, MonsterClass, HeroClass, InnerFx
 from xddtools.target import Target, SELF, LAUNCH_ANY
-from xddtools.utils import is_zero, float_to_percent_int, bool_to_lower_str, is_image, resize_image
+from xddtools.utils import is_zero, float_to_percent_int, bool_to_lower_str, is_image
 
 
 class Skill(BaseID):
@@ -42,7 +40,7 @@ class Skill(BaseID):
 
             effect_ids: Optional[Iterable[Union[Effect, str]]] = None,
             valid_modes_and_effects: Optional[Iterable[Tuple[
-                Union[Mode, str], Optional[Iterable[Union[Effect, str]]]]
+                Union[BaseID, str], Optional[Iterable[Union[Effect, str]]]]
             ]] = None,
 
             is_continue_turn: bool = False,
@@ -202,13 +200,13 @@ class Skill(BaseID):
 
     def _one_mode_effects(
             self,
-            mode: Union[Mode, str],
+            mode: Union[BaseID, str],
             effects: Optional[Iterable[Union[Effect, str]]]
     ) -> str:
         res = [f'{self.skill_head_type.value}: .id "{self.id}"']
         if self.skill_head_type != SkillHeadType.SKILL:
             res.append(f'.level {self.level.value}')
-        mode = mode.id if isinstance(mode, Mode) else mode
+        mode = mode.id if isinstance(mode, BaseID) else mode
         res.append(f'.valid_modes {mode}')
         if effects is not None:
             res.append(f".{mode}_effects")
@@ -224,7 +222,7 @@ class Skill(BaseID):
         if self.skill_type is not None:
             res.append(f'.type "{self.skill_type.value}"')
 
-        if not (isinstance(self.dmg, (float, int)) and is_zero(self.dmg)):
+        if not (isinstance(self.dmg, (float, int)) and is_zero(self.atk)):
             res.append(f'.atk {float_to_percent_int(self.atk)}%')
             if not is_zero(self.defence):
                 res.append(f'.def {float_to_percent_int(self.defence)}%')

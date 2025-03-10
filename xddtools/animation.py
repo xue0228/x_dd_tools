@@ -198,17 +198,19 @@ if __name__ == '__main__':
     #
     from xddtools.path import DATA_PATH
 
-    name = "riposte_2"
+    name = "defend"
 
     def func(d: dict) -> dict:
         keys = list(d["animations"].keys())
-        d["animations"][name] = d["animations"]["riposte_remi_blood_moon"]
+        d["animations"][name] = d["animations"]["defend"]
         for key in keys:
+            if key == name:
+                continue
             del d["animations"][key]
         return d
 
     a = Animation(
-        r"D:\Users\Desktop\x_dd_tools\xddtools\data\template\skill\enemy_2\targheadfx",
+        r"D:\Users\Desktop\x_dd_tools\examples\xhuihui\xhuihui\heroes\xhuihui\fx",
         name
     )
     print(a.animations)

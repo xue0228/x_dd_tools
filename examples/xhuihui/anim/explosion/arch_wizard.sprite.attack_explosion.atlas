@@ -1,0 +1,41 @@
+
+arch_wizard.sprite.attack_explosion.png
+size: 1895,692
+format: RGBA8888
+filter: Linear,Linear
+repeat: none
+glare
+  rotate: true
+  xy: 727, 3
+  size: 687, 723
+  orig: 687, 723
+  offset: 0, 0
+  index: -1
+megu
+  rotate: true
+  xy: 2, 2
+  size: 688, 723
+  orig: 688, 723
+  offset: 0, 0
+  index: -1
+ring
+  rotate: false
+  xy: 1452, 250
+  size: 441, 440
+  orig: 441, 440
+  offset: 0, 0
+  index: -1
+shadow
+  rotate: false
+  xy: 1452, 185
+  size: 357, 63
+  orig: 357, 63
+  offset: 0, 0
+  index: -1
+star
+  rotate: false
+  xy: 1452, 70
+  size: 110, 113
+  orig: 110, 113
+  offset: 0, 0
+  index: -1
