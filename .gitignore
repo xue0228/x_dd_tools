@@ -5,7 +5,9 @@
 /others/
 /tools/
 /.idea/
-__pycache__/
+*.pyc
+*.drawio
+__pycache__
 /examples/xhunter/trinket/*
 /examples/xlove_token/estate/*
 /examples/xlove_token/overlays/*

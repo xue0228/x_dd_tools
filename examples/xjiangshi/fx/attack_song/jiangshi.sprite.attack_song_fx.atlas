@@ -1,0 +1,27 @@
+
+jiangshi.sprite.attack_song_fx.png
+size: 1510,607
+format: RGBA8888
+filter: Linear,Linear
+repeat: none
+FX
+  rotate: false
+  xy: 2, 2
+  size: 672, 603
+  orig: 672, 603
+  offset: 0, 0
+  index: -1
+LIGHT
+  rotate: false
+  xy: 1291, 196
+  size: 217, 409
+  orig: 217, 409
+  offset: 0, 0
+  index: -1
+SHADOW
+  rotate: true
+  xy: 676, 21
+  size: 584, 613
+  orig: 584, 613
+  offset: 0, 0
+  index: -1

@@ -4,10 +4,22 @@
 
 运行 example 中的示例脚本前请提前通过 steam 创意工坊下载好对应的素材：
 
-xhunter：https://steamcommunity.com/sharedfiles/filedetails/?id=2402990562
+xhunter：
 
-xlove_token：https://steamcommunity.com/sharedfiles/filedetails/?id=2455714793
+https://steamcommunity.com/sharedfiles/filedetails/?id=2402990562
+
+xlove_token：
+
+https://steamcommunity.com/sharedfiles/filedetails/?id=2455714793
+
+xjiangshi: 
+
+https://steamcommunity.com/sharedfiles/filedetails/?id=2866004139
+
+https://steamcommunity.com/sharedfiles/filedetails/?id=2866006285
 
 ## 相关
 
-SpineConverter2.1.27-for-DragonBones：https://github.com/MonteePoke/SpineConverter2.1.27-for-DragonBones
+SpineConverter2.1.27-for-DragonBones：
+
+https://github.com/MonteePoke/SpineConverter2.1.27-for-DragonBones

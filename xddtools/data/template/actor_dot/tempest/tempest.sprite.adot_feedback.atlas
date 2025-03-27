@@ -1,0 +1,83 @@
+
+tempest.sprite.adot_feedback.png
+size: 2048,256
+format: RGBA8888
+filter: Linear,Linear
+repeat: none
+arrow_L
+  rotate: false
+  xy: 195, 69
+  size: 166, 185
+  orig: 166, 185
+  offset: 0, 0
+  index: -1
+arrow_R
+  rotate: true
+  xy: 363, 107
+  size: 147, 202
+  orig: 147, 202
+  offset: 0, 0
+  index: -1
+arrow_top
+  rotate: false
+  xy: 767, 145
+  size: 212, 109
+  orig: 212, 109
+  offset: 0, 0
+  index: -1
+free
+  rotate: false
+  xy: 468, 47
+  size: 93, 58
+  orig: 93, 58
+  offset: 0, 0
+  index: -1
+inner_glow
+  rotate: false
+  xy: 363, 2
+  size: 103, 103
+  orig: 103, 103
+  offset: 0, 0
+  index: -1
+lightning2
+  rotate: false
+  xy: 567, 119
+  size: 198, 135
+  orig: 198, 135
+  offset: 0, 0
+  index: -1
+lightning3
+  rotate: true
+  xy: 1320, 118
+  size: 136, 168
+  orig: 136, 168
+  offset: 0, 0
+  index: -1
+lightning4
+  rotate: false
+  xy: 2, 61
+  size: 191, 193
+  orig: 191, 193
+  offset: 0, 0
+  index: -1
+lightning6
+  rotate: false
+  xy: 1490, 187
+  size: 93, 67
+  orig: 93, 67
+  offset: 0, 0
+  index: -1
+lightningcircle1
+  rotate: true
+  xy: 981, 93
+  size: 161, 172
+  orig: 161, 172
+  offset: 0, 0
+  index: -1
+lightningcircle2
+  rotate: true
+  xy: 1155, 106
+  size: 148, 163
+  orig: 148, 163
+  offset: 0, 0
+  index: -1

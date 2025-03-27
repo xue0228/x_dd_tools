@@ -1,0 +1,20 @@
+
+jiangshispritedefend.png
+size: 787,519
+format: RGBA8888
+filter: Linear,Linear
+repeat: none
+shadow
+  rotate: false
+  xy: 1, 451
+  size: 546, 66
+  orig: 546, 66
+  offset: 0, 0
+  index: -1
+df
+  rotate: false
+  xy: 1, 1
+  size: 784, 448
+  orig: 786, 450
+  offset: 1, 1
+  index: -1

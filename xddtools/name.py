@@ -1,166 +1,98 @@
+import os
 import types
 
 
-class AutoNameBase:
-    def new_buff(self) -> str: ...
+class AutoName:
+    _instances = {}
+    _default_prefix = os.getenv('AUTO_NAME_PREFIX', 'default')  # 默认从环境变量中获取前缀
 
-    def last_buff(self) -> str: ...
+    def __new__(cls, prefix: str = None):
+        if prefix is None:
+            prefix = cls._default_prefix
+        if prefix not in cls._instances:
+            instance = super(AutoName, cls).__new__(cls)
+            instance._prefix = prefix
+            # 初始化数据存储
+            instance._data = {category: -1 for category in (
+                "buff", "effect", "colour", "skill",
+                "anim", "rarity", "trinket", "item",
+                "loot_table", "quirk", "camping_skill", "trait",
+                "mode", "sub_type", "set", "project",
+                "actor_dot", "hero"
+            )}
 
-    def index_buff(self, idx: int) -> str: ...
-
-    def new_effect(self) -> str: ...
-
-    def last_effect(self) -> str: ...
-
-    def index_effect(self, idx: int) -> str: ...
-
-    def new_colour(self) -> str: ...
-
-    def last_colour(self) -> str: ...
-
-    def index_colour(self, idx: int) -> str: ...
-
-    def new_skill(self) -> str: ...
-
-    def last_skill(self) -> str: ...
-
-    def index_skill(self, idx: int) -> str: ...
-
-    def new_anim(self) -> str: ...
-
-    def last_anim(self) -> str: ...
-
-    def index_anim(self, idx: int) -> str: ...
-
-    def new_rarity(self) -> str: ...
-
-    def last_rarity(self) -> str: ...
-
-    def index_rarity(self, idx: int) -> str: ...
-
-    def new_trinket(self) -> str: ...
-
-    def last_trinket(self) -> str: ...
-
-    def index_trinket(self, idx: int) -> str: ...
-
-    def new_item(self) -> str: ...
-
-    def last_item(self) -> str: ...
-
-    def index_item(self, idx: int) -> str: ...
-
-    def new_loot(self) -> str: ...
-
-    def last_loot(self) -> str: ...
-
-    def index_loot(self, idx: int) -> str: ...
-
-    def new_quirk(self) -> str: ...
-
-    def last_quirk(self) -> str: ...
-
-    def index_quirk(self, idx: int) -> str: ...
-
-    def new_camping_skill(self) -> str: ...
-
-    def last_camping_skill(self) -> str: ...
-
-    def index_camping_skill(self, idx: int) -> str: ...
-
-    def new_trait(self) -> str: ...
-
-    def last_trait(self) -> str: ...
-
-    def index_trait(self, idx: int) -> str: ...
-
-    def new_mode(self) -> str: ...
-
-    def last_mode(self) -> str: ...
-
-    def index_mode(self, idx: int) -> str: ...
-
-    def new_sub_type(self) -> str: ...
-
-    def last_sub_type(self) -> str: ...
-
-    def index_sub_type(self, idx: int) -> str: ...
-
-    def new_(self) -> str: ...
-
-    def last_(self) -> str: ...
-
-    def index_(self, idx: int) -> str: ...
-
-
-class AutoName(AutoNameBase):
-    def __init__(
-            self,
-            prefix: str,
-    ):
-        self._prefix = prefix
-        self._data = {}
-        self._categories = (
-            "buff", "effect", "colour", "skill",
-            "anim", "rarity", "trinket", "item",
-            "loot", "quirk", "camping_skill", "trait",
-            "mode", "sub_type"
-        )
-        for category in self._categories:
             # 动态生成并绑定方法
-            setattr(self, f"new_{category}", types.MethodType(self._make_new_method(category), self))
-            setattr(self, f"last_{category}", types.MethodType(self._make_last_method(category), self))
-            setattr(self, f"index_{category}", types.MethodType(self._make_index_method(category), self))
+            for category in instance._data.keys():
+                for operation in ('new', 'last', 'index'):
+                    method_name = f"{operation}_{category}"
+                    method = cls._make_method(operation, category)
+                    bound_method = types.MethodType(method, instance)
+                    setattr(instance, method_name, bound_method)
+            cls._instances[prefix] = instance
+        return cls._instances[prefix]
 
     @staticmethod
-    def _make_new_method(category):
-        def new_method(self):
-            return self._add_new_name(category)
+    def _make_method(operation, category):
+        def new_method(self, idx=None):
+            if operation == 'new':
+                self._data[category] += 1
+                return f"{self._prefix}_{category}_{self._data[category]}"
+            elif operation == 'last':
+                if self._data[category] < 0:
+                    raise ValueError(f"No items available in category {category}")
+                return f"{self._prefix}_{category}_{self._data[category]}"
+            elif operation == 'index':
+                if idx is None or idx > self._data[category] or idx < 0:
+                    raise ValueError(f"Index out of range for category {category}")
+                return f"{self._prefix}_{category}_{idx}"
 
         return new_method
 
-    @staticmethod
-    def _make_last_method(category):
-        def last_method(self):
-            return self._get_name_by_index(category)
-
-        return last_method
-
-    @staticmethod
-    def _make_index_method(category):
-        def index_method(self, idx: int):
-            return self._get_name_by_index(category, idx)
-
-        return index_method
-
     def __len__(self):
-        res = sum([value for value in self._data.values()])
-        return res + len(self._data)
+        return sum([v for v in self._data.values() if v > 0])
 
-    def _add_new_name(self, category: str):
-        if category not in self._data:
-            self._data[category] = 0
-            return "_".join([self._prefix, category, str(0)])
-        self._data[category] += 1
-        return "_".join([self._prefix, category, str(self._data[category])])
+    @classmethod
+    def set_default_prefix(cls, prefix: str):
+        instance = cls._instances.get(cls._default_prefix, None)
+        if instance is not None and len(instance) > 0:
+            raise ValueError("Cannot change default prefix when there are items in the default category")
+        cls._default_prefix = prefix
 
-    def _get_name_by_index(self, category: str, idx: int = -1):
-        if category not in self._data:
-            raise ValueError("Category not found")
-        if idx < 0:
-            idx = self._data[category] + 1 + idx
-            if idx < 0:
-                raise ValueError("Index out of range")
-        else:
-            if idx > self._data[category]:
-                raise ValueError("Index out of range")
-        return "_".join([self._prefix, category, str(idx)])
+    def __repr__(self):
+        return repr(self._data)
 
 
 if __name__ == '__main__':
-    a = AutoName("xhunter")
-    print(a.new_buff())
-    print(a.new_buff())
-    print(a.new_buff())
-    print(a.last_buff())
-    print(len(a))
+    import os
+
+    # 设置环境变量（仅用于演示）
+    os.environ['AUTO_NAME_PREFIX'] = 'env_prefix'
+
+    # 创建默认实例
+    default_instance = AutoName()
+    print(default_instance.new_buff())  # 使用默认前缀
+    print(default_instance.new_buff())
+    print(default_instance.new_buff())
+    print(default_instance.last_buff())
+
+    # 创建具有特定前缀的实例
+    specific_instance = AutoName("specific_prefix")
+    print(specific_instance.new_buff())  # 使用不同的前缀
+    print(specific_instance.new_buff())
+    print(specific_instance.new_buff())
+    print(specific_instance.last_buff())
+
+    # 更改默认前缀
+    AutoName.set_default_prefix("new_default_prefix")
+    changed_default_instance = AutoName()
+    print(changed_default_instance.new_buff())  # 使用新的默认前缀
+    print(changed_default_instance.new_buff())
+    print(changed_default_instance.new_buff())
+    print(changed_default_instance.last_buff())
+
+    # 验证单个前缀的实例是否相同
+    another_default_instance = AutoName()
+    print(changed_default_instance is another_default_instance)  # 应该输出 True
+
+    # 验证不同前缀的实例是否不同
+    print(default_instance is specific_instance)  # 应该输出 False

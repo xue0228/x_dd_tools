@@ -12,6 +12,7 @@ TRAIT_SAVE_DIR = os.path.join("shared", "trait")
 TRAIT_FILE_EXTENSION = ".trait_library.json"
 
 HERO_SAVE_DIR = "heroes"
+MONSTER_SAVE_DIR = "monsters"
 
 EFFECT_SAVE_DIR = "effects"
 EFFECT_FILE_EXTENSION = ".effects.darkest"
@@ -22,6 +23,13 @@ HERO_UPGRADE_FILE_EXTENSION = ".upgrades.json"
 DATA_PATH = os.path.join(os.path.dirname(__file__), "data")
 CONVERTER_PATH = os.path.normpath(os.path.join(DATA_PATH, "Spine.Converter.v1.0.5/Spine Converter v1.0.5.exe"))
 LOCALIZE_PATH = os.path.normpath(os.path.join(DATA_PATH, "localize/localization.exe"))
+
+BANK_PATH = os.path.normpath(os.path.join(DATA_PATH, "audio/bank"))
+
+AUDIO_SAVE_DIR = "audio"
+BANK_SAVE_DIR = "audio/secondary_banks"
+BANK_LOAD_FILE_EXTENSION = ".campaign.load_order.json"
+BANK_OVERRIDE_FILE_EXTENSION = ".campaign.guid_overrides.json"
 
 TRINKET_SAVE_DIR = "trinkets"
 TRINKET_IMAGE_SAVE_DIR = "panels/icons_equip/trinket"
@@ -47,6 +55,11 @@ CAMPING_SKILL_SAVE_DIR = os.path.join("raid", "camping")
 CAMPING_SKILL_FILE_EXTENSION = ".camping_skills.json"
 CAMPING_SKILL_IMAGE_SAVE_DIR = os.path.join(CAMPING_SKILL_SAVE_DIR, "skill_icons")
 
+ACTOR_DOT_SAVE_DIR = os.path.join("raid", "actor_dot")
+ACTOR_DOT_FILE_EXTENSION = ".actor_dot.json"
+
+EXTRA_STACK_LIMIT_SAVE_DIR = os.path.join("inventory")
+EXTRA_STACK_LIMIT_FILE_EXTENSION = ".inventory.extra_stack_limits.darkest"
 
 if __name__ == '__main__':
     print(BUFF_SAVE_DIR)

@@ -1,12 +1,47 @@
-import hashlib
+import json
 import os
-import shutil
-import time
+import subprocess
 from decimal import Decimal, ROUND_HALF_UP
-from typing import Optional, Tuple, List, Any, Callable
+from typing import Optional, Tuple, Sequence, Callable, List, Any
 
 from PIL import Image
 from PIL.Image import Resampling
+
+
+def make_dirs(dir_path: str):
+    if dir_path != "":
+        os.makedirs(dir_path, exist_ok=True)
+
+
+def write_str_to_file(file_path: str, content: str):
+    make_dirs(os.path.dirname(file_path))
+    with open(file_path, 'w', encoding='utf-8') as f:
+        f.write(content)
+    return os.path.normpath(file_path)
+
+
+def process_exe(
+        exe_path: str,
+        args: Optional[Sequence[str]],
+        cwd: Optional[str] = None
+) -> Tuple[str, str]:
+    if args is None:
+        args = []
+    process = subprocess.Popen(
+        [exe_path, *args],
+        stdin=subprocess.DEVNULL,
+        stdout=subprocess.PIPE,
+        stderr=subprocess.PIPE,
+        text=True,
+        cwd=cwd
+    )
+    info = process.stdout.read()
+    err = process.stderr.read()
+    return info, err
+
+
+def float_to_percent_int(value: float) -> int:
+    return round(value * 100)
 
 
 def float_to_percent_str(value: float) -> str:
@@ -18,117 +53,23 @@ def float_to_percent_str(value: float) -> str:
         return str(decimal_value.quantize(Decimal('0.1'), rounding=ROUND_HALF_UP)).rstrip(".0")
 
 
-def float_to_percent_int(value: float) -> int:
-    return round(value * 100)
-
-
 def bool_to_lower_str(value: bool) -> str:
     return str(value).lower()
 
 
-def bool_to_short_form_str(value: bool) -> str:
-    return "t" if value else "f"
-
-
-def str_or_none_to_short_form_str(value: Optional[str]) -> str:
-    if value is None:
-        return "category"
-    words = value.strip("_").split("_")
-    res = ""
-    for word in words:
-        if word == "":
-            continue
-        res += word[0]
-        if len(words) <= 2:
-            res += word[-1]
-    if res == "":
-        res = "nl"
-    return res
-
-
-def float_to_legal_str(value: float) -> str:
-    return str(value).replace(".", "d").replace("-", "category")
-
-
-def int_or_none_to_str(value: Optional[int]) -> str:
-    if value is None:
-        return "category"
-    else:
-        return str(value)
-
-
-def clamp_string(value: str, length: int = 64) -> str:
-    if len(value) > length:
-        return value[:length]
-    else:
-        return value
-
-
-def get_md5_of_instance(instance):
-    """
-    获取某个类实例的所有属性值拼接成的字符串的32位MD5值。
-
-    :param instance: 类的实例
-    :return: 32位的MD5值字符串
-    """
-    # 初始化一个时间戳字符串，用于拼接所有属性值
-    attributes_values = f"{time.time()}"
-
-    # 遍历实例的所有可访问属性
-    for attr_name in dir(instance):
-        # 忽略以双下划线开头的私有属性和方法
-        if attr_name.startswith('__'):
-            continue
-
-        # 获取属性值
-        try:
-            value = getattr(instance, attr_name)
-        except AttributeError:
-            # 如果尝试获取@property装饰的属性时抛出AttributeError，则跳过该属性
-            continue
-
-        # 如果是可迭代对象且不是字符串，则展开
-        if hasattr(value, '__iter__') and not isinstance(value, str):
-            value = ''.join(str(v) for v in value)
-
-        # 检查是否是属性而非方法，同时忽略@property属性
-        if not callable(value) and not isinstance(getattr(type(instance), attr_name, None), property):
-            attributes_values += str(value)
-
-    # 计算拼接后字符串的MD5值
-    md5_hash = hashlib.md5(attributes_values.encode()).hexdigest()
-
-    return md5_hash
-
-
-def is_zero(number, epsilon=1e-10) -> bool:
-    return abs(number) < epsilon
-
-
-def copy_dir(src_dir: str, dst_dir: str) -> Optional[Tuple[str]]:
-    """
-    将src_dir目录下所有文件拷贝到dst_dir
-    :param src_dir:
-    :param dst_dir:
-    :return:
-    """
-    if not os.path.exists(src_dir):
-        return None
-    res = os.listdir(src_dir)
-    if len(res) == 0:
-        return None
-    make_dirs(dst_dir)
-    for file in res:
-        shutil.copy2(os.path.join(src_dir, file), os.path.join(dst_dir, file))
-    return tuple(res)
-
-
-def dd_id(name: str, prefix: Optional[str] = None) -> str:
-    if prefix is not None:
-        res = f"{prefix}_{name}"
-    else:
-        res = name
-    return clamp_string(res)
+def int_to_alpha_str(n: int) -> str:
+    result = ''
+    while n >= 0:
+        n, remainder = divmod(n, 26)
+        result = chr(65 + remainder) + result
+        if n == 0:
+            break
+        elif n == 1:
+            # 特殊处理n=1的情况，因为下一个循环会使得n变为0并跳出循环
+            result = 'A' + result
+            break
+        n -= 1
+    return result.lower()
 
 
 def is_image(file_path: str) -> bool:
@@ -144,11 +85,6 @@ def is_image(file_path: str) -> bool:
         # 如果文件无法作为图像打开，则不是可编辑的图片
         print("File cannot be opened as an image.")
         return False
-
-
-def make_dirs(dir_path: str):
-    if dir_path != "":
-        os.makedirs(dir_path, exist_ok=True)
 
 
 def resize_image(input_path: str, output_path: str, size: Tuple[int, int] = (72, 144)):
@@ -216,26 +152,6 @@ def overlay_images(
     return os.path.normpath(output_path)
 
 
-def int_to_alpha_str(n):
-    result = ''
-    while n >= 0:
-        n, remainder = divmod(n, 26)
-        result = chr(65 + remainder) + result
-        if n == 0:
-            break
-        elif n == 1:
-            # 特殊处理n=1的情况，因为下一个循环会使得n变为0并跳出循环
-            result = 'A' + result
-            break
-        n -= 1
-    return result.lower()
-
-
-def split_list(big_list: List, chunk_size: int=8) -> List[List[Any]]:
-    # 使用列表推导式来生成分割后的子列表
-    return [big_list[i:i + chunk_size] for i in range(0, len(big_list), chunk_size)]
-
-
 def get_rename_skel_dict_func(new_name: str) -> Callable[[dict], dict]:
     def rename_skel_dict(skel_dict: dict) -> dict:
         if len(skel_dict["animations"]) > 1:
@@ -246,33 +162,24 @@ def get_rename_skel_dict_func(new_name: str) -> Callable[[dict], dict]:
         skel_dict["animations"][new_name] = skel_dict["animations"][target]
         del skel_dict["animations"][target]
         return skel_dict
+
     return rename_skel_dict
 
 
-if __name__ == '__main__':
-    print(int_to_alpha_str(0))
-    print(int_to_alpha_str(1))
-    print(int_to_alpha_str(10))
-    print(int_to_alpha_str(27))
-    print(int_to_alpha_str(100))
+def load_json(json_path: str) -> dict:
+    with open(json_path, 'r', encoding='utf-8') as f:
+        return json.load(f)
 
-    # resize_image("test.png", "test1.png")
-    # resize_image_keep_ratio("test.png", "test2.png")
-    # overlay_images("test.png", "test.png", "test3.png")
 
-    # print(str_or_none_to_short_form_str("riposte_on_hit_chance_"))
-    # print(str_or_none_to_short_form_str("_"))
-    # print(float_to_legal_str(0.75))
-    # # print(int_to_zero_fill_str_by_length(1, 100))
-    #
-    # # 示例类
-    # class Example:
-    #     def __init__(self, name, age):
-    #         self.name = name
-    #         self.age = age
-    #
-    # # 创建示例对象
-    # example = Example("张三", 30)
-    #
-    # # 调用函数获取16位MD5值
-    # print(get_md5_of_instance(example))
+def save_json(data, json_path: str):
+    with open(json_path, 'w', encoding='utf-8') as f:
+        json.dump(data, f, ensure_ascii=True, indent=2)
+
+
+def is_zero(number, epsilon=1e-10) -> bool:
+    return abs(number) < epsilon
+
+
+def split_list(big_list: List, chunk_size: int = 8) -> List[List[Any]]:
+    # 使用列表推导式来生成分割后的子列表
+    return [big_list[i:i + chunk_size] for i in range(0, len(big_list), chunk_size)]

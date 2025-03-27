@@ -1,0 +1,19 @@
+打开quickbms
+
+第一个窗口把文件里的Script.bms扔进去
+第二个窗口把你的bank文件丢进去
+第三个窗口选择解压到哪
+
+然后应该会出现一个00000000.fsb
+把那玩意和fsb_aud_extr.exe与fmodL.dll丢进新建文件夹里
+
+下一步如果你是win10会简单很多
+左键左上角文件
+选择“打开windows powershell”
+我不知道不是win10怎么办（叹气）
+
+在打开的窗口里输入 .\fsb_aud_extr.exe .\00000000.fsb
+说白了就是"fsb [TAB] [空格] 0 [TAB]"
+然后回车
+
+所有东西应该都在这个文件夹里了

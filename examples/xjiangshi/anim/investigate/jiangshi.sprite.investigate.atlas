@@ -1,0 +1,20 @@
+
+jiangshi.sprite.investigate.png
+size: 846,512
+format: RGBA8888
+filter: Linear,Linear
+repeat: none
+investigate
+  rotate: true
+  xy: 2, 70
+  size: 234, 842
+  orig: 234, 842
+  offset: 0, 0
+  index: -1
+shadow
+  rotate: false
+  xy: 2, 2
+  size: 546, 66
+  orig: 546, 66
+  offset: 0, 0
+  index: -1

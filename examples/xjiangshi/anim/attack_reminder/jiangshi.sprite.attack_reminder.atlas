@@ -1,0 +1,20 @@
+
+jiangshi.sprite.attack_reminder.png
+size: 1110,750
+format: RGBA8888
+filter: Linear,Linear
+repeat: none
+shadow
+  rotate: true
+  xy: 1042, 202
+  size: 546, 66
+  orig: 546, 66
+  offset: 0, 0
+  index: -1
+umbrella
+  rotate: true
+  xy: 2, 2
+  size: 746, 1038
+  orig: 746, 1038
+  offset: 0, 0
+  index: -1

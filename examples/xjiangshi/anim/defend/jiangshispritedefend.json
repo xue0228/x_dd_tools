@@ -1,0 +1,134 @@
+{
+  "skeleton": {
+    "width": 786,
+    "height": 450,
+    "hash": " ",
+    "name": "armatureName",
+    "spine": "2.1.27"
+  },
+  "bones": [
+    {
+      "scaleX": 0.835,
+      "scaleY": 0.835,
+      "name": "root"
+    },
+    {
+      "x": -41.6629,
+      "y": 226.3291,
+      "name": "fxchest",
+      "parent": "root"
+    },
+    {
+      "x": -43.1838,
+      "y": 226.7638,
+      "name": "fxdot",
+      "parent": "root"
+    },
+    {
+      "x": -87.2655,
+      "y": 285.0132,
+      "name": "fxhead",
+      "parent": "root"
+    },
+    {
+      "name": "fxskill",
+      "parent": "root"
+    }
+  ],
+  "slots": [
+    {
+      "name": "shadow",
+      "bone": "root",
+      "attachment": "shadow"
+    },
+    {
+      "name": "df",
+      "bone": "root",
+      "attachment": "df"
+    }
+  ],
+  "skins": {
+    "default": {
+      "shadow": {
+        "shadow": {
+          "name": "shadow",
+          "width": 546,
+          "height": 66,
+          "x": -8.2,
+          "scaleX": 0.5246,
+          "scaleY": 0.4131
+        }
+      },
+      "df": {
+        "df": {
+          "name": "df",
+          "width": 784,
+          "height": 448,
+          "x": -1.71,
+          "y": 162.15,
+          "rotation": -24.72,
+          "scaleX": 0.4639,
+          "scaleY": 0.4639
+        }
+      }
+    }
+  },
+  "animations": {
+    "death": {
+      "slots": {
+        "shadow": {
+          "color": [
+            {
+              "time": 0,
+              "curve": "stepped",
+              "color": "FFFFFFFF"
+            },
+            {
+              "time": 1.0667,
+              "color": "FFFFFFFF"
+            },
+            {
+              "time": 1.3334,
+              "color": "FFFFFF00"
+            }
+          ]
+        },
+        "df": {
+          "attachment": [
+            {
+              "time": 0,
+              "name": "df"
+            },
+            {
+              "time": 1.3333,
+              "name": ""
+            }
+          ],
+          "color": [
+            {
+              "time": 0,
+              "color": "FFFFFFFF"
+            },
+            {
+              "time": 0.1333,
+              "color": "FFFFFFFF"
+            },
+            {
+              "time": 0.5666,
+              "color": "000000FF"
+            },
+            {
+              "time": 1.0666,
+              "color": "000000FF"
+            },
+            {
+              "time": 1.3333,
+              "color": "00000000"
+            }
+          ]
+        }
+      }
+    },
+    "defend": {}
+  }
+}

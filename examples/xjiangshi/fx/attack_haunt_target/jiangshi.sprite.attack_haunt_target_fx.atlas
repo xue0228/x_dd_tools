@@ -1,0 +1,20 @@
+
+jiangshi.sprite.attack_haunt_target_fx.png
+size: 1024,1024
+format: RGBA8888
+filter: Linear,Linear
+repeat: none
+TARGET A
+  rotate: false
+  xy: 2, 2
+  size: 650, 142
+  orig: 650, 142
+  offset: 0, 0
+  index: -1
+TARGET B
+  rotate: false
+  xy: 2, 146
+  size: 518, 432
+  orig: 518, 432
+  offset: 0, 0
+  index: -1

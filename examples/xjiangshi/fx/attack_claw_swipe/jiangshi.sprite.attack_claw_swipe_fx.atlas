@@ -1,0 +1,27 @@
+
+jiangshi.sprite.attack_claw_swipe_fx.png
+size: 2200,583
+format: RGBA8888
+filter: Linear,Linear
+repeat: none
+CLAW FX
+  rotate: false
+  xy: 2, 79
+  size: 1250, 502
+  orig: 1250, 502
+  offset: 0, 0
+  index: -1
+LIGHT
+  rotate: false
+  xy: 1897, 69
+  size: 301, 512
+  orig: 301, 512
+  offset: 0, 0
+  index: -1
+SHADOW
+  rotate: false
+  xy: 1254, 2
+  size: 641, 579
+  orig: 641, 579
+  offset: 0, 0
+  index: -1

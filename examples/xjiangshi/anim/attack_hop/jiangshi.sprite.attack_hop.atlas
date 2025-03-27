@@ -1,0 +1,20 @@
+
+jiangshi.sprite.attack_hop.png
+size: 805,550
+format: RGBA8888
+filter: Linear,Linear
+repeat: none
+rush
+  rotate: false
+  xy: 2, 47
+  size: 733, 501
+  orig: 733, 501
+  offset: 0, 0
+  index: -1
+shadow
+  rotate: true
+  xy: 737, 2
+  size: 546, 66
+  orig: 546, 66
+  offset: 0, 0
+  index: -1

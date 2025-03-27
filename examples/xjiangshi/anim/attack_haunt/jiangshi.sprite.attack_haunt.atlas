@@ -1,0 +1,20 @@
+
+jiangshi.sprite.attack_haunt.png
+size: 1992,1308
+format: RGBA8888
+filter: Linear,Linear
+repeat: none
+leap
+  rotate: false
+  xy: 2, 2
+  size: 1920, 1304
+  orig: 1920, 1304
+  offset: 0, 0
+  index: -1
+shadow
+  rotate: true
+  xy: 1924, 760
+  size: 546, 66
+  orig: 546, 66
+  offset: 0, 0
+  index: -1

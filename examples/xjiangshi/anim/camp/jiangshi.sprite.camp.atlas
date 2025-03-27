@@ -1,0 +1,20 @@
+
+jiangshi.sprite.camp.png
+size: 1024,512
+format: RGBA8888
+filter: Linear,Linear
+repeat: none
+camp
+  rotate: true
+  xy: 2, 70
+  size: 351, 737
+  orig: 351, 737
+  offset: 0, 0
+  index: -1
+shadow
+  rotate: false
+  xy: 2, 2
+  size: 546, 66
+  orig: 546, 66
+  offset: 0, 0
+  index: -1

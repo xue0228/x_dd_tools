@@ -1,0 +1,40 @@
+from enum import Enum
+
+
+class CombatStartTurnActOuts(Enum):
+    NOTHING = "nothing"
+    BARK_STRESS = "bark_stress"
+    CHANGE_POS = "change_pos"
+    IGNORE_COMMAND = "ignore_command"
+    RANDOM_COMMADN = "random_command"
+    RETREAT_FROM_COMBAT = "retreat_from_combat"
+    ATTACK_FRIENDLY = "attack_friendly"
+    ATTACK_SELF = "attack_self"
+    MARK_SELF = "mark_self"
+    STRESS_HEAL_SELF = "stress_heal_self"
+    STRESS_HEAL_PARTY = "stress_heal_party"
+    BUFF_RANDOM_PARTY_MEMBER = "buff_random_party_member"
+    BUFF_PARTY = "buff_party"
+    HEAL_SELF = "heal_self"
+    CONSUME_ITEM = "consume_item"
+
+
+class ReactionActOuts(Enum):
+    BLOCK_MOVE = "block_move"
+    BLOCK_HEAL = "block_heal"
+    BLOCK_BUFF = "block_buff"
+    BLOCK_EFFECT = "block_effect"
+    BLOCK_ITEM = "block_item"
+    BLOCK_COMBAT_RETREAT = "block_combat_retreat"
+    BLOCK_CAMPING_MEAL = "block_camping_meal"
+    BLOCK_CAMPING_SKILL_PERFORMER = "block_camping_skill_performer"
+    BLOCK_CAMPING_SKILL_TARGET = "block_camping_skill_target"
+    COMMENT_SELF_HIT = "comment_self_hit"
+    COMMENT_SELF_MISSED = "comment_self_missed"
+    COMMENT_ALLY_HIT = "comment_ally_hit"
+    COMMENT_ALLY_MISSED = "comment_ally_missed"
+    COMMENT_ALLY_ATTACK_HIT = "comment_ally_attack_hit"
+    COMMENT_ALLY_ATTACK_MISSED = "comment_ally_attack_missed"
+    COMMENT_MOVE = "comment_move"
+    COMMENT_CURIO_INTERACTION = "comment_curio_interaction"
+    COMMENT_TRAP_TRIGGERED = "comment_trap_triggered"

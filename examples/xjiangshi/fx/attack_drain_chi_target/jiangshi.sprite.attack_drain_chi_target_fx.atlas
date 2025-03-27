@@ -1,0 +1,13 @@
+
+jiangshi.sprite.attack_drain_chi_target_fx.png
+size: 512,512
+format: RGBA8888
+filter: Linear,Linear
+repeat: none
+TARGET FX
+  rotate: false
+  xy: 2, 2
+  size: 286, 464
+  orig: 286, 464
+  offset: 0, 0
+  index: -1

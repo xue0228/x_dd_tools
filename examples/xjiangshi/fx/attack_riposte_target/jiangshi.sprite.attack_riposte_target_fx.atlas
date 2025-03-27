@@ -1,0 +1,27 @@
+
+jiangshi.sprite.attack_riposte_target_fx.png
+size: 1024,512
+format: RGBA8888
+filter: Linear,Linear
+repeat: none
+TARGET A
+  rotate: false
+  xy: 389, 2
+  size: 253, 489
+  orig: 253, 489
+  offset: 0, 0
+  index: -1
+TARGET B
+  rotate: true
+  xy: 2, 94
+  size: 397, 385
+  orig: 397, 385
+  offset: 0, 0
+  index: -1
+blood_splatter
+  rotate: false
+  xy: 644, 209
+  size: 309, 282
+  orig: 309, 282
+  offset: 0, 0
+  index: -1
