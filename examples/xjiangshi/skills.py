@@ -310,6 +310,7 @@ skill_3 = Skill(
     target=Target("123"),
     skill_info=[
         SkillInfo(
+            generation_guaranteed=True if i == 0 else False,
             atk=0.85 + i * 0.05,
             dmg=-0.5,
             crit=0,

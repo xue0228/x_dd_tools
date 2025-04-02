@@ -1,0 +1,20 @@
+
+x_hos_summon.sprite.defend.png
+size: 577,769
+format: RGBA8888
+filter: Linear,Linear
+repeat: none
+shadow
+  rotate: false
+  xy: 1, 762
+  size: 16, 5
+  orig: 16, 5
+  offset: 0, 0
+  index: -1
+defend
+  rotate: false
+  xy: 1, 1
+  size: 574, 759
+  orig: 574, 759
+  offset: 0, 0
+  index: -1

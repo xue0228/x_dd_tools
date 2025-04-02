@@ -14,6 +14,7 @@ from xddtools.writers.camping_skill import CampingSkillWriter
 from xddtools.writers.actor_dot import ActorDotWriter
 from xddtools.writers.hero import HeroWriter
 from xddtools.writers.bank import BankWriter
+from xddtools.writers.loot_monster import LootMonsterWriter
 
 
 def get_dd_writer(prefix: str) -> ProxyWriter:
@@ -34,8 +35,20 @@ def get_dd_writer(prefix: str) -> ProxyWriter:
             ActorDotWriter(prefix),
             BankWriter(prefix),
             HeroWriter(prefix),
+            LootMonsterWriter(prefix),
             get_colour_writer(prefix),
             get_localization_writer(prefix),
         ]
     )
     return writer
+
+
+# if __name__ == '__main__':
+#     from xddtools.entries.loot_monster import LootMonster
+#
+#     w = get_dd_writer("xue")
+#     lo = LootMonster(
+#         loot=""
+#     )
+#     w.add_entry(lo)
+#     w.export("test")

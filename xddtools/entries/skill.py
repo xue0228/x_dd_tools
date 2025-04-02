@@ -356,7 +356,13 @@ class Skill(SkillEntry, BaseModel):
         }
         for k, v in none_str.items():
             if v is not None:
-                res.append(f'.{k} "{get_entry_id(v)}"')
+                if isinstance(v, AnimationEntry):
+                    anim_name = v.name()
+                elif isinstance(v, InnerFx):
+                    anim_name = v.value
+                else:
+                    anim_name = v
+                res.append(f'.{k} "{anim_name}"')
 
         none_tuple_float = {
             "area_pos_offset": self.area_pos_offset,

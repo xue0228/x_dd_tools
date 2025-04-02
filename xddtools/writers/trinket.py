@@ -6,7 +6,7 @@ from xddtools.entries.localization import Localization
 from xddtools.entries.trinket import TrinketSet, TrinketRarity, Trinket
 from xddtools.path import TRINKET_SET_FILE_EXTENSION, TRINKET_SAVE_DIR, TRINKET_RARITY_FILE_EXTENSION, DATA_PATH, \
     TRINKET_IMAGE_SAVE_DIR, TRINKET_ENTRY_FILE_EXTENSION
-from xddtools.utils import resize_image
+from xddtools.utils import resize_image, resize_image_keep_ratio
 
 
 class TrinketSetWriter(JsonData, BaseWriter):
@@ -154,7 +154,7 @@ class TrinketWriter(JsonData, BaseWriter):
             else:
                 image_path = item.inv_trinket_image
             file = os.path.join(root_dir, TRINKET_IMAGE_SAVE_DIR, f"inv_trinket+{item.id()}.png")
-            res.append(resize_image(image_path, file))
+            res.append(resize_image_keep_ratio(image_path, file))
 
         res.extend(super().export(root_dir))
         return res

@@ -5,6 +5,7 @@ from pydantic import BaseModel, ConfigDict, Field, model_validator
 
 from xddtools.base import JsonData, AnimationEntry, BuffEntry, EffectEntry, QuirkEntry, Entry
 from xddtools.base import get_entry_id
+from xddtools.entries.animation import Animation
 from xddtools.entries.buff_rule import BuffRule, BuffRuleType
 from xddtools.enum.buff import BuffType, BuffDurationType, HealSource, STCombatStatMultiply, STCombatStatAdd, \
     STResistance, StressSource, STActivitySideEffectChance, STDisableCombatSkillAttribute
@@ -50,11 +51,17 @@ class Buff(JsonData, BuffEntry, BaseModel):
             res["is_clear_debuff_valid"] = self.is_clear_debuff_valid
         res.update(self.buff_rule.get_dict())
         if self.fx is not None:
-            res["fx"] = get_entry_id(self.fx)
+            res["fx"] = self.fx.name() if isinstance(self.fx, Animation) else self.fx
         return res
 
     @model_validator(mode="after")
     def _check_after(self):
+        if isinstance(self.fx, Animation):
+            anims = self.fx.animations
+            for item in ["onset", "idle", "release"]:
+                if item not in anims:
+                    raise ValueError(f"{self.fx.entry_id}的animations中缺少{item}")
+
         if self.stat_type in [
             BuffType.HP_HEAL_AMOUNT,
             BuffType.HP_HEAL_PERCENT,

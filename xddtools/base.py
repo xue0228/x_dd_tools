@@ -64,7 +64,8 @@ class ItemEntry(Entry):
 
 
 class AnimationEntry(Entry):
-    pass
+    def name(self) -> str:
+        raise NotImplementedError("please implement name() method")
 
 
 class EffectEntry(Entry):
@@ -76,6 +77,10 @@ class HeroEntry(Entry):
 
 
 class MonsterEntry(Entry):
+    pass
+
+
+class LootMonsterEntry(MonsterEntry):
     pass
 
 

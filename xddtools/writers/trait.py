@@ -61,12 +61,12 @@ class TraitWriter(JsonData, BaseWriter):
                 entry_id=entry_id,
                 text=entry.str_trait_name,
             ))
-        if entry.str_trait_description is not None:
-            entry_id = f"str_{overstress}_description_{entry.id()}"
-            res.append(Localization(
-                entry_id=entry_id,
-                text=entry.str_trait_description,
-            ))
+        # if entry.str_trait_description is not None:
+        #     entry_id = f"str_{overstress}_description_{entry.id()}"
+        #     res.append(Localization(
+        #         entry_id=entry_id,
+        #         text=entry.str_trait_description,
+        #     ))
         if entry.str_trait_barks is not None:
             if isinstance(entry.str_trait_barks, str):
                 barks = [entry.str_trait_barks]
@@ -74,6 +74,17 @@ class TraitWriter(JsonData, BaseWriter):
                 barks = entry.str_trait_barks
             for bark in barks:
                 entry_id = f"str_{overstress_bark}_{entry.id()}"
+                res.append(Localization(
+                    entry_id=entry_id,
+                    text=bark,
+                ))
+        if entry.str_stress_camp is not None:
+            if isinstance(entry.str_stress_camp, str):
+                barks = [entry.str_stress_camp]
+            else:
+                barks = entry.str_stress_camp
+            for bark in barks:
+                entry_id = f"str_bark_stress_camp_{entry.id()}"
                 res.append(Localization(
                     entry_id=entry_id,
                     text=bark,

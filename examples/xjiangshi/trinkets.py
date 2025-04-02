@@ -1,0 +1,310 @@
+from xddtools.entries import Trinket, TrinketEffect, TrinketSet, Buff, BuffRule, Effect, Animation
+from xddtools.entries.buff_rule import BuffRuleType
+from xddtools.entries.colour import debuff
+from xddtools.enum import TrinketRarityType, BuffType, STCombatStatAdd, MonsterType, STResistance, STCombatStatMultiply, \
+    TrinketTriggerType, EffectTarget, CurioResultType, HealSource
+from xddtools.magic import get_str_tooltip_effect, get_trinket_fx_buffs
+from xddtools import AutoName
+
+HERO_NAME = "xjiangshi"
+
+trinket_0 = Trinket(
+    buffs=[
+        Buff(
+            stat_type=BuffType.COMBAT_STAT_ADD,
+            stat_sub_type=STCombatStatAdd.PROTECTION_RATING,
+            amount=0.05
+        ),
+        Buff(
+            stat_type=BuffType.COMBAT_STAT_ADD,
+            stat_sub_type=STCombatStatAdd.SPEED_RATING,
+            amount=-1,
+            remove_on_battle_complete=True
+        ),
+        get_trinket_fx_buffs("fx/trinket_fx", [HERO_NAME])[0]
+    ],
+    hero_class_requirements=[HERO_NAME],
+    rarity=TrinketRarityType.VERY_COMMON,
+    limit=1,
+    str_inventory_title_trinket="被遗弃的钱袋",
+    inv_trinket_image="trinket/inv_trinket+jiang_coins.png"
+)
+
+trinket_1 = Trinket(
+    buffs=[
+        Buff(
+            stat_type=BuffType.STUN_CHANCE,
+            amount=0.2,
+            buff_rule=BuffRule(
+                rule_type=BuffRuleType.MONSTER_TYPE,
+                rule_data_string=MonsterType.UNHOLY
+            )
+        ),
+        Buff(
+            stat_type=BuffType.RESISTANCE,
+            stat_sub_type=STResistance.STUN,
+            amount=-0.15,
+            remove_on_battle_complete=True
+        ),
+    ],
+    hero_class_requirements=[HERO_NAME],
+    rarity=TrinketRarityType.COMMON,
+    limit=1,
+    str_inventory_title_trinket="道铃",
+    inv_trinket_image="trinket/inv_trinket+jiang_bell.png"
+)
+
+trinket_2 = Trinket(
+    buffs=[
+        Buff(
+            stat_type=BuffType.COMBAT_STAT_MULTIPLY,
+            stat_sub_type=STCombatStatMultiply.DAMAGE_LOW,
+            amount=0.15,
+            buff_rule=BuffRule(
+                rule_type=BuffRuleType.LIGHT_BELOW,
+                rule_data_float=33
+            )
+        ),
+        Buff(
+            stat_type=BuffType.COMBAT_STAT_MULTIPLY,
+            stat_sub_type=STCombatStatMultiply.DAMAGE_HIGH,
+            amount=0.15,
+            buff_rule=BuffRule(
+                rule_type=BuffRuleType.LIGHT_BELOW,
+                rule_data_float=33
+            )
+        ),
+        Buff(
+            stat_type=BuffType.COMBAT_STAT_ADD,
+            stat_sub_type=STCombatStatAdd.PROTECTION_RATING,
+            amount=0.20,
+            buff_rule=BuffRule(
+                rule_type=BuffRuleType.LIGHT_BELOW,
+                rule_data_float=33
+            )
+        ),
+        Buff(
+            stat_type=BuffType.STRESS_DMG_RECEIVED_PERCENT,
+            amount=-0.15
+        )
+    ],
+    hero_class_requirements=[HERO_NAME],
+    rarity=TrinketRarityType.RARE,
+    limit=1,
+    str_inventory_title_trinket="破琵琶",
+    inv_trinket_image="trinket/inv_trinket+jiang_pipa.png"
+)
+
+trinket_3 = Trinket(
+    buffs=[
+        Buff(
+            stat_type=BuffType.COMBAT_STAT_ADD,
+            stat_sub_type=STCombatStatAdd.CRIT_CHANCE,
+            amount=0.1
+        ),
+        Buff(
+            stat_type=BuffType.COMBAT_STAT_ADD,
+            stat_sub_type=STCombatStatAdd.SPEED_RATING,
+            amount=2
+        ),
+        Buff(
+            stat_type=BuffType.RESOLVE_CHECK_PERCENT,
+            amount=-0.3
+        )
+    ],
+    hero_class_requirements=[HERO_NAME],
+    rarity=TrinketRarityType.VERY_RARE,
+    limit=1,
+    str_inventory_title_trinket="戏剧海报",
+    inv_trinket_image="trinket/inv_trinket+jiang_poster.png"
+)
+
+trinket_4 = Trinket(
+    buffs=[
+        Buff(
+            stat_type=BuffType.COMBAT_STAT_ADD,
+            stat_sub_type=STCombatStatAdd.ATTACK_RATING,
+            amount=0.1,
+            buff_rule=BuffRule(
+                rule_type=BuffRuleType.MELEE_ONLY
+            )
+        ),
+        Buff(
+            stat_type=BuffType.COMBAT_STAT_ADD,
+            stat_sub_type=STCombatStatAdd.CRIT_CHANCE,
+            amount=0.05,
+            buff_rule=BuffRule(
+                rule_type=BuffRuleType.MELEE_ONLY
+            )
+        ),
+        Buff(
+            stat_type=BuffType.COMBAT_STAT_MULTIPLY,
+            stat_sub_type=STCombatStatMultiply.DAMAGE_LOW,
+            amount=-0.05,
+            buff_rule=BuffRule(
+                rule_type=BuffRuleType.RANGED_ONLY
+            )
+        ),
+        Buff(
+            stat_type=BuffType.COMBAT_STAT_MULTIPLY,
+            stat_sub_type=STCombatStatMultiply.DAMAGE_HIGH,
+            amount=-0.05,
+            buff_rule=BuffRule(
+                rule_type=BuffRuleType.RANGED_ONLY
+            )
+        )
+    ],
+    special_effects=[
+        TrinketEffect(
+            trigger=TrinketTriggerType.ATTACK_SKILL,
+            effects=[
+                Effect(
+                    target=EffectTarget.PERFORMER,
+                    curio_result_type=CurioResultType.POSITIVE,
+                    buff_ids=[Buff(
+                        stat_type=BuffType.COMBAT_STAT_MULTIPLY,
+                        stat_sub_type=STCombatStatMultiply.MAX_HP,
+                        amount=0.2
+                    )]
+                )
+            ]
+        )
+    ],
+    hero_class_requirements=[HERO_NAME],
+    rarity=TrinketRarityType.UNCOMMON,
+    limit=1,
+    str_inventory_title_trinket="一碗鸟血",
+    inv_trinket_image="trinket/inv_trinket+jiang_blood.png"
+)
+
+trinket_5 = Trinket(
+    buffs=[
+        Buff(
+            stat_type=BuffType.COMBAT_STAT_MULTIPLY,
+            stat_sub_type=STCombatStatMultiply.MAX_HP,
+            amount=0.35
+        ),
+        Buff(
+            stat_type=BuffType.STRESS_DMG_RECEIVED_PERCENT,
+            amount=0.2
+        )
+    ],
+    special_effects=[
+        TrinketEffect(
+            trigger=TrinketTriggerType.ATTACK_SKILL,
+            effects=[
+                Effect(
+                    target=EffectTarget.PERFORMER,
+                    curio_result_type=CurioResultType.POSITIVE,
+                    heal=3,
+                    source_heal_type=HealSource.HERO_SKILL
+                )
+            ]
+        )
+    ],
+    hero_class_requirements=[HERO_NAME],
+    rarity=TrinketRarityType.COMMON,
+    shard=98,
+    limit=1,
+    str_inventory_title_trinket="神秘的棺材",
+    inv_trinket_image="trinket/inv_trinket+jiang_coffin.png"
+)
+
+trinket_set = TrinketSet(
+    buffs=[
+        Buff(
+            stat_type=BuffType.COMBAT_STAT_ADD,
+            stat_sub_type=STCombatStatAdd.PROTECTION_RATING,
+            amount=0.15,
+            buff_rule=BuffRule(
+                rule_type=BuffRuleType.HP_ABOVE,
+                rule_data_float=0.9
+            )
+        )
+    ],
+    str_inventory_set_title="“他最后还是在乎……”"
+)
+
+trinket_6 = Trinket(
+    buffs=[
+        Buff(
+            stat_type=BuffType.HP_HEAL_RECEIVED_PERCENT,
+            stat_sub_type=HealSource.DAMAGE_HEAL,
+            amount=0.30,
+        ),
+        Buff(
+            stat_type=BuffType.DEBUFF_CHANCE,
+            amount=0.25,
+        )
+    ],
+    special_effects=[
+        TrinketEffect(
+            trigger=TrinketTriggerType.MELEE_ATTACK_SKILL,
+            effects=[
+                Effect(
+                    target=EffectTarget.TARGET,
+                    curio_result_type=CurioResultType.NEGATIVE,
+                    chance=1.1,
+                    dot_bleed=1,
+                    duration=3
+                )
+            ]
+        )
+    ],
+    hero_class_requirements=[HERO_NAME],
+    rarity=TrinketRarityType.CRIMSON_COURT,
+    limit=1,
+    str_inventory_title_trinket="他的长袍",
+    inv_trinket_image="trinket/inv_trinket+jiang_robes.png"
+)
+
+trinket_7 = Trinket(
+    buffs=[
+        Buff(
+            stat_type=BuffType.COMBAT_STAT_MULTIPLY,
+            stat_sub_type=STCombatStatMultiply.DAMAGE_LOW,
+            amount=0.5,
+            buff_rule=BuffRule(
+                rule_type=BuffRuleType.RIPOSTE
+            )
+        ),
+        Buff(
+            stat_type=BuffType.COMBAT_STAT_MULTIPLY,
+            stat_sub_type=STCombatStatMultiply.DAMAGE_HIGH,
+            amount=0.5,
+            buff_rule=BuffRule(
+                rule_type=BuffRuleType.RIPOSTE
+            )
+        ),
+        Buff(
+            stat_type=BuffType.COMBAT_STAT_ADD,
+            stat_sub_type=STCombatStatAdd.SPEED_RATING,
+            amount=-4
+        ),
+    ],
+    special_effects=[
+        TrinketEffect(
+            trigger=TrinketTriggerType.KILL_ALL_MONSTERS,
+            effects=[
+                get_str_tooltip_effect(f"{debuff('减益')}：-2速度，-10%%防御，-10%%伤害"),
+                Effect(
+                    target=EffectTarget.TARGET,
+                    chance=100,
+                    combat_stat_buff=True,
+                    speed_rating_add=-2,
+                    protection_rating_add=-0.1,
+                    damage_low_multiply=-0.1,
+                    damage_high_multiply=-0.1,
+                    has_description=False
+                )
+            ]
+        )
+    ],
+    hero_class_requirements=[HERO_NAME],
+    rarity=TrinketRarityType.CRIMSON_COURT,
+    limit=1,
+    str_inventory_title_trinket="皇家毒药",
+    inv_trinket_image="trinket/inv_trinket+jiang_poison.png"
+)
+
+trinkets = [trinket_0, trinket_1, trinket_2, trinket_3, trinket_4, trinket_5, trinket_6, trinket_7]

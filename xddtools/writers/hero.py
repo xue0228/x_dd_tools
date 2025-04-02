@@ -3,6 +3,7 @@ import os
 from typing import List, Any, Dict, Optional
 
 from xddtools.base import BaseWriter, Entry, HeroEntry
+from xddtools.entries.effect import Effect
 from xddtools.entries.bank import Bank
 from xddtools.entries.animation import Animation
 from xddtools.entries.hero import Hero, Mode
@@ -217,9 +218,19 @@ class HeroWriter(BaseWriter):
 
         # 暴击效果
         for effect in entry.crit_effects:
-            if isinstance(effect, Entry):
+            if isinstance(effect, Effect):
+                if isinstance(effect.actor_dot, Animation):
+                    effect.actor_dot.hero_name = entry.id()
                 res.append(effect)
 
+        # 生命变化
+        if entry.hp_reactions is not None:
+            for reaction in entry.hp_reactions:
+                for effect in reaction.effects:
+                    if isinstance(effect, Effect):
+                        if isinstance(effect.actor_dot, Animation):
+                            effect.actor_dot.hero_name = entry.id()
+                        res.append(effect)
         # 技能
         for skill in entry.skills:  # type: Skill
             # 音效
@@ -295,13 +306,17 @@ class HeroWriter(BaseWriter):
                             res.append(item)
                 if info.effect_ids is not None:
                     for item in info.effect_ids:
-                        if isinstance(item, Entry):
+                        if isinstance(item, Effect):
+                            if isinstance(item.actor_dot, Animation):
+                                item.actor_dot.hero_name = entry.id()
                             res.append(item)
                 if info.valid_modes_and_effects is not None:
                     for mode_effects in info.valid_modes_and_effects:
                         if mode_effects.effect_ids is not None:
                             for item in mode_effects.effect_ids:
-                                if isinstance(item, Entry):
+                                if isinstance(item, Effect):
+                                    if isinstance(item.actor_dot, Animation):
+                                        item.actor_dot.hero_name = entry.id()
                                     res.append(item)
 
         # 过压修改

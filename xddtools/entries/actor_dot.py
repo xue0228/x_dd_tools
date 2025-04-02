@@ -1,7 +1,7 @@
 import os.path
 from typing import Union, Sequence, Optional
 
-from pydantic import BaseModel, ConfigDict, Field, field_validator
+from pydantic import BaseModel, ConfigDict, Field, field_validator, model_validator
 
 from xddtools.entries.animation import Animation
 from xddtools.name import AutoName
@@ -49,6 +49,12 @@ class ActorDot(JsonData, ActorDotEntry, BaseModel):
             if tem != {"idle", "increment", "onset", "release"}:
                 raise ValueError(f"Animation {v.id()} must have animations: idle, increment, onset, release")
         return v
+
+    @model_validator(mode="after")
+    def _check_after(self):
+        if isinstance(self.fx, Animation):
+            self.fx.anim_name = self.id()
+        return self
 
     def get_dict(self) -> dict:
         return {

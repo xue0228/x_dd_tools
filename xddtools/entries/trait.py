@@ -22,8 +22,9 @@ class Trait(JsonData, QuirkEntry, BaseModel):
     reaction_act_outs: Optional[Sequence[Reaction]] = None
 
     str_trait_name: Optional[str] = None
-    str_trait_description: Optional[str] = None
+    # str_trait_description: Optional[str] = None
     str_trait_barks: Union[Sequence[str], str, None] = None
+    str_stress_camp: Union[Sequence[str], str, None] = None
     entry_id: str = Field(default_factory=lambda x: AutoName().new_trait(), frozen=True)
 
     def get_dict(self) -> dict:

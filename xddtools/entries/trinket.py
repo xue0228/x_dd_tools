@@ -160,7 +160,10 @@ class Trinket(JsonData, TrinketEntry, BaseModel):
                 res["limit"] = 1
 
         if self.origin_dungeon is None:
-            res["origin_dungeon"] = ""
+            if self.rarity == TrinketRarityType.CRIMSON_COURT:
+                res["origin_dungeon"] = DungeonID.COURTYARD.value
+            else:
+                res["origin_dungeon"] = ""
         else:
             res["origin_dungeon"] = get_entry_id(self.origin_dungeon)
 

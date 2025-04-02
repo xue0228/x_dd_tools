@@ -1,8 +1,10 @@
 from typing import List
 
 from xddtools.base import Entry, EffectEntry, BaseWriter
+from xddtools.entries import Localization
 from xddtools.entries.effect import Effect
 from xddtools.path import EFFECT_SAVE_DIR, EFFECT_FILE_EXTENSION
+from xddtools.utils import get_bark_list
 
 
 class EffectWriter(BaseWriter):
@@ -44,6 +46,13 @@ class EffectWriter(BaseWriter):
             for effect in entry.riposte_effect:
                 if isinstance(effect, Entry):
                     res.append(effect)
+
+        for bark in get_bark_list(entry.barks):
+            res.append(Localization(
+                entry_id=entry.bark_id(),
+                text=bark
+            ))
+
         return res
 
     def __str__(self):

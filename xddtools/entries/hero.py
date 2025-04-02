@@ -12,7 +12,7 @@ from xddtools.enum.buff_rule import TownActivityType, ItemType, MonsterClass, He
 from xddtools.enum.hero import DeathFx, TagID
 from xddtools.name import AutoName
 from xddtools.path import DATA_PATH
-from xddtools.utils import float_to_percent_str, bool_to_lower_str, split_list
+from xddtools.utils import float_to_percent_str, bool_to_lower_str, split_list, get_bark_list
 
 
 class Resistance(BaseModel):
@@ -321,15 +321,36 @@ class ExtraStackLimit(BaseModel):
                f'.amount {self.amount}'
 
 
+class HpReaction(BaseModel):
+    model_config = ConfigDict(frozen=False, strict=True, arbitrary_types_allowed=True)
+
+    hp_ratio: float = Field(..., ge=0.0, le=1.0)
+    is_under: bool = True
+    effects: Sequence[Union[EffectEntry, str]] = Field(default_factory=list)
+
+    def __str__(self):
+        res = [f'hp_reaction: .hp_ratio {self.hp_ratio} .is_under {bool_to_lower_str(self.is_under)}']
+        if len(self.effects) > 0:
+            res.append(".effects")
+            for effect in self.effects:
+                res.append(f'"{get_entry_id(effect)}"')
+        return " ".join(res)
+
+
 class HeroLocalization(BaseModel):
     model_config = ConfigDict(frozen=True, strict=True, arbitrary_types_allowed=True)
 
+    # 英雄名称
     hero_class_name: str
 
+    # 铁匠铺描述
     blacksmith_verbose: str
+    # 工会描述
     guild_verbose: str
+    # 营地描述
     camping_verbose: str
 
+    # 武器名称
     weapon_upgrade: str
     weapon_0: str
     weapon_1: str
@@ -337,12 +358,133 @@ class HeroLocalization(BaseModel):
     weapon_3: str
     weapon_4: str
 
+    # 护甲名称
     armour_upgrade: str
     armour_0: str
     armour_1: str
     armour_2: str
     armour_3: str
     armour_4: str
+
+    # 夜袭台词
+    # 注意！夜袭台词不遵循常规的同条多行写法，而是必须0123逐条
+    night_ambush_bark_0: Optional[str] = None
+    night_ambush_bark_1: Optional[str] = None
+    night_ambush_bark_2: Optional[str] = None
+    night_ambush_bark_3: Optional[str] = None
+
+    # 确认进入城镇活动时触发
+    bar_committed: Union[Sequence[str], str, None] = None
+    gambling_committed: Union[Sequence[str], str, None] = None
+    brothel_committed: Union[Sequence[str], str, None] = None
+    meditation_committed: Union[Sequence[str], str, None] = None
+    prayer_committed: Union[Sequence[str], str, None] = None
+    flagellation_committed: Union[Sequence[str], str, None] = None
+    treatment_committed: Union[Sequence[str], str, None] = None
+    disease_treatment_committed: Union[Sequence[str], str, None] = None
+
+    # 通用活动受限台词，当info下直接编写活动受限时需使用本条
+    override_invalid_rejection: Union[Sequence[str], str, None] = None
+
+    # 城镇闲置台词
+    # 下述内容为英雄于城镇界面右侧列表闲置时的弹出式台词
+    roster_list_bar: Union[Sequence[str], str, None] = None
+    roster_list_gambling: Union[Sequence[str], str, None] = None
+    roster_list_brothel: Union[Sequence[str], str, None] = None
+    roster_list_meditation: Union[Sequence[str], str, None] = None
+    roster_list_prayer: Union[Sequence[str], str, None] = None
+    roster_list_flagellation: Union[Sequence[str], str, None] = None
+    roster_list_treatment: Union[Sequence[str], str, None] = None
+    roster_list_disease_treatment: Union[Sequence[str], str, None] = None
+    roster_list_low_stress: Union[Sequence[str], str, None] = None
+    roster_list_medium_stress: Union[Sequence[str], str, None] = None
+    roster_list_high_stress: Union[Sequence[str], str, None] = None
+    roster_dd_survivor: Union[Sequence[str], str, None] = None
+
+    # 马车招募台词
+    # 马车闲置台词
+    stagecoach_idle: Union[Sequence[str], str, None] = None
+    # 兵营满员台词
+    stagecoach_roster_full_rejection: Union[Sequence[str], str, None] = None
+
+    # 地图触发界面台词
+    quest_too_hard: Union[Sequence[str], str, None] = None
+    quest_too_easy: Union[Sequence[str], str, None] = None
+
+    # 自身互斥组队台词
+    incompatible_self_party: Union[Sequence[str], str, None] = None
+
+    # 副本内台词，探索及战斗
+    # 探索台词：开始移动
+    start_moving: Union[Sequence[str], str, None] = None
+    # 探索台词：停止移动
+    stop_moving: Union[Sequence[str], str, None] = None
+    # 探索台词：后退移动
+    backing_up: Union[Sequence[str], str, None] = None
+    # 探索台词：触发陷阱
+    comment_trap_triggered: Union[Sequence[str], str, None] = None
+    # 探索及战斗台词：自身压力提升
+    increasing_stress: Union[Sequence[str], str, None] = None
+    # 战斗台词：自身暴击
+    crit_by_hero: Union[Sequence[str], str, None] = None
+    # 战斗台词：被击退(包括自身和友方造成的击退
+    combat_knock_back: Union[Sequence[str], str, None] = None
+    # 战斗台词：拖延时间导致增援触发警告
+    combat_wasting_time: Union[Sequence[str], str, None] = None
+    # 战斗台词：自身承受重伤
+    big_wound: Union[Sequence[str], str, None] = None
+    # 战斗台词：友方承受重伤
+    big_wound_ally: Union[Sequence[str], str, None] = None
+    # 战斗台词：自身死门
+    deathsdoor: Union[Sequence[str], str, None] = None
+    # 战斗台词：友方死门
+    deathsdoor_ally: Union[Sequence[str], str, None] = None
+    # 战斗台词：自身脱离死门
+    deathsdoor_survive: Union[Sequence[str], str, None] = None
+    # 战斗台词：友方脱离死门
+    deathsdoor_survive_ally: Union[Sequence[str], str, None] = None
+    # 战斗台词：自身心衰(注意官方原版是存在单独且非折磨的心衰台词，意味不明)
+    heart_attack: Union[Sequence[str], str, None] = None
+    # 战斗台词：自身腐蚀生效
+    poison_dot: Union[Sequence[str], str, None] = None
+    # 战斗台词：自身流血生效
+    bleed_dot: Union[Sequence[str], str, None] = None
+    # 战斗台词：自身愈合生效
+    hp_heal_dot: Union[Sequence[str], str, None] = None
+
+    # 降低亮度台词
+    torch_0: Union[Sequence[str], str, None] = None
+    torch_1: Union[Sequence[str], str, None] = None
+    torch_2: Union[Sequence[str], str, None] = None
+
+    # 奇物互动台词
+    curio_good: Union[Sequence[str], str, None] = None
+    curio_bad: Union[Sequence[str], str, None] = None
+    # 奇物互动无事发生
+    curio_meh: Union[Sequence[str], str, None] = None
+
+    # 扎营台词
+    # 队伍平均状态
+    stress_party_high: Union[Sequence[str], str, None] = None
+    stress_party_low: Union[Sequence[str], str, None] = None
+    hp_party_high: Union[Sequence[str], str, None] = None
+    hp_party_low: Union[Sequence[str], str, None] = None
+    # 自身状态
+    stress_self_high: Union[Sequence[str], str, None] = None
+    stress_self_low: Union[Sequence[str], str, None] = None
+    hp_self_high: Union[Sequence[str], str, None] = None
+    hp_self_low: Union[Sequence[str], str, None] = None
+    # 队伍总体状态
+    party_poor_condition: Union[Sequence[str], str, None] = None
+    party_great_condition: Union[Sequence[str], str, None] = None
+    # 营火储备
+    firewood_high: Union[Sequence[str], str, None] = None
+    firewood_low: Union[Sequence[str], str, None] = None
+    # 食物储备
+    provisions_high: Union[Sequence[str], str, None] = None
+    provisions_low: Union[Sequence[str], str, None] = None
+    # 扎营友谊聊天(扎营收尾时)
+    companionship: Union[Sequence[str], str, None] = None
 
     def get_localization_entries(self, hero_name: str) -> List[Tuple[str, str]]:
         res = [
@@ -366,6 +508,158 @@ class HeroLocalization(BaseModel):
             (f"{hero_name}_armour_3", self.armour_3),
             (f"{hero_name}_armour_4", self.armour_4),
         ]
+
+        if self.night_ambush_bark_0 is not None:
+            res.append((f"{hero_name}+str_night_ambush_bark_0", self.night_ambush_bark_0))
+        if self.night_ambush_bark_1 is not None:
+            res.append((f"{hero_name}+str_night_ambush_bark_1", self.night_ambush_bark_1))
+        if self.night_ambush_bark_2 is not None:
+            res.append((f"{hero_name}+str_night_ambush_bark_2", self.night_ambush_bark_2))
+        if self.night_ambush_bark_3 is not None:
+            res.append((f"{hero_name}+str_night_ambush_bark_3", self.night_ambush_bark_3))
+
+        res.extend([(f"{hero_name}+str_bar_committed", bark)
+                    for bark in get_bark_list(self.bar_committed)])
+        res.extend([(f"{hero_name}+str_gambling_committed", bark)
+                    for bark in get_bark_list(self.gambling_committed)])
+        res.extend([(f"{hero_name}+str_brothel_committed", bark)
+                    for bark in get_bark_list(self.brothel_committed)])
+        res.extend([(f"{hero_name}+str_meditation_committed", bark)
+                    for bark in get_bark_list(self.meditation_committed)])
+        res.extend([(f"{hero_name}+str_prayer_committed", bark)
+                    for bark in get_bark_list(self.prayer_committed)])
+        res.extend([(f"{hero_name}+str_flagellation_committed", bark)
+                    for bark in get_bark_list(self.flagellation_committed)])
+        res.extend([(f"{hero_name}+str_treatment_committed", bark)
+                    for bark in get_bark_list(self.treatment_committed)])
+        res.extend([(f"{hero_name}+str_disease_treatment_committed", bark)
+                    for bark in get_bark_list(self.disease_treatment_committed)])
+
+        res.extend([(f"{hero_name}+str_override_invalid_rejection", bark)
+                    for bark in get_bark_list(self.override_invalid_rejection)])
+
+        res.extend([(f"{hero_name}+str_roster_list_bar_bark", bark)
+                    for bark in get_bark_list(self.roster_list_bar)])
+        res.extend([(f"{hero_name}+str_roster_list_gambling_bark", bark)
+                    for bark in get_bark_list(self.roster_list_gambling)])
+        res.extend([(f"{hero_name}+str_roster_list_brothel_bark", bark)
+                    for bark in get_bark_list(self.roster_list_brothel)])
+        res.extend([(f"{hero_name}+str_roster_list_meditation_bark", bark)
+                    for bark in get_bark_list(self.roster_list_meditation)])
+        res.extend([(f"{hero_name}+str_roster_list_prayer_bark", bark)
+                    for bark in get_bark_list(self.roster_list_prayer)])
+        res.extend([(f"{hero_name}+str_roster_list_flagellation_bark", bark)
+                    for bark in get_bark_list(self.roster_list_flagellation)])
+        res.extend([(f"{hero_name}+str_roster_list_treatment_bark", bark)
+                    for bark in get_bark_list(self.roster_list_treatment)])
+        res.extend([(f"{hero_name}+str_roster_list_disease_treatment_bark", bark)
+                    for bark in get_bark_list(self.roster_list_disease_treatment)])
+        res.extend([(f"{hero_name}+str_roster_list_low_stress_bark", bark)
+                    for bark in get_bark_list(self.roster_list_low_stress)])
+        res.extend([(f"{hero_name}+str_roster_list_medium_stress_bark", bark)
+                    for bark in get_bark_list(self.roster_list_medium_stress)])
+        res.extend([(f"{hero_name}+str_roster_list_high_stress_bark", bark)
+                    for bark in get_bark_list(self.roster_list_high_stress)])
+        res.extend([(f"{hero_name}+str_roster_darkest_dungeon_survivor_bark", bark)
+                    for bark in get_bark_list(self.roster_dd_survivor)])
+
+        res.extend([(f"{hero_name}+str_stagecoach_idle", bark)
+                    for bark in get_bark_list(self.stagecoach_idle)])
+        res.extend([(f"{hero_name}+str_stagecoach_roster_full_rejection", bark)
+                    for bark in get_bark_list(self.stagecoach_roster_full_rejection)])
+
+        res.extend([(f"{hero_name}+str_quest_too_hard", bark)
+                    for bark in get_bark_list(self.quest_too_hard)])
+        res.extend([(f"{hero_name}+str_quest_too_easy", bark)
+                    for bark in get_bark_list(self.quest_too_easy)])
+
+        if self.incompatible_self_party is not None:
+            tem = get_bark_list(self.incompatible_self_party)
+            res.extend([(f"str_incompatible_party_{hero_name}_limit", bark) for bark in tem])
+            res.extend([(f"str_incompatible_party_member_{hero_name}_limit", bark) for bark in tem])
+
+        res.extend([(f"{hero_name}+str_bark_startmoving", bark)
+                    for bark in get_bark_list(self.start_moving)])
+        res.extend([(f"{hero_name}+str_bark_stopmoving", bark)
+                    for bark in get_bark_list(self.stop_moving)])
+        res.extend([(f"{hero_name}+str_bark_backingup", bark)
+                    for bark in get_bark_list(self.backing_up)])
+        res.extend([(f"{hero_name}+str_comment_trap_triggered", bark)
+                    for bark in get_bark_list(self.comment_trap_triggered)])
+        res.extend([(f"{hero_name}+str_bark_increasingstress", bark)
+                    for bark in get_bark_list(self.increasing_stress)])
+        res.extend([(f"{hero_name}+str_critbyhero", bark)
+                    for bark in get_bark_list(self.crit_by_hero)])
+        res.extend([(f"{hero_name}+str_combat_knockback", bark)
+                    for bark in get_bark_list(self.combat_knock_back)])
+        res.extend([(f"{hero_name}+str_combat_wastingtime", bark)
+                    for bark in get_bark_list(self.combat_wasting_time)])
+        res.extend([(f"{hero_name}+str_bark_bigwound", bark)
+                    for bark in get_bark_list(self.big_wound)])
+        res.extend([(f"{hero_name}+str_bark_bigwound_ally", bark)
+                    for bark in get_bark_list(self.big_wound_ally)])
+        res.extend([(f"{hero_name}+str_bark_deathsdoor", bark)
+                    for bark in get_bark_list(self.deathsdoor)])
+        res.extend([(f"{hero_name}+str_bark_deathsdoor_ally", bark)
+                    for bark in get_bark_list(self.deathsdoor_ally)])
+        res.extend([(f"{hero_name}+str_bark_deathsdoorsurvive", bark)
+                    for bark in get_bark_list(self.deathsdoor_survive)])
+        res.extend([(f"{hero_name}+str_bark_deathsdoorsurvive_ally", bark)
+                    for bark in get_bark_list(self.deathsdoor_survive_ally)])
+        res.extend([(f"{hero_name}+str_heart_attack", bark)
+                    for bark in get_bark_list(self.heart_attack)])
+        res.extend([(f"{hero_name}+str_bark_poisondot", bark)
+                    for bark in get_bark_list(self.poison_dot)])
+        res.extend([(f"{hero_name}+str_bark_bleeddot", bark)
+                    for bark in get_bark_list(self.bleed_dot)])
+        res.extend([(f"{hero_name}+str_bark_hp_heal_dot", bark)
+                    for bark in get_bark_list(self.hp_heal_dot)])
+
+        res.extend([(f"{hero_name}+str_bark_torch_0", bark)
+                    for bark in get_bark_list(self.torch_0)])
+        res.extend([(f"{hero_name}+str_bark_torch_1", bark)
+                    for bark in get_bark_list(self.torch_1)])
+        res.extend([(f"{hero_name}+str_bark_torch_2", bark)
+                    for bark in get_bark_list(self.torch_2)])
+
+        res.extend([(f"{hero_name}+str_bark_curiogood", bark)
+                    for bark in get_bark_list(self.curio_good)])
+        res.extend([(f"{hero_name}+str_bark_curiobad", bark)
+                    for bark in get_bark_list(self.curio_bad)])
+        res.extend([(f"{hero_name}+str_bark_curiomeh", bark)
+                    for bark in get_bark_list(self.curio_meh)])
+
+        res.extend([(f"{hero_name}+str_bark_stress_partyhigh", bark)
+                    for bark in get_bark_list(self.stress_party_high)])
+        res.extend([(f"{hero_name}+str_bark_stress_partylow", bark)
+                    for bark in get_bark_list(self.stress_party_low)])
+        res.extend([(f"{hero_name}+str_bark_hp_partyhigh", bark)
+                    for bark in get_bark_list(self.hp_party_high)])
+        res.extend([(f"{hero_name}+str_bark_hp_partylow", bark)
+                    for bark in get_bark_list(self.hp_party_low)])
+        res.extend([(f"{hero_name}+str_bark_stress_selfhigh", bark)
+                    for bark in get_bark_list(self.stress_self_high)])
+        res.extend([(f"{hero_name}+str_bark_stress_selflow", bark)
+                    for bark in get_bark_list(self.stress_self_low)])
+        res.extend([(f"{hero_name}+str_bark_hp_selfhigh", bark)
+                    for bark in get_bark_list(self.hp_self_high)])
+        res.extend([(f"{hero_name}+str_bark_hp_selflow", bark)
+                    for bark in get_bark_list(self.hp_self_low)])
+        res.extend([(f"{hero_name}+str_bark_party_poor_condition", bark)
+                    for bark in get_bark_list(self.party_poor_condition)])
+        res.extend([(f"{hero_name}+str_bark_party_great_condition", bark)
+                    for bark in get_bark_list(self.party_great_condition)])
+        res.extend([(f"{hero_name}+str_bark_firewood_low", bark)
+                    for bark in get_bark_list(self.firewood_low)])
+        res.extend([(f"{hero_name}+str_bark_firewood_high", bark)
+                    for bark in get_bark_list(self.firewood_high)])
+        res.extend([(f"{hero_name}+str_bark_provisions_low", bark)
+                    for bark in get_bark_list(self.provisions_low)])
+        res.extend([(f"{hero_name}+str_bark_provisions_high", bark)
+                    for bark in get_bark_list(self.provisions_high)])
+        res.extend([(f"{hero_name}+str_bark_companionship", bark) 
+                    for bark in get_bark_list(self.companionship)])
+
         return res
 
 
@@ -438,6 +732,7 @@ class Hero(HeroEntry, BaseModel):
     armour_images: Optional[Sequence[str]] = None
     guild_header_image_path: Optional[str] = None
     portrait_roster_image_path: Optional[str] = None
+    hp_reactions: Optional[Sequence[HpReaction]] = None
     weapon_golds: Tuple[int, int, int, int] = (750, 1750, 3000, 6000)
     armour_golds: Tuple[int, int, int, int] = (750, 1750, 3000, 6000)
     tags: Optional[Sequence[Union[TagID, str]]] = None
@@ -449,7 +744,7 @@ class Hero(HeroEntry, BaseModel):
     enter_effect_round_cooldown: int = 6
     can_select_combat_skills: bool = True
     number_of_selected_combat_skills_max: int = 4
-    can_self_party: bool = True
+    can_self_party: bool = True  # TODO: 因为不了解多英雄互斥的写法，此处暂时写为只支持自身互斥
     generation: Optional[Generation] = None
     activity_modifier: Optional[ActivityModify] = None
     quirk_modifier: Optional[Sequence[Union[QuirkEntry, QuirkType, str]]] = None
@@ -602,6 +897,10 @@ class Hero(HeroEntry, BaseModel):
         if len(self.crit_effects) > 0:
             effects = " ".join([f'"{get_entry_id(effect)}"' for effect in self.crit_effects])
             res.append(f'crit: .effects {effects}')
+
+        # 生命值变化
+        if self.hp_reactions is not None:
+            res.append("\n".join([str(reaction) for reaction in self.hp_reactions]))
 
         # 武器和护甲
         res.append("\n".join([weapon.info(level, self.id()) for level, weapon in enumerate(self.weapons)]))

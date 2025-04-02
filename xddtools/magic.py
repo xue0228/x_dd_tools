@@ -1,9 +1,10 @@
-from typing import Optional, Iterable, List
+from typing import Optional, Iterable, List, Sequence, Union
 
 from pydantic import BaseModel, ConfigDict
 
 from xddtools import AutoName
-from xddtools.entries import Effect, Buff
+from xddtools.base import HeroEntry, get_entry_id, LootMonsterEntry
+from xddtools.entries import Effect, Buff, Animation
 from xddtools.entries.colour import debuff, heal_hp, skill_unselectable
 from xddtools.enum import EffectTarget, BuffType, STDisableCombatSkillAttribute, CurioResultType, BuffSource, \
     BuffDurationType, STCombatStatAdd, HealSource
@@ -306,13 +307,52 @@ def get_suck_blood_effects(
     ]
 
 
-if __name__ == '__main__':
-    AutoName.set_default_prefix("xue")
-    t1 = get_number_tooltip_buff("魔力值：%d", amount=1)
-    t2 = get_number_tooltip_buff(amount=2, keep_last_sub_type=True)
-    print(t1)
-    print(t2)
+def get_trinket_fx_buffs(fx_dir: str, heroes: Sequence[Union[HeroEntry, str]]) -> List[Buff]:
+    res = []
+    sub_type = AutoName().new_sub_type()
+    for hero in heroes:
+        res.append(Buff(
+            stat_type=BuffType.UPGRADE_DISCOUNT,
+            stat_sub_type=sub_type,
+            has_description=False,
+            duration=-1,
+            fx=Animation(
+                anim_name=sub_type + "_fx",
+                anim_dir=fx_dir,
+                is_fx=True,
+                need_rename=False,
+                hero_name=get_entry_id(hero)
+            )
+        ))
+    return res
 
-    c1 = get_cd_charge_effect([CDCharge(disable=STDisableCombatSkillAttribute.DAZE, amount=1)], tooltip_buff=t1)
-    print(c1)
-    print(c1.buff_ids[0])
+
+def get_summon_loot_monster_effect(
+        loot_monster: Union[LootMonsterEntry, str]
+) -> Effect:
+    return Effect(
+        target=EffectTarget.PERFORMER,
+        summon_count=1,
+        summon_can_spawn_loot=True,
+        summon_monsters=[f"{get_entry_id(loot_monster)}_A"],
+        summon_chances=[1],
+        summon_ranks=["01234"],
+        summon_does_roll_initiatives=False,
+        on_miss=True,
+        apply_once=True,
+        has_description=False
+    )
+
+
+if __name__ == '__main__':
+    # AutoName.set_default_prefix("xue")
+    # t1 = get_number_tooltip_buff("魔力值：%d", amount=1)
+    # t2 = get_number_tooltip_buff(amount=2, keep_last_sub_type=True)
+    # print(t1)
+    # print(t2)
+    #
+    # c1 = get_cd_charge_effect([CDCharge(disable=STDisableCombatSkillAttribute.DAZE, amount=1)], tooltip_buff=t1)
+    # print(c1)
+    # print(c1.buff_ids[0])
+    e = get_summon_loot_monster_effect("loot_monster_test")
+    print(e)

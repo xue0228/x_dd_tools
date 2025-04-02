@@ -130,13 +130,17 @@ class Animation(AnimationEntry, BaseModel):
         os.remove(new_path)
         return os.path.normpath(new_path)
 
+    def name(self) -> str:
+        anim_name = self.id() if self.anim_name is None else self.anim_name
+        if self.mode_name is not None and self.mode_name != "":
+            anim_name = f"{anim_name}_{get_entry_id(self.mode_name)}"
+        return anim_name
+
     def copy_and_rename_animation(self, root_dir: str) -> List[str]:
         if self.hero_name is not None and self.monster_name is not None:
             raise ValueError("Cannot set both hero_name and monster_name")
 
-        anim_name = self.id() if self.anim_name is None else self.anim_name
-        if self.mode_name is not None and self.mode_name != "":
-            anim_name = f"{anim_name}_{get_entry_id(self.mode_name)}"
+        anim_name = self.name()
 
         if self.need_rename:
             dict_func = get_rename_skel_dict_func(anim_name)

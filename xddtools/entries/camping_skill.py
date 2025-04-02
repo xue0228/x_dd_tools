@@ -3,7 +3,8 @@ from typing import Union, Sequence, Optional
 from pydantic import BaseModel, ConfigDict, Field, model_validator, field_validator
 
 from xddtools import AutoName
-from xddtools.base import JsonData, LootTableEntry, ItemEntry, get_entry_id, CampingSkillEntry, HeroEntry, BankEntry
+from xddtools.base import JsonData, LootTableEntry, ItemEntry, get_entry_id, CampingSkillEntry, HeroEntry, BankEntry, \
+    BuffEntry
 from xddtools.enum.buff_rule import HeroClass, ItemID, ItemType
 from xddtools.enum.camping_skill import CampingSkillBuffSubType, CampingSkillEffectType, CampingSkillSelection, \
     CampingSkillEffectRequirement
@@ -14,19 +15,20 @@ class CampingSkillEffect(JsonData, BaseModel):
     model_config = ConfigDict(frozen=False, strict=True, arbitrary_types_allowed=True)
 
     effect_type: CampingSkillEffectType
-    sub_type: Union[ItemEntry, LootTableEntry, CampingSkillBuffSubType, str] = ""
+    sub_type: Union[ItemEntry, LootTableEntry, CampingSkillBuffSubType, BuffEntry, str] = ""
     amount: float = 0.0
     selection: CampingSkillSelection = CampingSkillSelection.INDIVIDUAL
     requirements: Sequence[CampingSkillEffectRequirement] = Field(default_factory=list)
     chance: float = 1.0
-    code_idx: int = 1
+    code_idx: int = 1,
+    effect_tooltip: Optional[str] = None  # 目前只看到过 loot 使用
 
     @model_validator(mode="after")
     def _check_after(self):
         if self.effect_type == CampingSkillEffectType.BUFF:
-            if not isinstance(self.sub_type, (CampingSkillBuffSubType, str)):
+            if not isinstance(self.sub_type, (CampingSkillBuffSubType, BuffEntry, str)):
                 raise ValueError("when effect_type == CampingSkillEffectType.BUFF,"
-                                 "sub_type must be CampingSkillBuffSubType or str")
+                                 "sub_type must be CampingSkillBuffSubType,BuffEntry or str")
         elif self.effect_type == CampingSkillEffectType.ITEM:
             if not isinstance(self.sub_type, (ItemEntry, str)):
                 raise ValueError("when effect_type == CampingSkillEffectType.ITEM,"

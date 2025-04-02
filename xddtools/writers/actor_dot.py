@@ -27,6 +27,7 @@ class ActorDotWriter(JsonData, BaseWriter):
 
         if isinstance(entry.fx, Animation):
             entry.fx.anim_name = entry.id()
+            entry.fx.is_fx = True
             res.append(entry.fx)
         for element in entry.duration_elements:
             for effect in element.completion_effects:

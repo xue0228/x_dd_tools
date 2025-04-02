@@ -18,3 +18,4 @@ from xddtools.entries.skill import Skill, ModeEffects, SkillInfo
 from xddtools.entries.hero import Resistance, Weapon, Armour, Generation, ActoutDisplay, OverstressedModify, \
     ActivityModify, ExtraLoot, ExtraStackLimit, HeroLocalization, Mode, Hero
 from xddtools.entries.bank import Bank
+from xddtools.entries.loot_monster import LootMonster

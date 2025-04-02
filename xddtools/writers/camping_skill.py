@@ -1,7 +1,7 @@
 import os.path
 from typing import List, Optional
 
-from xddtools.base import JsonData, BaseWriter, Entry, CampingSkillEntry
+from xddtools.base import JsonData, BaseWriter, Entry, CampingSkillEntry, get_entry_id
 from xddtools.entries import Localization, Bank
 from xddtools.entries.camping_skill import CampingSkill
 from xddtools.enum import BankDir, BankSource
@@ -56,6 +56,11 @@ class CampingSkillWriter(JsonData, BaseWriter):
             for effect in entry.effects:
                 if isinstance(effect.sub_type, Entry):
                     res.append(effect.sub_type)
+                if effect.effect_tooltip is not None:
+                    res.append(Localization(
+                        entry_id=f"camping_skill_effect_{effect.effect_type.value}_{get_entry_id(effect.sub_type)}",
+                        text=effect.effect_tooltip,
+                    ))
 
         if entry.camping_skill_name is not None:
             entry_id = f"camping_skill_name_{entry.id()}"

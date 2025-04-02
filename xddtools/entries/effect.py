@@ -108,7 +108,7 @@ class Effect(EffectEntry, BaseModel):
     disease: Union[QuirkType, QuirkEntry, str, None] = None
     set_mode: Union[ModeEntry, str, None] = None
     actor_dot: Union[ActorDotEntry, str, None] = None
-    bark: Optional[str] = None
+    barks: Union[Sequence[str], str, None] = None
     damage_type: Optional[DamageType] = None
     damage_source_type: Optional[DamageSourceType] = None
     damage_source_data: Union[TrinketEntry, TrinketID, str, None] = None
@@ -119,7 +119,7 @@ class Effect(EffectEntry, BaseModel):
 
     summon_monsters: Optional[Sequence[str]] = None
     summon_chances: Optional[Sequence[float]] = None
-    summon_ranks: Optional[Sequence[Target]] = None
+    summon_ranks: Optional[Sequence[Union[Target, str]]] = None
     summon_limits: Optional[Sequence[int]] = None
     summon_count: Optional[int] = None
     summon_erase_data_on_roll: Optional[bool] = None
@@ -169,6 +169,9 @@ class Effect(EffectEntry, BaseModel):
     queue: bool = True
 
     entry_id: str = Field(default_factory=lambda x: AutoName().new_effect(), frozen=True)
+
+    def bark_id(self) -> str:
+        return f"str_bark_{self.id()}"
 
     def _one_line(self, buff_ids: Union[List[BuffEntry], List[str]]):
         res = [f'effect: .name "{self.id()}"']
@@ -314,8 +317,8 @@ class Effect(EffectEntry, BaseModel):
             res.append(f'.set_mode {get_entry_id(self.set_mode)}')
         if self.actor_dot is not None:
             res.append(f'.actor_dot {get_entry_id(self.actor_dot)}')
-        if self.bark is not None:
-            res.append(f'.bark {self.bark}')
+        if self.barks is not None:
+            res.append(f'.bark {self.bark_id()}')
         if self.damage_type is not None:
             res.append(f'.damage_type {self.damage_type.value}')
         if self.damage_source_type is not None:
@@ -354,7 +357,7 @@ class Effect(EffectEntry, BaseModel):
         if self.summon_erase_data_on_roll is not None:
             res.append(f'.summon_erase_data_on_roll {1 if self.summon_erase_data_on_roll else 0}')
         if self.summon_can_spawn_loot is not None:
-            res.append(f'.summon_can_spawn_loot {1 if self.summon_can_spawn_loot else 0}')
+            res.append(f'.summon_can_spawn_loot {bool_to_lower_str(self.summon_can_spawn_loot)}')
         if self.summon_rank_is_previous_monster_class is not None:
             res.append(f'.summon_rank_is_previous_monster_class '
                        f'{1 if self.summon_rank_is_previous_monster_class else 0}')

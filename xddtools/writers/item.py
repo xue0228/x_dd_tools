@@ -2,6 +2,7 @@ import os
 from typing import List, Optional
 
 from xddtools.base import BaseWriter, Entry, ItemEntry
+from xddtools.entries.effect import Effect
 from xddtools.entries.localization import Localization
 from xddtools.entries.item import Item
 from xddtools.path import ITEM_SAVE_DIR, ITEM_FILE_EXTENSION, DATA_PATH, ITEM_IMAGE_SAVE_DIR
@@ -25,7 +26,8 @@ class ItemWriter(BaseWriter):
 
         self._entries.append(entry)
         res = []
-        if isinstance(entry.effect, Entry):
+        if isinstance(entry.effect, Effect):
+            entry.effect.item = True
             res.append(entry.effect)
 
         if entry.str_inventory_title is not None:

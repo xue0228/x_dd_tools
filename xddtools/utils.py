@@ -2,10 +2,19 @@ import json
 import os
 import subprocess
 from decimal import Decimal, ROUND_HALF_UP
-from typing import Optional, Tuple, Sequence, Callable, List, Any
+from typing import Optional, Tuple, Sequence, Callable, List, Any, Union
 
 from PIL import Image
 from PIL.Image import Resampling
+
+
+def get_bark_list(bark: Union[Sequence[str], str, None]) -> List[str]:
+    if isinstance(bark, str):
+        return [bark]
+    elif isinstance(bark, Sequence):
+        return list(bark)
+    else:
+        return []
 
 
 def make_dirs(dir_path: str):

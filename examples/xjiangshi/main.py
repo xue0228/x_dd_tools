@@ -1,5 +1,3 @@
-import os.path
-
 from xddtools import AutoName
 
 MOD_NAME = "xjiangshi"
@@ -13,7 +11,7 @@ from xddtools.entries.colour import heal_hp, debuff, skill_unselectable, riposte
 
 from skills import skills
 from camping_skills import camping_skills
-
+from trinkets import trinkets
 
 if __name__ == '__main__':
     project = Project(
@@ -128,5 +126,6 @@ if __name__ == '__main__':
     writer.add_entry(project)
     writer.add_entry(hero)
     writer.add_entries(camping_skills)
+    writer.add_entries(trinkets)
     writer.add_entries([heal_hp, debuff, skill_unselectable, riposte, mark])
     writer.export(MOD_NAME)
