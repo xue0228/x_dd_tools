@@ -116,6 +116,18 @@ def get_localization_writer(
     from xddtools.entries.colour import bleed, blight, stress, heal_hp
     localization_writer = LocalizationWriter(prefix, language)
     base_entries = {
+        "trinket_kill_performer_additional_effects": "击杀怪物：自身：",
+        "trinket_kill_all_heroes_additional_effects": "击杀怪物：友方全体：",
+        "trinket_kill_all_monsters_additional_effects": "击杀怪物：敌方全体：",
+        "trinket_attack_skill_additional_effects_hit_miss": "攻击：",
+        "trinket_attack_skill_additional_effects_hit": "攻击命中：",
+        "trinket_attack_skill_additional_effects_miss": "攻击未命中：",
+        "trinket_ranged_attack_skill_additional_effects_miss": "远程攻击未命中：",
+        "trinket_friendly_skill_additional_effects": "友方技能：",
+        "trinket_was_hit_additional_effects": "被击中：",
+        "trinket_was_hit_all_monsters_additional_effects": "被击中：",
+        "trinket_was_hit_all_heroes_additional_effects": "被击中：",
+
         "buff_rule_tooltip_target_hpabove": f"%s如果目标生命值高于%d%%",
 
         "str_ui_actor_dot_complete": "",  # 所有actor_dot完成时共用的文本显示，此处这样设置会使女伯爵的egg破裂时没有文本提示

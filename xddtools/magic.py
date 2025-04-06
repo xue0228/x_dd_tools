@@ -1,30 +1,47 @@
-from typing import Optional, Iterable, List, Sequence, Union
+import glob
+import hashlib
+import os
+import shutil
+import re
+from typing import Optional, Iterable, List, Union, Tuple, Sequence
 
+from PIL import Image, ImageDraw, ImageFont
 from pydantic import BaseModel, ConfigDict
 
 from xddtools import AutoName
-from xddtools.base import HeroEntry, get_entry_id, LootMonsterEntry
-from xddtools.entries import Effect, Buff, Animation
+from xddtools.base import HeroEntry, get_entry_id, LootMonsterEntry, BankEntry
+from xddtools.entries import Effect, Buff, Animation, TrinketEffect
 from xddtools.entries.colour import debuff, heal_hp, skill_unselectable
 from xddtools.enum import EffectTarget, BuffType, STDisableCombatSkillAttribute, CurioResultType, BuffSource, \
-    BuffDurationType, STCombatStatAdd, HealSource
+    BuffDurationType, STCombatStatAdd, HealSource, TrinketTriggerType
+from xddtools.path import DATA_PATH
 from xddtools.utils import float_to_percent_int
 
 
-def get_str_tooltip_effect(text: str) -> Effect:
+def get_str_tooltip_effect(
+        text: str,
+        target: EffectTarget = EffectTarget.PERFORMER,
+        on_hit: bool = False,
+        on_miss: bool = False
+) -> Effect:
     """
     为 skill 添加文本提示
     :param text:
+    :param target:
+    :param on_hit:
+    :param on_miss:
     :return:
     """
     return Effect(
-        target=EffectTarget.PERFORMER,
+        target=target,
         buff_ids=[Buff(
             stat_type=BuffType.UPGRADE_DISCOUNT,
             stat_sub_type=AutoName().new_sub_type(),
             buff_stat_tooltip=text
         )],
-        on_miss=True,
+        duration=1,
+        on_hit=on_hit,
+        on_miss=on_miss,
         skill_instant=True,
         apply_once=True
     )
@@ -196,8 +213,8 @@ def get_cd_charge_effect(
 
 
 def get_duration_localization(
-    duration_type: Optional[BuffDurationType] = None,
-    duration: Optional[int] = None
+        duration_type: Optional[BuffDurationType] = None,
+        duration: Optional[int] = None
 ) -> str:
     """
     获取持续时间的翻译文本，仅用于技能描述
@@ -307,31 +324,38 @@ def get_suck_blood_effects(
     ]
 
 
-def get_trinket_fx_buffs(fx_dir: str, heroes: Sequence[Union[HeroEntry, str]]) -> List[Buff]:
-    res = []
-    sub_type = AutoName().new_sub_type()
-    for hero in heroes:
-        res.append(Buff(
-            stat_type=BuffType.UPGRADE_DISCOUNT,
-            stat_sub_type=sub_type,
-            has_description=False,
-            duration=-1,
-            fx=Animation(
-                anim_name=sub_type + "_fx",
-                anim_dir=fx_dir,
-                is_fx=True,
-                need_rename=False,
-                hero_name=get_entry_id(hero)
-            )
-        ))
-    return res
+def get_hero_fx_sfx_buff(
+        hero: Union[HeroEntry, str],
+        fx_dir: Optional[str] = None,
+        sfx: Optional[BankEntry] = None,
+        duration: int = -1
+) -> Buff:
+    if fx_dir is None and sfx is None:
+        raise ValueError("fx_dir and sfx cannot be both None")
+
+    if fx_dir is None:
+        fx_dir = os.path.join(DATA_PATH, "template/fx/sfx")
+
+    return Buff(
+        stat_type=BuffType.UPGRADE_DISCOUNT,
+        stat_sub_type=AutoName().new_sub_type(),
+        has_description=False,
+        duration=duration,
+        fx=Animation(
+            anim_dir=fx_dir,
+            is_fx=True,
+            need_rename=False,
+            hero_name=hero
+        ),
+        fx_onset_sfx=sfx
+    )
 
 
 def get_summon_loot_monster_effect(
         loot_monster: Union[LootMonsterEntry, str]
 ) -> Effect:
     return Effect(
-        target=EffectTarget.PERFORMER,
+        target=EffectTarget.TARGET,
         summon_count=1,
         summon_can_spawn_loot=True,
         summon_monsters=[f"{get_entry_id(loot_monster)}_A"],
@@ -344,7 +368,153 @@ def get_summon_loot_monster_effect(
     )
 
 
+def get_title_fx(
+        hero: Union[HeroEntry, str],
+        text: str,
+        font_path: Optional[str] = None,
+        font_size: int = 60,
+        text_color: Optional[Tuple[int, int, int]] = None,
+        y_offset: int = -5,
+) -> Animation:
+    if text_color is None:
+        text_color = (255, 255, 255)
+    if font_path is None:
+        font_path = os.path.join(DATA_PATH, "template/font/TianZhenWuXieShouJinTi-2.ttf")
+    fx_dir = os.path.join(DATA_PATH, "template/fx/skill_bark")
+    fx_name = hashlib.md5((text + str(text_color)).encode()).hexdigest()
+    anim = Animation(anim_dir=fx_dir, anim_name=fx_name, is_fx=True, need_rename=False)
+    root_dir = os.path.join(DATA_PATH, "temp")
+    anim.copy_and_rename_animation(root_dir)
+    anim_dir = os.path.join(root_dir, "fx", fx_name)
+    res = Animation(
+        anim_dir=anim_dir,
+        is_fx=True,
+        hero_name=hero,
+        need_rename=False
+    )
+
+    image = Image.open(res.png_path)
+    width, height = image.size
+    draw = ImageDraw.Draw(image)
+    font = ImageFont.truetype(font_path, font_size)
+
+    bbox = draw.textbbox((0, 0), text, font=font)
+    text_width = bbox[2] - bbox[0]
+    text_height = bbox[3] - bbox[1]
+    x = (width - 30 - text_width) / 2
+    y = (height - text_height) / 2 + y_offset
+
+    draw.text((x, y), text, fill=text_color, font=font)
+    image.save(res.png_path)
+
+    return res
+
+
+def get_title_effect(
+        hero: Union[HeroEntry, str],
+        text: str,
+        font_path: Optional[str] = None,
+        font_size: int = 60,
+        text_color: Optional[Tuple[int, int, int]] = None,
+        y_offset: int = -5,
+        target: EffectTarget = EffectTarget.PERFORMER,
+        sfx: Optional[BankEntry] = None,
+) -> Effect:
+    return Effect(
+        target=target,
+        chance=1.01,
+        skill_instant=True,
+        buff_source_type=BuffSource.NOTSPECIFIED,
+        buff_duration_type=BuffDurationType.BEFORE_TURN,
+        duration=1,
+        on_miss=True,
+        queue=False,
+        has_description=False,
+        apply_once=True,
+        buff_ids=[
+            Buff(
+                stat_type=BuffType.UPGRADE_DISCOUNT,
+                stat_sub_type=AutoName().new_sub_type(),
+                remove_on_battle_complete=True,
+                has_description=False,
+                fx=get_title_fx(hero, text, font_path, font_size, text_color, y_offset),
+                fx_onset_sfx=sfx
+            )
+        ]
+    )
+
+
+def get_trinket_effect_sfx(
+        hero: Union[HeroEntry, str],
+        trigger: TrinketTriggerType,
+        sfx: Optional[BankEntry] = None,
+) -> TrinketEffect:
+    target = EffectTarget.PERFORMER
+    if trigger == TrinketTriggerType.KILL_PERFORMER:
+        target = EffectTarget.TARGET
+
+    res = TrinketEffect(
+        trigger=trigger,
+        effects=[
+            Effect(
+                target=target,
+                apply_once=True,
+                on_miss=True,
+                duration=1,
+                buff_ids=[
+                    get_hero_fx_sfx_buff(hero, sfx=sfx, duration=1)
+                ]
+            )
+        ]
+    )
+    return res
+
+
+def copy_and_rename_hero_fx(hero_dir: str, heroes: Optional[Sequence[Union[HeroEntry, str]]] = None) -> List[str]:
+    if heroes is None:
+        heroes = ("bounty_hunter", "crusader", "vestal", "occultist",
+                  "hellion", "grave_robber", "highwayman", "plague_doctor",
+                  "jester", "leper", "arbalest", "man_at_arms",
+                  "houndmaster", "abomination", "antiquarian", "musketeer",
+                  "shieldbreaker", "flagellant")
+    exist_hero = os.path.split(hero_dir)[-1]
+    heroes = [get_entry_id(hero) for hero in heroes if hero != exist_hero]
+
+    res = []
+
+    for hero in heroes:
+        dst_dir = os.path.join(os.path.dirname(hero_dir), hero)
+        shutil.copytree(hero_dir, dst_dir, dirs_exist_ok=True)
+        for file in glob.glob(os.path.join(dst_dir, "fx", "*.*")):
+            file_name = os.path.basename(file)
+            tem = file_name.split(".")
+            tem[0] = hero
+            new_file_name = ".".join(tem)
+            new_path = os.path.join(os.path.dirname(file), new_file_name)
+
+            if file.endswith(".atlas"):
+                with open(file, 'r', encoding='utf-8') as f:
+                    data = f.read()
+                pattern = r'^(.*?)\.png$'
+                tem = new_file_name.split(".")
+                tem[-1] = "png"
+                new_png_name = ".".join(tem)
+                result = re.sub(pattern, new_png_name, data, count=1, flags=re.MULTILINE)
+                with open(new_path, 'w', encoding='utf-8') as f:
+                    f.write(result)
+                os.remove(file)
+            else:
+                os.rename(file, new_path)
+
+            res.append(new_path)
+
+    return res
+
+
 if __name__ == '__main__':
+    res = copy_and_rename_hero_fx(r"D:\Users\Desktop\x_dd_tools\examples\xhos\xhos\heroes\xjiangshi")
+    print(res)
+
     # AutoName.set_default_prefix("xue")
     # t1 = get_number_tooltip_buff("魔力值：%d", amount=1)
     # t2 = get_number_tooltip_buff(amount=2, keep_last_sub_type=True)
@@ -354,5 +524,6 @@ if __name__ == '__main__':
     # c1 = get_cd_charge_effect([CDCharge(disable=STDisableCombatSkillAttribute.DAZE, amount=1)], tooltip_buff=t1)
     # print(c1)
     # print(c1.buff_ids[0])
-    e = get_summon_loot_monster_effect("loot_monster_test")
-    print(e)
+    # e = get_summon_loot_monster_effect("loot_monster_test")
+    # print(e)
+    # a = get_title_fx("hero_test", "测试标题")

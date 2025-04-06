@@ -50,7 +50,10 @@ class Loot(JsonData, BaseModel):
                 raise ValueError("item_type, item_id, item_amount must be set together,"
                                  "or min_page_index, max_page_index together, "
                                  "or loot_table_id only, or trinket_rarity only")
-            values["loot_type"] = LootType.TABLE
+            if loot_table_id is not None:
+                values["loot_type"] = LootType.TABLE
+            else:
+                values["loot_type"] = LootType.TRINKET
         elif none_num == 5:
             if min_page_index is None or max_page_index is None:
                 raise ValueError("item_type, item_id, item_amount must be set together,"
@@ -105,7 +108,7 @@ class LootTable(JsonData, LootTableEntry, BaseModel):
     model_config = ConfigDict(frozen=False, strict=True, arbitrary_types_allowed=True)
 
     loot_entries: Sequence[Loot]
-    difficulty: int = 0,
+    difficulty: int = 0
     dungeon: Union[DungeonID, str] = ""
 
     entry_id: str = Field(default_factory=lambda x: AutoName().new_loot_table(), frozen=True)

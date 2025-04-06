@@ -49,7 +49,8 @@ class BankWriter(JsonData, BaseWriter):
                 )
                 _audio_processor.calculate_and_adjust_db(
                     input_path=bank.audio,
-                    output_path=file
+                    output_path=file,
+                    target_db=0
                 )
                 res.append(os.path.normpath(file))
                 sources.add(bank.source.value)

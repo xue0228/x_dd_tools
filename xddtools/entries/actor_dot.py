@@ -5,7 +5,7 @@ from pydantic import BaseModel, ConfigDict, Field, field_validator, model_valida
 
 from xddtools.entries.animation import Animation
 from xddtools.name import AutoName
-from xddtools.base import JsonData, EffectEntry, get_entry_id, ActorDotEntry, AnimationEntry
+from xddtools.base import JsonData, EffectEntry, get_entry_id, ActorDotEntry, AnimationEntry, BankEntry
 from xddtools.enum.actor_dot import ActorDotUpdateDurationType
 from xddtools.path import DATA_PATH
 
@@ -32,6 +32,7 @@ class ActorDot(JsonData, ActorDotEntry, BaseModel):
     duration_elements: Sequence[DurationElement] = Field(default_factory=list)
 
     fx: Optional[AnimationEntry] = None
+    fx_onset_sfx: Optional[BankEntry] = None
     entry_id: str = Field(default_factory=lambda x: AutoName().new_actor_dot(), frozen=True)
 
     @field_validator("fx")

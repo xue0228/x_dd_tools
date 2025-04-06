@@ -2,8 +2,10 @@ import os.path
 from typing import List, Optional
 
 from xddtools.base import BaseWriter, Entry, LootMonsterEntry
+from xddtools.entries.bank import Bank
 from xddtools.entries.animation import Animation
 from xddtools.entries.loot_monster import LootMonster
+from xddtools.enum.bank import BankDir, BankSource
 from xddtools.path import DATA_PATH, MONSTER_SAVE_DIR
 from xddtools.utils import write_str_to_file
 
@@ -31,6 +33,15 @@ class LootMonsterWriter(BaseWriter):
             for effect in entry.spawn_effects:
                 if isinstance(effect, Entry):
                     res.append(effect)
+
+        if isinstance(entry.sfx, Bank):
+            res.append(entry.sfx.model_copy(update={
+                "bank_dir": BankDir.CHAR_ENEMY,
+                "bank_name": f"{entry.id()}_vo_death",
+                "guid": entry.sfx.guid,
+                "audio": entry.sfx.audio,
+                "source": BankSource.EN
+            }))
 
         res.append(Animation(
             anim_name="defend",

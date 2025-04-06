@@ -1,0 +1,27 @@
+
+ddd.png
+size: 397,503
+format: RGBA8888
+filter: Linear,Linear
+repeat: none
+HW2
+  rotate: false
+  xy: 304, 1
+  size: 91, 232
+  orig: 91, 232
+  offset: 0, 0
+  index: -1
+HW1
+  rotate: false
+  xy: 304, 235
+  size: 84, 231
+  orig: 84, 231
+  offset: 0, 0
+  index: -1
+SHAOFIRE
+  rotate: false
+  xy: 1, 1
+  size: 301, 500
+  orig: 301, 500
+  offset: 0, 0
+  index: -1

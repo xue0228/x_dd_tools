@@ -1,10 +1,9 @@
-from xddtools.entries import Trinket, TrinketEffect, TrinketSet, Buff, BuffRule, Effect, Animation
+from xddtools.entries import Trinket, TrinketEffect, TrinketSet, Buff, BuffRule, Effect
 from xddtools.entries.buff_rule import BuffRuleType
 from xddtools.entries.colour import debuff
-from xddtools.enum import TrinketRarityType, BuffType, STCombatStatAdd, MonsterType, STResistance, STCombatStatMultiply, \
-    TrinketTriggerType, EffectTarget, CurioResultType, HealSource
+from xddtools.enum import TrinketRarityType, BuffType, STCombatStatAdd, MonsterType, STResistance, \
+    STCombatStatMultiply, TrinketTriggerType, EffectTarget, CurioResultType, HealSource
 from xddtools.magic import get_str_tooltip_effect, get_trinket_fx_buffs
-from xddtools import AutoName
 
 HERO_NAME = "xjiangshi"
 

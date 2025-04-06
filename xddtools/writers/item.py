@@ -2,11 +2,14 @@ import os
 from typing import List, Optional
 
 from xddtools.base import BaseWriter, Entry, ItemEntry
+from xddtools.entries.bank import Bank
+from xddtools.entries.animation import Animation
 from xddtools.entries.effect import Effect
 from xddtools.entries.localization import Localization
 from xddtools.entries.item import Item
+from xddtools.enum.bank import BankDir, BankSource
 from xddtools.path import ITEM_SAVE_DIR, ITEM_FILE_EXTENSION, DATA_PATH, ITEM_IMAGE_SAVE_DIR
-from xddtools.utils import resize_image_keep_ratio
+from xddtools.utils import resize_image_keep_ratio, get_rename_skel_dict_func
 
 
 class ItemWriter(BaseWriter):
@@ -29,6 +32,23 @@ class ItemWriter(BaseWriter):
         if isinstance(entry.effect, Effect):
             entry.effect.item = True
             res.append(entry.effect)
+
+        if isinstance(entry.fx, Animation):
+            res.append(entry.fx.model_copy(update={
+                "is_fx": True,
+                "anim_name": entry.id(),
+                # "need_rename": False,
+                "dict_func": get_rename_skel_dict_func("cure_target")
+            }))
+
+        if isinstance(entry.sfx, Bank):
+            res.append(entry.sfx.model_copy(update={
+                "bank_dir": BankDir.GENERAL_ITEMS,
+                "bank_name": entry.id(),
+                "guid": entry.sfx.guid,
+                "audio": entry.sfx.audio,
+                "source": BankSource.GENERAL
+            }))
 
         if entry.str_inventory_title is not None:
             res.append(Localization(
@@ -55,7 +75,7 @@ class ItemWriter(BaseWriter):
             if item.item_image is None:
                 image_path = os.path.join(DATA_PATH, "template/item/item_unknown.png")
             else:
-                image_path = item.inv_trinket_image
+                image_path = item.item_image
             file = os.path.join(
                 root_dir,
                 ITEM_IMAGE_SAVE_DIR,

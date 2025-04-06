@@ -1,9 +1,11 @@
 from typing import List
 
 from xddtools.base import BaseWriter, Entry, BuffEntry, JsonData, get_entry_id
+from xddtools.entries.bank import Bank
 from xddtools.entries.animation import Animation
 from xddtools.entries.buff import Buff
 from xddtools.entries.localization import Localization
+from xddtools.enum.bank import BankDir, BankSource
 from xddtools.path import BUFF_FILE_EXTENSION, BUFF_SAVE_DIR
 
 
@@ -31,6 +33,16 @@ class BuffWriter(JsonData, BaseWriter):
         if isinstance(entry.fx, Animation):
             entry.fx.is_fx = True
             res.append(entry.fx)
+        if entry.fx is not None:
+            if isinstance(entry.fx_onset_sfx, Bank):
+                res.append(entry.fx_onset_sfx.model_copy(update={
+                    "bank_dir": BankDir.GENERAL_STATUS,
+                    "bank_name": f"buff_fx_{get_entry_id(entry.fx)}_onset",
+                    "guid": entry.fx_onset_sfx.guid,
+                    "audio": entry.fx_onset_sfx.audio,
+                    "source": BankSource.GENERAL
+                }))
+
         if entry.buff_rule.rule_data_string_tooltip is not None and entry.buff_rule.rule_data_string != "":
             entry_id = f"buff_rule_data_tooltip_{get_entry_id(entry.buff_rule.rule_data_string)}"
             res.append(Localization(

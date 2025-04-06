@@ -176,12 +176,14 @@ class ProxyWriter:
             self.add_writer(writer)
 
     def _add_entry(self, entry: Entry) -> NoReturn:
-        if entry.id() not in self._ids:
+        entry_id = entry.id() + f"_{entry.__class__.__name__}"
+
+        if entry_id not in self._ids:
             for writer in self._writers:
                 if writer.is_valid(entry):
                     tem = writer.add_entry(entry)
                     if not isinstance(entry, LocalizationEntry):
-                        self._ids.add(entry.id())
+                        self._ids.add(entry_id)
                     for e in tem:
                         self._add_entry(e)
                     return

@@ -5,7 +5,7 @@ from pydantic import BaseModel, ConfigDict, Field, model_validator
 from xddtools.entries.effect import Effect
 from xddtools.enum import EffectTarget
 from xddtools.name import AutoName
-from xddtools.base import LootMonsterEntry, LootTableEntry, EffectEntry, get_entry_id
+from xddtools.base import LootMonsterEntry, LootTableEntry, EffectEntry, get_entry_id, BankEntry
 
 
 class LootMonster(LootMonsterEntry, BaseModel):
@@ -13,6 +13,7 @@ class LootMonster(LootMonsterEntry, BaseModel):
 
     loot: Union[LootTableEntry, str]
     count: int = 1
+    sfx: Optional[BankEntry] = None
     spawn_effects: Optional[Sequence[Union[EffectEntry, str]]] = None
     entry_id: str = Field(default_factory=lambda x: AutoName().new_loot_monster(), frozen=True)
 

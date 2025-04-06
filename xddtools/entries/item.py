@@ -1,8 +1,8 @@
-from typing import Optional
+from typing import Optional, Union
 
 from pydantic import ConfigDict, BaseModel, field_validator
 
-from xddtools.base import ItemEntry, EffectEntry
+from xddtools.base import ItemEntry, EffectEntry, AnimationEntry, BankEntry
 from xddtools.enum.buff_rule import ItemType
 from xddtools.utils import is_image
 
@@ -19,6 +19,8 @@ class Item(ItemEntry, BaseModel):
     tutorial_id: Optional[str] = None
     sfx_override: Optional[str] = None
 
+    fx: Optional[AnimationEntry] = None
+    sfx: Optional[BankEntry] = None
     item_image: Optional[str] = None
     str_inventory_title: Optional[str] = None
     str_inventory_description: Optional[str] = None

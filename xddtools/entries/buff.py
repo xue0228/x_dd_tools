@@ -3,7 +3,7 @@ from typing import Optional, Union
 
 from pydantic import BaseModel, ConfigDict, Field, model_validator
 
-from xddtools.base import JsonData, AnimationEntry, BuffEntry, EffectEntry, QuirkEntry, Entry
+from xddtools.base import JsonData, AnimationEntry, BuffEntry, EffectEntry, QuirkEntry, Entry, BankEntry
 from xddtools.base import get_entry_id
 from xddtools.entries.animation import Animation
 from xddtools.entries.buff_rule import BuffRule, BuffRuleType
@@ -28,6 +28,7 @@ class Buff(JsonData, BuffEntry, BaseModel):
     is_clear_debuff_valid: bool = True
     buff_rule: BuffRule = Field(default_factory=lambda x: _buff_rule_always)
     fx: Union[AnimationEntry, str, None] = None
+    fx_onset_sfx: Optional[BankEntry] = None
     buff_stat_tooltip: Optional[str] = None
     entry_id: str = Field(default_factory=lambda x: AutoName().new_buff(), frozen=True)
 
