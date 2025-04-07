@@ -3,7 +3,7 @@ from xddtools.entries.buff_rule import BuffRuleType
 from xddtools.entries.colour import debuff
 from xddtools.enum import TrinketRarityType, BuffType, STCombatStatAdd, MonsterType, STResistance, \
     STCombatStatMultiply, TrinketTriggerType, EffectTarget, CurioResultType, HealSource
-from xddtools.magic import get_str_tooltip_effect, get_trinket_fx_buffs
+from xddtools.magic import get_str_tooltip_effect
 
 HERO_NAME = "xjiangshi"
 
@@ -19,8 +19,7 @@ trinket_0 = Trinket(
             stat_sub_type=STCombatStatAdd.SPEED_RATING,
             amount=-1,
             remove_on_battle_complete=True
-        ),
-        get_trinket_fx_buffs("fx/trinket_fx", [HERO_NAME])[0]
+        )
     ],
     hero_class_requirements=[HERO_NAME],
     rarity=TrinketRarityType.VERY_COMMON,

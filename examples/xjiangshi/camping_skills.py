@@ -1,4 +1,4 @@
-from xddtools.entries import CampingSkill, CampingSkillEffect, Bank
+from xddtools.entries import CampingSkill, CampingSkillEffect
 from xddtools.entries.camping_skill import pep_talk, encourage
 from xddtools.enum import CampingSkillEffectType, CampingSkillBuffSubType, CampingSkillSelection
 
