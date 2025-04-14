@@ -1,0 +1,137 @@
+{
+  "skeleton": {
+    "width": 1099,
+    "height": 610.8,
+    "hash": " ",
+    "name": "armatureName",
+    "spine": "2.1.27"
+  },
+  "bones": [
+    {
+      "name": "fxskill"
+    },
+    {
+      "scaleX": 0.2,
+      "scaleY": 0.2,
+      "name": "bone",
+      "parent": "fxskill"
+    }
+  ],
+  "slots": [
+    {
+      "name": "Ground",
+      "bone": "fxskill",
+      "attachment": "Ground"
+    },
+    {
+      "name": "c",
+      "bone": "bone",
+      "attachment": "c"
+    },
+    {
+      "name": "Clothes",
+      "bone": "bone",
+      "attachment": "Clothes"
+    },
+    {
+      "name": "E4",
+      "bone": "bone",
+      "attachment": "E4"
+    },
+    {
+      "name": "E3",
+      "bone": "bone",
+      "attachment": "E3"
+    },
+    {
+      "name": "E2",
+      "bone": "bone",
+      "attachment": "E2"
+    },
+    {
+      "name": "E1",
+      "bone": "bone",
+      "attachment": "E1"
+    }
+  ],
+  "skins": {
+    "default": {
+      "E3": {
+        "E3": {
+          "name": "E3",
+          "width": 673,
+          "height": 507,
+          "x": 1293.61,
+          "y": 1077.44,
+          "scaleX": 3.997,
+          "scaleY": 4
+        }
+      },
+      "E4": {
+        "E4": {
+          "name": "E4",
+          "width": 1099,
+          "height": 537,
+          "x": 455.61,
+          "y": 633.44,
+          "scaleX": 3.9982,
+          "scaleY": 4
+        }
+      },
+      "E1": {
+        "E1": {
+          "name": "E1",
+          "width": 422,
+          "height": 158,
+          "x": -669.39,
+          "y": 106.44,
+          "scaleX": 3.9953,
+          "scaleY": 3.9873
+        }
+      },
+      "Clothes": {
+        "Clothes": {
+          "name": "Clothes",
+          "width": 68,
+          "height": 88,
+          "x": -72.39,
+          "y": 940.44,
+          "scaleX": 3.9706,
+          "scaleY": 4
+        }
+      },
+      "Ground": {
+        "Ground": {
+          "name": "Ground",
+          "width": 90,
+          "height": 16,
+          "scaleX": 3.9889,
+          "scaleY": 4.0625
+        }
+      },
+      "c": {
+        "c": {
+          "name": "c",
+          "width": 717,
+          "height": 399,
+          "x": -201.89,
+          "y": 812.94,
+          "scaleX": 3.9986,
+          "scaleY": 4.0025
+        }
+      },
+      "E2": {
+        "E2": {
+          "name": "E2",
+          "width": 420,
+          "height": 23,
+          "x": -397.39,
+          "y": -30.56,
+          "scaleX": 3.9952,
+          "scaleY": 3.913
+        }
+      }
+    }
+  },
+  "animations": {"b1": {}}
+}

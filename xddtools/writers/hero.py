@@ -10,8 +10,8 @@ from xddtools.entries.hero import Hero, Mode
 from xddtools.entries.localization import Localization
 from xddtools.entries.skill import Skill, SkillInfo
 from xddtools.enum import BankDir, BankSource
-from xddtools.path import HERO_SAVE_DIR, HERO_UPGRADE_FILE_EXTENSION, HERO_UPGRADE_SAVE_DIR, EXTRA_STACK_LIMIT_SAVE_DIR, \
-    EXTRA_STACK_LIMIT_FILE_EXTENSION
+from xddtools.path import HERO_SAVE_DIR, HERO_UPGRADE_FILE_EXTENSION, HERO_UPGRADE_SAVE_DIR, \
+    EXTRA_STACK_LIMIT_SAVE_DIR, EXTRA_STACK_LIMIT_FILE_EXTENSION
 from xddtools.utils import write_str_to_file, resize_image
 
 
@@ -32,9 +32,9 @@ class HeroWriter(BaseWriter):
 
         # 多模式动画
         modes = entry.get_modes()
-        if len(modes) > 0 and entry.base_mode is not None:
-            raise ValueError(f"{entry.id()} has base mode {entry.base_mode.id()} "
-                             f"but also has modes {','.join([m.id() for m in modes])}")
+        # if len(modes) > 0 and entry.base_mode is not None:
+        #     raise ValueError(f"{entry.id()} has base mode {entry.base_mode.id()} "
+        #                      f"but also has modes {','.join([m.id() for m in modes])}")
         for mode in modes:  # type: Mode
             if mode.afflicted is not None and isinstance(mode.afflicted, Animation):
                 anim = mode.afflicted
@@ -103,26 +103,40 @@ class HeroWriter(BaseWriter):
             if mode.defend is not None and isinstance(mode.defend, Animation):
                 anim = mode.defend
 
-                def tem_func(d: Dict[str, Any]) -> dict:
-                    tem = {}
-                    if len(d) != 2:
-                        raise ValueError("defend animation must have 2 animations,defend and death")
-                    for k, v in d.items():
-                        if k.startswith("defend"):
-                            tem[f"defend_{mode.id()}"] = v
-                        elif k.startswith("death"):
-                            tem[f"death_{mode.id()}"] = v
-                    if len(tem) != 2:
-                        raise ValueError("defend animation must have 2 animations,defend and death")
-                    return tem
+                def get_tem_func(mode_id: str):
+                    def tem_func(d: Dict[str, Any]) -> dict:
+                        tem = {}
+                        if len(d["animations"]) != 2:
+                            raise ValueError("defend animation must have 2 animations,defend and death")
+                        for k, v in d["animations"].items():
+                            if k.startswith("defend"):
+                                tem[f"defend_{mode_id}"] = v
+                            elif k.startswith("death"):
+                                tem[f"death_{mode_id}"] = v
+                        if len(tem) != 2:
+                            raise ValueError("defend animation must have 2 animations,defend and death")
+                        d["animations"] = tem
+                        return d
+                    return tem_func
 
                 res.append(anim.model_copy(update={
                     "hero_name": entry.id(),
                     "mode_name": mode.id(),
                     "is_fx": False,
                     "anim_name": "defend",
-                    "dict_func": tem_func if anim.dict_func is None else anim.dict_func
+                    "dict_func": get_tem_func(mode.id()) if anim.dict_func is None else anim.dict_func
                 }))
+
+            if mode.actor_mode_name is not None:
+                res.append(Localization(
+                    entry_id=f"actor_mode_name_{mode.id()}",
+                    text=mode.actor_mode_name
+                ))
+            if mode.str_skill_mode_info is not None:
+                res.append(Localization(
+                    entry_id=f"str_skill_mode_info_{mode.id()}",
+                    text=mode.str_skill_mode_info
+                ))
 
         # 基本模式动画
         mode: Optional[Mode] = entry.base_mode
@@ -312,8 +326,8 @@ class HeroWriter(BaseWriter):
                             res.append(item)
                 if info.valid_modes_and_effects is not None:
                     for mode_effects in info.valid_modes_and_effects:
-                        if mode_effects.effect_ids is not None:
-                            for item in mode_effects.effect_ids:
+                        if mode_effects.effects is not None:
+                            for item in mode_effects.effects:
                                 if isinstance(item, Effect):
                                     if isinstance(item.actor_dot, Animation):
                                         item.actor_dot.hero_name = entry.id()

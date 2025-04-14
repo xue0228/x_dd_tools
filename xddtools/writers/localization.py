@@ -128,6 +128,8 @@ def get_localization_writer(
         "trinket_was_hit_all_monsters_additional_effects": "被击中：",
         "trinket_was_hit_all_heroes_additional_effects": "被击中：",
 
+        "buff_bsrc_never_again": "其他",
+
         "buff_rule_tooltip_target_hpabove": f"%s如果目标生命值高于%d%%",
 
         "str_ui_actor_dot_complete": "",  # 所有actor_dot完成时共用的文本显示，此处这样设置会使女伯爵的egg破裂时没有文本提示

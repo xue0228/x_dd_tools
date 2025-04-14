@@ -1,0 +1,89 @@
+{
+  "skeleton": {
+    "width": 650,
+    "height": 623,
+    "hash": " ",
+    "name": "armatureName",
+    "spine": "2.1.27"
+  },
+  "bones": [
+    {
+      "name": "fxskill"
+    },
+    {
+      "scaleX": 0.14,
+      "scaleY": 0.14,
+      "name": "bone",
+      "parent": "fxskill"
+    },
+    {
+      "x": 95.1348,
+      "y": 1532.6682,
+      "name": "fxdot",
+      "parent": "bone"
+    },
+    {
+      "x": 204.6776,
+      "y": 2130.5896,
+      "name": "fxhead",
+      "parent": "bone"
+    },
+    {
+      "name": "fxchest",
+      "parent": "fxdot"
+    }
+  ],
+  "slots": [
+    {
+      "name": "Ground",
+      "bone": "fxskill",
+      "attachment": "Ground"
+    },
+    {
+      "name": "C",
+      "bone": "bone",
+      "attachment": "C"
+    },
+    {
+      "name": "Clothes",
+      "bone": "bone",
+      "attachment": "Clothes"
+    }
+  ],
+  "skins": {
+    "default": {
+      "Ground": {
+        "Ground": {
+          "name": "Ground",
+          "width": 90,
+          "height": 16,
+          "scaleX": 3.9889,
+          "scaleY": 4.0625
+        }
+      },
+      "Clothes": {
+        "Clothes": {
+          "name": "Clothes",
+          "width": 109,
+          "height": 87,
+          "x": -21.14,
+          "y": 1362.8,
+          "scaleX": 4,
+          "scaleY": 4.0115
+        }
+      },
+      "C": {
+        "C": {
+          "name": "C",
+          "width": 650,
+          "height": 623,
+          "x": -147.14,
+          "y": 1206.3,
+          "scaleX": 4,
+          "scaleY": 4
+        }
+      }
+    }
+  },
+  "animations": {"investigate": {}}
+}

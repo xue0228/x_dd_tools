@@ -67,7 +67,7 @@ class Effect(EffectEntry, BaseModel):
 
     riposte_validate: bool = True
     can_crit_heal: bool = True
-    can_apply_on_death: bool = True
+    can_apply_on_death: Optional[bool] = None
     has_description: bool = True
     buff_is_clear_debuff_valid: bool = True
 
@@ -166,7 +166,7 @@ class Effect(EffectEntry, BaseModel):
 
     on_hit: bool = True
     on_miss: bool = False
-    queue: bool = True
+    queue: Optional[bool] = None
 
     entry_id: str = Field(default_factory=lambda x: AutoName().new_effect(), frozen=True)
 
@@ -242,10 +242,20 @@ class Effect(EffectEntry, BaseModel):
             tem = " ".join(tem)
             res.append(f'.riposte_effect {tem}')
 
+        if self.can_apply_on_death is None:
+            if self.push is not None or self.pull is not None \
+                    or self.shuffle_party or self.shuffle_target or self.instant_shuffle:
+                can_apply_on_death = True
+            else:
+                can_apply_on_death = self.can_apply_on_death
+        else:
+            can_apply_on_death = self.can_apply_on_death
+        if can_apply_on_death is not None:
+            res.append(f'.can_apply_on_death {bool_to_lower_str(can_apply_on_death)}')
+
         true_false_display_false = {
             "riposte_validate": self.riposte_validate,
             "can_crit_heal": self.can_crit_heal,
-            "can_apply_on_death": self.can_apply_on_death,
             "has_description": self.has_description,
             "buff_is_clear_debuff_valid": self.buff_is_clear_debuff_valid
         }
@@ -289,8 +299,8 @@ class Effect(EffectEntry, BaseModel):
         for k, v in int_value_larger_than_zero.items():
             if v is None:
                 continue
-            if v <= 0:
-                raise ValueError(f"{k} must be larger than 0")
+            # if v <= 0:
+            #     raise ValueError(f"{k} must be larger than 0")
             res.append(f'.{k} {v}')
 
         float_percent = {
@@ -446,10 +456,19 @@ class Effect(EffectEntry, BaseModel):
             if v is not None:
                 res.append(f'.{k} {v}')
 
+        if self.queue is None:
+            if self.push is not None or self.pull is not None \
+                    or self.shuffle_target or self.shuffle_party or self.instant_shuffle:
+                queue = False
+            else:
+                queue = True
+        else:
+            queue = self.queue
+
         true_false_display_all = {
             "on_hit": self.on_hit,
             "on_miss": self.on_miss,
-            "queue": self.queue
+            "queue": queue
         }
         for k, v in true_false_display_all.items():
             res.append(f'.{k} {bool_to_lower_str(v)}')

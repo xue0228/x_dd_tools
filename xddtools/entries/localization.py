@@ -15,7 +15,7 @@ class Localization(LocalizationEntry, BaseModel):
         strict=True,
     )
 
-    entry_id: str = Field(..., min_length=1, max_length=64, pattern="^[a-zA-Z0-9_.+]+$")
+    entry_id: str = Field(..., min_length=1, pattern="^[a-zA-Z0-9_.+]+$")
     text: str
 
     @field_validator("text")

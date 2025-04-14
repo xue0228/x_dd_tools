@@ -9,7 +9,7 @@ from PIL import Image, ImageDraw, ImageFont
 from pydantic import BaseModel, ConfigDict
 
 from xddtools import AutoName
-from xddtools.base import HeroEntry, get_entry_id, LootMonsterEntry, BankEntry
+from xddtools.base import HeroEntry, get_entry_id, LootMonsterEntry, BankEntry, ModeEntry
 from xddtools.entries import Effect, Buff, Animation, TrinketEffect
 from xddtools.entries.colour import debuff, heal_hp, skill_unselectable
 from xddtools.enum import EffectTarget, BuffType, STDisableCombatSkillAttribute, CurioResultType, BuffSource, \
@@ -21,8 +21,9 @@ from xddtools.utils import float_to_percent_int
 def get_str_tooltip_effect(
         text: str,
         target: EffectTarget = EffectTarget.PERFORMER,
-        on_hit: bool = False,
-        on_miss: bool = False
+        on_hit: bool = True,
+        on_miss: bool = True,
+        skill_instant: bool = True
 ) -> Effect:
     """
     为 skill 添加文本提示
@@ -30,6 +31,7 @@ def get_str_tooltip_effect(
     :param target:
     :param on_hit:
     :param on_miss:
+    :param skill_instant:
     :return:
     """
     return Effect(
@@ -39,10 +41,9 @@ def get_str_tooltip_effect(
             stat_sub_type=AutoName().new_sub_type(),
             buff_stat_tooltip=text
         )],
-        duration=1,
         on_hit=on_hit,
         on_miss=on_miss,
-        skill_instant=True,
+        skill_instant=skill_instant,
         apply_once=True
     )
 
@@ -157,7 +158,7 @@ class CDCharge(BaseModel):
 
 def get_cd_charge_effect(
         cd_charges: Iterable[CDCharge],
-        tooltip_buff: Optional[Buff] = None,
+        other_buffs: Optional[Sequence[Buff]] = None,
         chance: float = 100,
         buff_source: BuffSource = BuffSource.NEVER_AGAIN,
         buff_duration_type: BuffDurationType = BuffDurationType.QUEST_END,
@@ -166,7 +167,7 @@ def get_cd_charge_effect(
     """
     给技能 CD 充能，需要搭配禁用技能的 quirk 和 get_clear_self_buff_source_effect 函数一起使用
     :param cd_charges:
-    :param tooltip_buff:
+    :param other_buffs:
     :param chance:
     :param buff_source:
     :param buff_duration_type:
@@ -188,8 +189,8 @@ def get_cd_charge_effect(
     )
 
     buffs = []
-    if tooltip_buff is not None:
-        buffs.append(tooltip_buff)
+    if other_buffs is not None:
+        buffs.extend(other_buffs)
 
     for cd_charge in cd_charges:
         if cd_charge.amount <= 0:
@@ -297,17 +298,19 @@ def get_steal_target_max_life_effects(
 
 
 def get_suck_blood_effects(
-        heal_percent: float
+        heal_percent: float,
+        has_description: bool = True
 ):
     """
     需要搭配 skill 中的 damage_heal_base_class_ids 属性使用
     :param heal_percent: 生命偷取比例
+    :param has_description:
     :return:
     """
-    if heal_percent < 0 or heal_percent > 1:
-        raise ValueError("heal_percent must be in range [0, 1]")
+    if heal_percent < 0:
+        raise ValueError("heal_percent cannot be negative")
 
-    return [
+    res = [
         Effect(
             target=EffectTarget.PERFORMER,
             skill_instant=True,
@@ -319,9 +322,12 @@ def get_suck_blood_effects(
                     amount=round(heal_percent - 1, 2),
                 )
             ]
-        ),
-        get_str_tooltip_effect(f"{float_to_percent_int}%% {heal_hp('生命偷取')}")
+        )
     ]
+    if has_description:
+        res.append(get_str_tooltip_effect(f"{float_to_percent_int(heal_percent)}%% {heal_hp('生命偷取')}"))
+
+    return res
 
 
 def get_hero_fx_sfx_buff(
@@ -509,6 +515,26 @@ def copy_and_rename_hero_fx(hero_dir: str, heroes: Optional[Sequence[Union[HeroE
             res.append(new_path)
 
     return res
+
+
+def get_set_mode_effect(
+        mode: Union[ModeEntry, str],
+        has_description: bool = True,
+        on_hit: bool = True,
+        on_miss: bool = True,
+        ensure_last: bool = True
+):
+    return Effect(
+        target=EffectTarget.PERFORMER,
+        chance=100,
+        push=0 if ensure_last else None,
+        set_mode=mode,
+        on_hit=on_hit,
+        on_miss=on_miss,
+        apply_once=True,
+        queue=True if ensure_last else False,
+        has_description=has_description
+    )
 
 
 if __name__ == '__main__':

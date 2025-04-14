@@ -175,6 +175,20 @@ def get_rename_skel_dict_func(new_name: str) -> Callable[[dict], dict]:
     return rename_skel_dict
 
 
+def get_modes_skel_dict_func(new_name: str, modes: Sequence[str]) -> Callable[[dict], dict]:
+    def rename_skel_dict(skel_dict: dict) -> dict:
+        if len(skel_dict["animations"]) > 1:
+            raise ValueError("Only one animation is allowed in the skel dict.")
+        target = list(skel_dict["animations"].keys())[0]
+        for mode in modes:
+            name = f"{new_name}_{mode}"
+            skel_dict["animations"][name] = skel_dict["animations"][target]
+        del skel_dict["animations"][target]
+        return skel_dict
+
+    return rename_skel_dict
+
+
 def load_json(json_path: str) -> dict:
     with open(json_path, 'r', encoding='utf-8') as f:
         return json.load(f)

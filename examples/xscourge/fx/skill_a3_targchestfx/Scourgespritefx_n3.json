@@ -1,0 +1,170 @@
+{
+  "skeleton": {
+    "width": 375,
+    "height": 250,
+    "hash": " ",
+    "name": "armatureName",
+    "spine": "2.1.27"
+  },
+  "bones": [
+    {
+      "name": "fxskill"
+    },
+    {
+      "name": "bone",
+      "parent": "fxskill"
+    },
+    {
+      "name": "bone2",
+      "parent": "fxskill"
+    }
+  ],
+  "slots": [
+    {
+      "name": "n3",
+      "bone": "bone",
+      "attachment": "n2"
+    },
+    {
+      "name": "n4",
+      "bone": "bone2",
+      "attachment": "n2"
+    }
+  ],
+  "skins": {
+    "default": {
+      "n4": {
+        "n2": {
+          "name": "n2",
+          "width": 269,
+          "height": 190,
+          "x": 1,
+          "y": 5.66,
+          "scaleX": 1,
+          "scaleY": 1
+        }
+      },
+      "n3": {
+        "n2": {
+          "name": "n2",
+          "width": 269,
+          "height": 190,
+          "x": 1,
+          "y": 5.66,
+          "scaleX": 1,
+          "scaleY": 1
+        }
+      }
+    }
+  },
+  "animations": {
+    "fx_n3": {
+      "bones": {
+        "bone": {
+          "scale": [
+            {
+              "time": 0,
+              "curve": [
+                0,
+                0.799482524394989,
+                0.75,
+                1
+              ],
+              "x": 1,
+              "y": 1
+            },
+            {
+              "time": 0.1333,
+              "curve": [
+                0.25,
+                0,
+                0.75,
+                1
+              ],
+              "x": 1.16,
+              "y": 1.16
+            },
+            {
+              "time": 0.5,
+              "x": 0.86,
+              "y": 0.86
+            }
+          ]
+        },
+        "bone2": {
+          "scale": [
+            {
+              "time": 0,
+              "curve": [
+                0.25,
+                0,
+                0.75,
+                1
+              ],
+              "x": 0.97,
+              "y": 0.97
+            },
+            {
+              "time": 0.5,
+              "x": 1,
+              "y": 1
+            }
+          ]
+        }
+      },
+      "slots": {
+        "n3": {
+          "color": [
+            {
+              "time": 0,
+              "curve": [
+                0.25,
+                0,
+                0.75,
+                1
+              ],
+              "color": "FFFFFF00"
+            },
+            {
+              "time": 0.2333,
+              "curve": [
+                0.25,
+                0,
+                0.75,
+                1
+              ],
+              "color": "FFFFFFFF"
+            },
+            {
+              "time": 0.5,
+              "color": "FFFFFF00"
+            }
+          ]
+        },
+        "n4": {
+          "color": [
+            {
+              "time": 0,
+              "curve": "stepped",
+              "color": "FFFFFFFF"
+            },
+            {
+              "time": 0.3333,
+              "curve": [
+                0.25,
+                0,
+                0.75,
+                1
+              ],
+              "color": "FFFFFFFF"
+            },
+            {
+              "time": 1,
+              "color": "FFFFFF00"
+            }
+          ]
+        }
+      }
+    }
+  }
+}

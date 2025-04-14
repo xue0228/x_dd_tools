@@ -1,0 +1,155 @@
+{
+  "skeleton": {
+    "width": 631,
+    "height": 742,
+    "hash": " ",
+    "name": "armatureName",
+    "spine": "2.1.27"
+  },
+  "bones": [
+    {
+      "name": "fxskill"
+    },
+    {
+      "scaleX": 0.25,
+      "scaleY": 0.25,
+      "name": "bone",
+      "parent": "fxskill"
+    },
+    {
+      "x": 254.1847,
+      "y": 1295.4476,
+      "name": "bone3",
+      "parent": "bone"
+    },
+    {
+      "x": 254.1847,
+      "y": 1295.4476,
+      "name": "fxchest",
+      "parent": "bone"
+    },
+    {
+      "x": 254.1847,
+      "y": 1295.4476,
+      "name": "fxdeath",
+      "parent": "bone"
+    },
+    {
+      "x": 254.1847,
+      "y": 1295.4476,
+      "name": "fxhead",
+      "parent": "bone"
+    }
+  ],
+  "slots": [
+    {
+      "name": "c",
+      "bone": "bone",
+      "attachment": "c"
+    },
+    {
+      "name": "Clothes",
+      "bone": "bone",
+      "attachment": "Clothes"
+    }
+  ],
+  "skins": {
+    "default": {
+      "Clothes": {
+        "Clothes": {
+          "name": "Clothes",
+          "width": 291,
+          "height": 365,
+          "x": -159.8,
+          "y": 693.94,
+          "scaleX": 3.9931,
+          "scaleY": 4.0027
+        }
+      },
+      "c": {
+        "c": {
+          "name": "c",
+          "width": 631,
+          "height": 742,
+          "x": -152.8,
+          "y": 1035.44,
+          "scaleX": 4,
+          "scaleY": 3.9973
+        }
+      }
+    }
+  },
+  "animations": {
+    "defend": {},
+    "death_Scourge_C": {
+      "slots": {
+        "Clothes": {
+          "color": [
+            {
+              "time": 0,
+              "curve": [
+                0.25,
+                0,
+                0.75,
+                1
+              ],
+              "color": "FFFFFFFF"
+            },
+            {
+              "time": 0.5,
+              "curve": "stepped",
+              "color": "000000FF"
+            },
+            {
+              "time": 1,
+              "curve": [
+                0.25,
+                0,
+                0.75,
+                1
+              ],
+              "color": "000000FF"
+            },
+            {
+              "time": 1.5,
+              "color": "00000000"
+            }
+          ]
+        },
+        "c": {
+          "color": [
+            {
+              "time": 0,
+              "curve": [
+                0.25,
+                0,
+                0.75,
+                1
+              ],
+              "color": "FFFFFFFF"
+            },
+            {
+              "time": 0.5,
+              "curve": "stepped",
+              "color": "000000FF"
+            },
+            {
+              "time": 1,
+              "curve": [
+                0.25,
+                0,
+                0.75,
+                1
+              ],
+              "color": "000000FF"
+            },
+            {
+              "time": 1.5,
+              "color": "00000000"
+            }
+          ]
+        }
+      }
+    }
+  }
+}

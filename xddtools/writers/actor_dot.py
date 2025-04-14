@@ -30,6 +30,7 @@ class ActorDotWriter(JsonData, BaseWriter):
         if isinstance(entry.fx, Animation):
             entry.fx.anim_name = entry.id()
             entry.fx.is_fx = True
+            entry.fx.need_rename = False
             res.append(entry.fx)
 
         if entry.fx is not None:
