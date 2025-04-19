@@ -6,7 +6,7 @@ import numpy as np
 from pydantic import BaseModel, ConfigDict, Field, model_validator
 
 from xddtools.base import HeroEntry, SkillEntry, EffectEntry, TownEventEntry, get_entry_id, AnimationEntry, \
-    TraitEntry, LootTableEntry, ItemEntry, QuirkEntry, BuffEntry, ModeEntry, MonsterEntry, BankEntry
+    TraitEntry, LootTableEntry, ItemEntry, QuirkEntry, BuffEntry, ModeEntry, MonsterEntry, BankEntry, ColourEntry
 from xddtools.entries.skill import Skill, SkillInfo
 from xddtools.enum.buff_rule import TownActivityType, ItemType, MonsterClass, HeroClass, QuirkType
 from xddtools.enum.hero import DeathFx, TagID
@@ -675,6 +675,7 @@ class Mode(ModeEntry, BaseModel):
     is_bark_override: bool = False
     affliction_combat_skill_id: Union[SkillEntry, str, None] = None
     battle_complete_combat_skill_id: Union[SkillEntry, str, None] = None
+    battle_complete_sfx: Union[BankEntry, str, None] = None  # 战斗结束后使用上一个参数变身时触发的音效
 
     afflicted: Union[AnimationEntry, str, None] = None
     camp: Union[AnimationEntry, str, None] = None
@@ -714,6 +715,17 @@ class Mode(ModeEntry, BaseModel):
         if self.stress_damage_per_turn != 0:
             res += f" .stress_damage_per_turn {self.stress_damage_per_turn}"
         return res
+
+
+class HealthBar(BaseModel):
+    model_config = ConfigDict(frozen=False, strict=True, arbitrary_types_allowed=True)
+
+    damage_bottom: Union[str, Tuple[int, int, int, int]] = "#a32a00"
+    damage_top: Union[str, Tuple[int, int, int, int]] = "#ffa500"
+    heal_bottom: Union[str, Tuple[int, int, int, int]] = "#004e21"
+    heal_top: Union[str, Tuple[int, int, int, int]] = "#00e500"
+    current_bottom: Union[str, Tuple[int, int, int, int]] = "#150000"
+    current_top: Union[str, Tuple[int, int, int, int]] = "#cd0000"
 
 
 class Hero(HeroEntry, BaseModel):
@@ -757,6 +769,7 @@ class Hero(HeroEntry, BaseModel):
     sort_position_z_rank_override: Optional[int] = None
     hero_localization: Optional[HeroLocalization] = None
     base_mode: Optional[ModeEntry] = None
+    health_bar: Optional[HealthBar] = None
 
     def _complete_weapons(self):
         if len(self.weapons) == 5:
@@ -914,7 +927,7 @@ class Hero(HeroEntry, BaseModel):
         tem = []
         for tag in self.tags:
             tem.append(f'tag: .id "{get_entry_id(tag)}"')
-        tem.append(f'tag: .id "{self.id()}"')
+        # tem.append(f'tag: .id "{self.id()}"')
         res.append("\n".join(tem))
 
         # 修改爆压后获得 trait 的概率
@@ -1005,6 +1018,9 @@ class Hero(HeroEntry, BaseModel):
 
     def art(self) -> str:
         res = [f'commonfx: .deathfx {self.death_fx.value}']
+
+        if self.health_bar is not None:
+            res.append(f'health_bar: .type "{self.id()}"')
 
         weapon = "".join(f'weapon: .name "{self.id()}_weapon_{i}" .icon "eqp_weapon_{i}.png"\n' for i in range(5))
         armour = "".join(f'armour: .name "{self.id()}_armour_{i}" .icon "eqp_armour_{i}.png"\n' for i in range(5))

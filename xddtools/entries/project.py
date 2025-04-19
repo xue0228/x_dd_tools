@@ -20,7 +20,7 @@ class Project(ProjectEntry, BaseModel):
     language: LocalizationLanguage = LocalizationLanguage.SCHINESE
     update_details: str = ""
     visibility: ProjectVisibility = ProjectVisibility.PRIVATE
-    upload_mode: ProjectUploadMode = ProjectUploadMode.DIRECT_UPLOAD
+    upload_mode: ProjectUploadMode = ProjectUploadMode.DONT_SUBMIT
     version_major: int = 0
     version_minor: int = 0
     target_build: int = 0

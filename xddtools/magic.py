@@ -1,8 +1,8 @@
 import glob
 import hashlib
 import os
-import shutil
 import re
+import shutil
 from typing import Optional, Iterable, List, Union, Tuple, Sequence
 
 from PIL import Image, ImageDraw, ImageFont
@@ -134,14 +134,16 @@ def get_cd_tag_effect(cd_type: STDisableCombatSkillAttribute = STDisableCombatSk
     return effect
 
 
-def get_clear_self_buff_source_effect(buff_source: BuffSource = BuffSource.NEVER_AGAIN) -> Effect:
+def get_clear_self_buff_source_effect(buff_source: BuffSource = BuffSource.NEVER_AGAIN, chance: float = 1.0) -> Effect:
     """
     完全驱散自身所有属于 buff_source 来源的 buff
     :param buff_source:
+    :param chance:
     :return:
     """
     return Effect(
         target=EffectTarget.PERFORMER,
+        chance=chance,
         on_miss=True,
         steal_buff_source_type=buff_source,
         has_description=False,
@@ -162,7 +164,9 @@ def get_cd_charge_effect(
         chance: float = 100,
         buff_source: BuffSource = BuffSource.NEVER_AGAIN,
         buff_duration_type: BuffDurationType = BuffDurationType.QUEST_END,
-        duration: int = 1
+        duration: int = 1,
+        on_hit: bool = True,
+        on_miss: bool = True
 ) -> Effect:
     """
     给技能 CD 充能，需要搭配禁用技能的 quirk 和 get_clear_self_buff_source_effect 函数一起使用
@@ -172,6 +176,8 @@ def get_cd_charge_effect(
     :param buff_source:
     :param buff_duration_type:
     :param duration:
+    :param on_miss:
+    :param on_hit:
     :return:
     """
     positive = 0
@@ -183,7 +189,8 @@ def get_cd_charge_effect(
         duration=duration,
         buff_duration_type=buff_duration_type,
         buff_source_type=buff_source,
-        on_miss=True,
+        on_hit=on_hit,
+        on_miss=on_miss,
         has_description=False,
         apply_once=True
     )

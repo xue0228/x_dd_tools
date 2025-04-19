@@ -1,11 +1,12 @@
 /*.png
 /*.txt
-/examples/xhunter/xhunter/
-/examples/xlove_token/xlove_token/
-/examples/xhos/xhos/
-/examples/xhuihui/xhuihui/
-/examples/xjiangshi/xjiangshi/
+/examples/xhunter/
+/examples/xlove_token/
+/examples/xhos/
+/examples/xhuihui/
+/examples/xjiangshi/
 /examples/xscourge/xscourge/
+/examples/test/
 /others/
 /tools/
 /.idea/
@@ -17,6 +18,7 @@ temp/
 /examples/*/*/*/*.skel
 /examples/*/*/*/*.atlas
 /examples/*/*/*/*.png
+/examples/*/*/*/*.json
 /examples/*/*/*.png
 /examples/*/*/*.wav
 /examples/*/*/*.bank

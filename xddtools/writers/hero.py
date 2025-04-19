@@ -2,14 +2,15 @@ import json
 import os
 from typing import List, Any, Dict, Optional
 
-from xddtools.base import BaseWriter, Entry, HeroEntry
+from xddtools.base import BaseWriter, Entry, HeroEntry, get_entry_id
+from xddtools.entries.colour import Colour
 from xddtools.entries.effect import Effect
 from xddtools.entries.bank import Bank
 from xddtools.entries.animation import Animation
 from xddtools.entries.hero import Hero, Mode
 from xddtools.entries.localization import Localization
 from xddtools.entries.skill import Skill, SkillInfo
-from xddtools.enum import BankDir, BankSource
+from xddtools.enum import BankDir, BankSource, SkillHeadType
 from xddtools.path import HERO_SAVE_DIR, HERO_UPGRADE_FILE_EXTENSION, HERO_UPGRADE_SAVE_DIR, \
     EXTRA_STACK_LIMIT_SAVE_DIR, EXTRA_STACK_LIMIT_FILE_EXTENSION
 from xddtools.utils import write_str_to_file, resize_image
@@ -36,6 +37,22 @@ class HeroWriter(BaseWriter):
         #     raise ValueError(f"{entry.id()} has base mode {entry.base_mode.id()} "
         #                      f"but also has modes {','.join([m.id() for m in modes])}")
         for mode in modes:  # type: Mode
+            if isinstance(mode.battle_complete_sfx, str):
+                res.append(Bank(
+                    bank_dir=BankDir.NONE,
+                    bank_name=f"_{mode.id()}",
+                    audio=mode.battle_complete_sfx,
+                    source=BankSource.HERO
+                ))
+            elif isinstance(mode.battle_complete_sfx, Bank):
+                res.append(mode.battle_complete_sfx.model_copy(update={
+                    "bank_dir": BankDir.NONE,
+                    "bank_name": f"_{mode.id()}",
+                    "guid": mode.battle_complete_sfx.guid,
+                    "audio": mode.battle_complete_sfx.audio,
+                    "source": BankSource.HERO
+                }))
+
             if mode.afflicted is not None and isinstance(mode.afflicted, Animation):
                 anim = mode.afflicted
                 res.append(anim.model_copy(update={
@@ -103,28 +120,33 @@ class HeroWriter(BaseWriter):
             if mode.defend is not None and isinstance(mode.defend, Animation):
                 anim = mode.defend
 
-                def get_tem_func(mode_id: str):
-                    def tem_func(d: Dict[str, Any]) -> dict:
-                        tem = {}
-                        if len(d["animations"]) != 2:
-                            raise ValueError("defend animation must have 2 animations,defend and death")
-                        for k, v in d["animations"].items():
-                            if k.startswith("defend"):
-                                tem[f"defend_{mode_id}"] = v
-                            elif k.startswith("death"):
-                                tem[f"death_{mode_id}"] = v
-                        if len(tem) != 2:
-                            raise ValueError("defend animation must have 2 animations,defend and death")
-                        d["animations"] = tem
-                        return d
-                    return tem_func
+                # def get_tem_func(mode_id: str):
+                #     def tem_func(d: Dict[str, Any]) -> dict:
+                #         tem = {}
+                #         if len(d["animations"]) != 2:
+                #             raise ValueError("defend animation must have 2 animations,defend and death")
+                #         for k, v in d["animations"].items():
+                #             if k.startswith("defend"):
+                #                 tem[f"defend_{mode_id}"] = v
+                #             elif k.startswith("death"):
+                #                 tem[f"death_{mode_id}"] = v
+                #         if len(tem) != 2:
+                #             raise ValueError("defend animation must have 2 animations,defend and death")
+                #         # d["animations"] = {
+                #         #     f"death_{mode_id}": tem[f"death_{mode_id}"],
+                #         #     f"defend_{mode_id}": tem[f"defend_{mode_id}"]
+                #         # }
+                #         d["animations"] = tem
+                #         return d
+                #     return tem_func
 
                 res.append(anim.model_copy(update={
                     "hero_name": entry.id(),
                     "mode_name": mode.id(),
                     "is_fx": False,
                     "anim_name": "defend",
-                    "dict_func": get_tem_func(mode.id()) if anim.dict_func is None else anim.dict_func
+                    "need_rename": False
+                    # "dict_func": get_tem_func(mode.id()) if anim.dict_func is None else anim.dict_func
                 }))
 
             if mode.actor_mode_name is not None:
@@ -208,26 +230,27 @@ class HeroWriter(BaseWriter):
             if mode.defend is not None and isinstance(mode.defend, Animation):
                 anim = mode.defend
 
-                def tem_func(d: Dict[str, Any]) -> dict:
-                    tem = {}
-                    if len(d["animations"]) != 2:
-                        raise ValueError("defend animation must have 2 animations,defend and death")
-                    for k, v in d["animations"].items():
-                        if k.startswith("defend"):
-                            tem[f"defend"] = v
-                        elif k.startswith("death"):
-                            tem[f"death"] = v
-                    if len(tem) != 2:
-                        raise ValueError("defend animation must have 2 animations,defend and death")
-                    d["animations"] = tem
-                    return d
+                # def tem_func(d: Dict[str, Any]) -> dict:
+                #     tem = {}
+                #     if len(d["animations"]) != 2:
+                #         raise ValueError("defend animation must have 2 animations,defend and death")
+                #     for k, v in d["animations"].items():
+                #         if k.startswith("defend"):
+                #             tem[f"defend"] = v
+                #         elif k.startswith("death"):
+                #             tem[f"death"] = v
+                #     if len(tem) != 2:
+                #         raise ValueError("defend animation must have 2 animations,defend and death")
+                #     d["animations"] = tem
+                #     return d
 
                 res.append(anim.model_copy(update={
                     "hero_name": entry.id(),
                     "mode_name": None,
                     "is_fx": False,
                     "anim_name": "defend",
-                    "dict_func": tem_func if anim.dict_func is None else anim.dict_func
+                    "need_rename": False
+                    # "dict_func": tem_func if anim.dict_func is None else anim.dict_func
                 }))
 
         # 暴击效果
@@ -248,35 +271,84 @@ class HeroWriter(BaseWriter):
         # 技能
         for skill in entry.skills:  # type: Skill
             # 音效
-            if isinstance(skill.hit_sfx, str):
-                res.append(Bank(
-                    bank_name=f"{entry.id()}_{skill.id()}",
-                    audio=skill.hit_sfx,
-                    source=BankSource.HERO
-                ))
-            elif isinstance(skill.hit_sfx, Bank):
-                res.append(skill.hit_sfx.model_copy(update={
-                    "bank_dir": BankDir.CHAR_ALLY,
-                    "bank_name": f"{entry.id()}_{skill.id()}",
-                    "guid": skill.hit_sfx.guid,
-                    "audio": skill.hit_sfx.audio,
-                    "source": BankSource.HERO
-                }))
+            bank_modes = set()
+            if skill.skill_head_type == SkillHeadType.RIPOSTE_SKILL:
+                for mode in modes:
+                    bank_modes.add(get_entry_id(mode))
+            else:
+                if isinstance(skill.skill_info, SkillInfo):
+                    skill_info = [skill.skill_info]
+                else:
+                    skill_info = skill.skill_info
+                for item in skill_info:
+                    if item.valid_modes_and_effects is not None:
+                        for mode_effects in item.valid_modes_and_effects:
+                            bank_modes.add(get_entry_id(mode_effects.valid_mode))
 
-            if isinstance(skill.miss_sfx, str):
-                res.append(Bank(
-                    bank_name=f"{entry.id()}_{skill.id()}_miss",
-                    audio=skill.miss_sfx,
-                    source=BankSource.HERO
-                ))
-            elif isinstance(skill.miss_sfx, Bank):
-                res.append(skill.miss_sfx.model_copy(update={
-                    "bank_dir": BankDir.CHAR_ALLY,
-                    "bank_name": f"{entry.id()}_{skill.id()}_miss",
-                    "guid": skill.miss_sfx.guid,
-                    "audio": skill.miss_sfx.audio,
-                    "source": BankSource.HERO
-                }))
+            if len(bank_modes) == 0:
+                if isinstance(skill.hit_sfx, str):
+                    res.append(Bank(
+                        bank_name=f"{entry.id()}_{skill.id()}",
+                        audio=skill.hit_sfx,
+                        source=BankSource.HERO
+                    ))
+                elif isinstance(skill.hit_sfx, Bank):
+                    res.append(skill.hit_sfx.model_copy(update={
+                        "bank_dir": BankDir.CHAR_ALLY,
+                        "bank_name": f"{entry.id()}_{skill.id()}",
+                        "guid": skill.hit_sfx.guid,
+                        "audio": skill.hit_sfx.audio,
+                        "source": BankSource.HERO
+                    }))
+
+                if isinstance(skill.miss_sfx, str):
+                    res.append(Bank(
+                        bank_name=f"{entry.id()}_{skill.id()}_miss",
+                        audio=skill.miss_sfx,
+                        source=BankSource.HERO
+                    ))
+                elif isinstance(skill.miss_sfx, Bank):
+                    res.append(skill.miss_sfx.model_copy(update={
+                        "bank_dir": BankDir.CHAR_ALLY,
+                        "bank_name": f"{entry.id()}_{skill.id()}_miss",
+                        "guid": skill.miss_sfx.guid,
+                        "audio": skill.miss_sfx.audio,
+                        "source": BankSource.HERO
+                    }))
+            else:
+                if isinstance(skill.hit_sfx, str):
+                    for idx, item in enumerate(bank_modes):
+                        res.append(Bank(
+                            bank_name=f"{entry.id()}_{skill.id()}_{item}",
+                            audio=skill.hit_sfx if idx == 0 else None,
+                            source=BankSource.HERO
+                        ))
+                elif isinstance(skill.hit_sfx, Bank):
+                    for idx, item in enumerate(bank_modes):
+                        res.append(skill.hit_sfx.model_copy(update={
+                            "bank_dir": BankDir.CHAR_ALLY,
+                            "bank_name": f"{entry.id()}_{skill.id()}_{item}",
+                            "guid": skill.hit_sfx.guid,
+                            "audio": skill.hit_sfx.audio if idx == 0 else None,
+                            "source": BankSource.HERO
+                        }))
+
+                if isinstance(skill.miss_sfx, str):
+                    for idx, item in enumerate(bank_modes):
+                        res.append(Bank(
+                            bank_name=f"{entry.id()}_{skill.id()}_miss_{item}",
+                            audio=skill.miss_sfx if idx == 0 else None,
+                            source=BankSource.HERO
+                        ))
+                elif isinstance(skill.miss_sfx, Bank):
+                    for idx, item in enumerate(bank_modes):
+                        res.append(skill.miss_sfx.model_copy(update={
+                            "bank_dir": BankDir.CHAR_ALLY,
+                            "bank_name": f"{entry.id()}_{skill.id()}_miss_{item}",
+                            "guid": skill.miss_sfx.guid,
+                            "audio": skill.miss_sfx.audio if idx == 0 else None,
+                            "source": BankSource.HERO
+                        }))
 
             # 翻译
             if skill.skill_name is not None:
@@ -412,6 +484,17 @@ class HeroWriter(BaseWriter):
                     entry_id=item[0],
                     text=item[1]
                 ))
+
+        # 血条颜色
+        if entry.health_bar is not None:
+            res.extend([
+                Colour(entry_id=f"tray_health_bar_{entry.id()}_damage_bottom", rgba=entry.health_bar.damage_bottom),
+                Colour(entry_id=f"tray_health_bar_{entry.id()}_damage_top", rgba=entry.health_bar.damage_top),
+                Colour(entry_id=f"tray_health_bar_{entry.id()}_heal_bottom", rgba=entry.health_bar.heal_bottom),
+                Colour(entry_id=f"tray_health_bar_{entry.id()}_heal_top", rgba=entry.health_bar.heal_top),
+                Colour(entry_id=f"tray_health_bar_{entry.id()}_current_bottom", rgba=entry.health_bar.current_bottom),
+                Colour(entry_id=f"tray_health_bar_{entry.id()}_current_top", rgba=entry.health_bar.current_top),
+            ])
 
         return res
 

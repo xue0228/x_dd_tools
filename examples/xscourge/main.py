@@ -1,8 +1,8 @@
 from xddtools import AutoName
-from xddtools.entries.colour import move, bleed, heal_hp, stress, buff, mark, riposte, stun
+from xddtools.entries.colour import move, bleed, heal_hp, stress, buff, mark, riposte, stun, blight, Colour, notable
 from xddtools.magic import get_set_mode_effect, get_suck_blood_effects, get_cd_tag_effect, get_str_tooltip_effect, \
-    get_number_tooltip_buff, get_clear_self_buff_source_effect, get_cd_charge_effect, CDCharge
-from xddtools.target import LAUNCH_12, Target, ENEMY_GROUP_12, ALL_ENEMY, LAUNCH_ANY, SELF, LAUNCH_34
+    get_number_tooltip_buff, get_clear_self_buff_source_effect, get_cd_charge_effect, CDCharge, get_str_tooltip_buff
+from xddtools.target import LAUNCH_12, Target, ENEMY_GROUP_12, ALL_ENEMY, LAUNCH_ANY, SELF, LAUNCH_34, ENEMY_GROUP_34
 from xddtools.utils import float_to_percent_int
 
 MOD_NAME = "xscourge"
@@ -10,10 +10,11 @@ AutoName.set_default_prefix(MOD_NAME)
 
 from xddtools.entries import Resistance, Hero, Weapon, Armour, ActivityModify, Mode, Animation, Effect, \
     HeroLocalization, Generation, Project, ActoutDisplay, Skill, SkillInfo, ModeEffects, Buff, BuffRule, ActorDot, \
-    DurationElement, Quirk
+    DurationElement, Quirk, HealthBar, TrinketRarity, Trinket, TrinketEffect, TrinketSet
 from xddtools.enum import TagID, TownActivityType, QuirkType, EffectTarget, CurioResultType, ProjectTag, SkillType, \
     KeyStatus, BuffType, STCombatStatMultiply, BuffRuleType, BuffDurationType, STCombatStatAdd, BuffSource, \
-    STDisableCombatSkillAttribute, STResistance, ActorDotUpdateDurationType, SkillHeadType, QuirkTag
+    STDisableCombatSkillAttribute, STResistance, ActorDotUpdateDurationType, SkillHeadType, QuirkTag, \
+    TrinketAwardCategory, TrinketRarityType, TrinketTriggerType
 from xddtools.writers import get_dd_writer
 
 if __name__ == '__main__':
@@ -40,8 +41,9 @@ if __name__ == '__main__':
         # str_skill_mode_info=f"{i}充能时：",
         str_skill_mode_info="",
         combat=Animation(anim_dir="anim/combat_a"),
-        defend=Animation(anim_dir="anim/defend_a"),
-        riposte=Animation(anim_dir="anim/skill_a1")
+        # defend=Animation(anim_dir="anim/defend_a"),
+        riposte=Animation(anim_dir="anim/skill_a1"),
+        battle_complete_sfx="audio/Scourge_SK7 {fa1467a6-b782-45c9-bf88-92ae1ac64bf6}.wav"
     ) for i in range(4)]
 
     change_modes_a = [get_set_mode_effect(mode, False, True, False) for mode in modes_a]
@@ -52,7 +54,7 @@ if __name__ == '__main__':
         actor_mode_name=f"律令形态",
         str_skill_mode_info=f"律令形态时：",
         combat=Animation(anim_dir="anim/combat_a"),
-        defend=Animation(anim_dir="anim/defend_a"),
+        # defend=Animation(anim_dir="anim/defend_a"),
         riposte=Animation(anim_dir="anim/skill_a1")
     )
 
@@ -61,7 +63,7 @@ if __name__ == '__main__':
         actor_mode_name="极巨化形态",
         str_skill_mode_info="极巨化时：",
         combat=Animation(anim_dir="anim/combat_c"),
-        defend=Animation(anim_dir="anim/defend_c"),
+        # defend=Animation(anim_dir="anim/defend_c"),
         riposte=Animation(anim_dir="anim/skill_c2")
     )
 
@@ -480,8 +482,8 @@ if __name__ == '__main__':
         has_description=False,
         apply_once=True,
         curio_result_type=CurioResultType.POSITIVE,
-        buff_duration_type=BuffDurationType.COMBAT_END,
-        duration=1,
+        # buff_duration_type=BuffDurationType.COMBAT_END,
+        duration=3,
         buff_ids=[
             Buff(
                 stat_type=BuffType.COMBAT_STAT_ADD,
@@ -510,7 +512,7 @@ if __name__ == '__main__':
         skill_info=[
             SkillInfo(
                 atk=0.9 + i * 0.05,
-                dmg=-0.9,
+                dmg=-0.65,
                 per_battle_limit=2,
                 effect_ids=[
                     tooltip_effect_1,
@@ -522,7 +524,7 @@ if __name__ == '__main__':
                         chance=0.9 + i * 0.1,
                         combat_stat_buff=True,
                         duration=3,
-                        protection_rating_add=-0.1 + i * 0.02 if i < 4 else -0.2
+                        protection_rating_add=-0.1 - i * 0.02 if i < 4 else -0.2
                     ),
                     poison_cd,
                     effect_b,
@@ -583,7 +585,7 @@ if __name__ == '__main__':
         entry_id=skill_b2,
         skill_type=SkillType.MELEE,
         launch=LAUNCH_12,
-        target=ALL_ENEMY,
+        target=ENEMY_GROUP_34,
         skill_name="新月",
         upgrade_tree_name="新月",
         icon_image="hero/Scourge.ability.5.png",
@@ -593,7 +595,7 @@ if __name__ == '__main__':
         skill_info=[
             SkillInfo(
                 atk=0.95 + i * 0.05,
-                dmg=-0.9,
+                dmg=-0.95,
                 per_battle_limit=1,
                 effect_ids=[
                     tooltip_effect_2,
@@ -727,7 +729,8 @@ if __name__ == '__main__':
                     Effect(
                         target=EffectTarget.PERFORMER_GROUP,
                         chance=0.5 + i * 0.02 if i < 4 else 0.6,
-                        heal_stress=2 + i
+                        heal_stress=2 + i,
+                        apply_once=True
                     ),
                     no_crit_effect,
                     bleed_cd,
@@ -798,7 +801,8 @@ if __name__ == '__main__':
                     ),
                     Effect(
                         target=EffectTarget.PERFORMER,
-                        heal_percent=0.5
+                        heal_percent=0.5,
+                        apply_once=True
                     ),
                     Effect(
                         target=EffectTarget.PERFORMER_GROUP,
@@ -1006,6 +1010,18 @@ if __name__ == '__main__':
                 stat_sub_type=STDisableCombatSkillAttribute.DAZE,
                 amount=3,
                 has_description=False
+            ),
+            Buff(
+                stat_type=BuffType.STRESS_DMG_RECEIVED_PERCENT,
+                amount=0.5,
+                buff_rule=BuffRule(
+                    rule_type=BuffRuleType.IN_MODE,
+                    rule_data_string=mode_c
+                )
+            ),
+            Buff(
+                stat_type=BuffType.MONSTERS_SURPRISE_CHANCE,
+                amount=0.25
             )
         ]
     )
@@ -1049,6 +1065,127 @@ if __name__ == '__main__':
         ]
     )
 
+    skill_11 = Skill(
+        entry_id=skill_a3,
+        skill_type=SkillType.RANGED,
+        launch=LAUNCH_34,
+        target=Target("1234"),
+        skill_name="律令：死亡",
+        upgrade_tree_name="律令：死亡",
+        icon_image="hero/Scourge.ability.6.png",
+        anim=Animation(anim_dir="anim/skill_a3"),
+        targchestfx=Animation(anim_dir="fx/skill_a3_targchestfx"),
+        hit_sfx="audio/Scourge_SK6 {45e3c21c-2eab-4587-8fb7-690a903606cd}.wav",
+        miss_sfx="audio/Scourge_SK6 {45e3c21c-2eab-4587-8fb7-690a903606cd}.wav",
+        skill_info=[
+            SkillInfo(
+                per_battle_limit=1,
+                atk=0.85 + i * 0.05,
+                crit=1.075 + i * 0.01,
+                dmg=-0.15,
+                effect_ids=[
+                    change_modes_a[0],
+                    effect_a,
+                    get_str_tooltip_effect(f"对{mark('标记')}/{bleed('流血')}/{blight('腐蚀')}/{stun('眩晕')}"
+                                           f"最大攻击力+{float_to_percent_int(0.3 + i * 0.02 if i < 4 else 0.4)}%%"),
+                    Effect(
+                        target=EffectTarget.PERFORMER,
+                        has_description=False,
+                        curio_result_type=CurioResultType.POSITIVE,
+                        combat_stat_buff=True,
+                        key_status=KeyStatus.TAGGED,
+                        damage_high_multiply=0.3 + i * 0.02 if i < 4 else 0.4,
+                    ),
+                    Effect(
+                        target=EffectTarget.PERFORMER,
+                        has_description=False,
+                        curio_result_type=CurioResultType.POSITIVE,
+                        combat_stat_buff=True,
+                        key_status=KeyStatus.BLEEDING,
+                        damage_high_multiply=0.3 + i * 0.02 if i < 4 else 0.4,
+                    ),
+                    Effect(
+                        target=EffectTarget.PERFORMER,
+                        has_description=False,
+                        curio_result_type=CurioResultType.POSITIVE,
+                        combat_stat_buff=True,
+                        key_status=KeyStatus.POISONED,
+                        damage_high_multiply=0.3 + i * 0.02 if i < 4 else 0.4,
+                    ),
+                    Effect(
+                        target=EffectTarget.PERFORMER,
+                        has_description=False,
+                        curio_result_type=CurioResultType.POSITIVE,
+                        combat_stat_buff=True,
+                        key_status=KeyStatus.STUNNED,
+                        damage_high_multiply=0.3 + i * 0.02 if i < 4 else 0.4,
+                    )
+                ],
+                valid_modes_and_effects=[
+                    ModeEffects(
+                        valid_mode=mode_b
+                    )
+                ]
+            )
+            for i in range(5)
+        ]
+    )
+
+    skill_12 = Skill(
+        entry_id=skill_b3,
+        skill_type=SkillType.RANGED,
+        launch=LAUNCH_34,
+        target=Target("1234"),
+        skill_name="律令：痛苦",
+        upgrade_tree_name="律令：痛苦",
+        icon_image="hero/Scourge.ability.3.png",
+        anim=Animation(anim_dir="anim/skill_b3"),
+        targchestfx=Animation(anim_dir="fx/skill_b3_targchestfx"),
+        hit_sfx="audio/Scourge_SK3 {c21b3b34-0837-445f-97dc-fc8accff2c5e}.wav",
+        miss_sfx="audio/Scourge_SK3 {c21b3b34-0837-445f-97dc-fc8accff2c5e}.wav",
+        skill_info=[
+            SkillInfo(
+                per_battle_limit=1,
+                atk=0.95 + i * 0.05,
+                dmg=-1,
+                effect_ids=[
+                    change_modes_a[0],
+                    effect_b,
+                    Effect(
+                        target=EffectTarget.TARGET,
+                        tag=True,
+                        duration=3
+                    ),
+                    Effect(
+                        target=EffectTarget.TARGET,
+                        chance=0.9+i*0.1,
+                        dot_bleed=1+(i//2),
+                        buff_duration_type=BuffDurationType.COMBAT_END,
+                        duration=1
+                    ),
+                    Effect(
+                        target=EffectTarget.TARGET,
+                        chance=0.9 + i * 0.1,
+                        dot_poison=1 + (i // 2),
+                        buff_duration_type=BuffDurationType.COMBAT_END,
+                        duration=1
+                    ),
+                    Effect(
+                        target=EffectTarget.TARGET,
+                        chance=0.9+i*0.1,
+                        stun=1
+                    )
+                ],
+                valid_modes_and_effects=[
+                    ModeEffects(
+                        valid_mode=mode_b
+                    )
+                ]
+            )
+            for i in range(5)
+        ]
+    )
+
     move_skill = Skill(
         entry_id="move",
         skill_name="移动",
@@ -1060,12 +1197,11 @@ if __name__ == '__main__':
                 move_back=2,
                 move_forward=2,
                 effect_ids=[
-                    change_back_a0,
+                    get_set_mode_effect(modes_a[0], ensure_last=False, has_description=False),
                     quirk_effect
                 ]
             )
-        ],
-        anim="combat"
+        ]
     )
 
     riposte_skill = Skill(
@@ -1160,6 +1296,7 @@ if __name__ == '__main__':
             heroic=Animation(anim_dir="anim/heroic"),
             idle=Animation(anim_dir="anim/idle"),
             investigate=Animation(anim_dir="anim/investigate"),
+            defend=Animation(anim_dir="anim/defend"),
             walk=Animation(anim_dir="anim/walk")
         ),
         crit_effects=[
@@ -1180,12 +1317,13 @@ if __name__ == '__main__':
                 ]
             )
         ],
-        skills=[skill_1, skill_2, skill_3, skill_4, skill_5, skill_6, skill_7, skill_8, skill_9, skill_10, move_skill,
-                riposte_skill],
-        generation=Generation(card_chance=1, number_of_cards_in_deck=6, number_of_random_combat_skills=12),
+        skills=[skill_1, skill_2, skill_3, skill_4, skill_5, skill_6, skill_7, skill_8, skill_9, skill_10,
+                skill_11, skill_12, move_skill, riposte_skill],
+        generation=Generation(card_chance=100, number_of_cards_in_deck=100, number_of_random_combat_skills=12),
         actout_display=ActoutDisplay(
             attack_friendly_anim="riposte"
         ),
+        health_bar=HealthBar(current_top="#FFC0CB"),
         hero_localization=HeroLocalization(
             hero_class_name="灾厄",
             blacksmith_verbose="",
@@ -1206,7 +1344,410 @@ if __name__ == '__main__':
         )
     )
 
+    rarity = TrinketRarity(
+        award_category=TrinketAwardCategory.TROPHY,
+        trinket_rarity_title="世界",
+        rarity_image="trinket/rarity_Scourge_World.png"
+    )
+
+    world_colour = Colour(rgba=(202, 66, 117, 255), entry_id=rarity.id())
+    trinket_0 = Trinket(
+        hero_class_requirements=[MOD_NAME],
+        rarity=TrinketRarityType.COMMON,
+        str_inventory_title_trinket="德罗姆的建言",
+        inv_trinket_image="trinket/inv_trinket+Scourge_1.png",
+        limit=1,
+        buffs=[
+            get_str_tooltip_buff(world_colour(text="“别忘了有空时来看看我”\n")),
+            Buff(
+                stat_type=BuffType.COMBAT_STAT_ADD,
+                stat_sub_type=STCombatStatAdd.DAMAGE_LOW,
+                has_description=False,
+                amount=5
+            ),
+            Buff(
+                stat_type=BuffType.COMBAT_STAT_ADD,
+                stat_sub_type=STCombatStatAdd.DAMAGE_HIGH,
+                has_description=False,
+                amount=-5
+            ),
+            get_str_tooltip_buff("+5最小攻击\n-5最大攻击"),
+            Buff(
+                stat_type=BuffType.COMBAT_STAT_ADD,
+                stat_sub_type=STCombatStatAdd.ATTACK_RATING,
+                amount=0.05
+            ),
+            Buff(
+                stat_type=BuffType.STRESS_DMG_RECEIVED_PERCENT,
+                amount=0.1
+            )
+        ]
+    )
+
+    trinket_1 = Trinket(
+        hero_class_requirements=[MOD_NAME],
+        rarity=TrinketRarityType.UNCOMMON,
+        str_inventory_title_trinket="一罐能量饮料",
+        inv_trinket_image="trinket/inv_trinket+Scourge_2.png",
+        limit=1,
+        buffs=[
+            get_str_tooltip_buff(world_colour(text="“饮料里的能量也是能量！”\n")),
+            Buff(
+                stat_type=BuffType.COMBAT_STAT_ADD,
+                stat_sub_type=STCombatStatAdd.SPEED_RATING,
+                amount=-6
+            ),
+            Buff(
+                stat_type=BuffType.COMBAT_STAT_MULTIPLY,
+                stat_sub_type=STCombatStatMultiply.DAMAGE_LOW,
+                amount=-0.5
+            ),
+            Buff(
+                stat_type=BuffType.COMBAT_STAT_MULTIPLY,
+                stat_sub_type=STCombatStatMultiply.DAMAGE_HIGH,
+                amount=-0.5
+            )
+        ],
+        special_effects=[
+            TrinketEffect(
+                trigger=TrinketTriggerType.ATTACK_SKILL,
+                effects=[
+                    Effect(
+                        target=EffectTarget.PERFORMER_GROUP,
+                        heal=2,
+                        apply_once=True
+                    ),
+                    Effect(
+                        target=EffectTarget.PERFORMER_GROUP,
+                        chance=0.5,
+                        duration=3,
+                        apply_once=True,
+                        buff_ids=[
+                            Buff(
+                                stat_type=BuffType.HP_HEAL_RECEIVED_PERCENT,
+                                amount=0.25
+                            )
+                        ]
+                    ),
+                    Effect(
+                        target=EffectTarget.PERFORMER,
+                        chance=0.5,
+                        duration=3,
+                        apply_once=True,
+                        buff_ids=[
+                            Buff(
+                                stat_type=BuffType.HP_HEAL_PERCENT,
+                                amount=0.25
+                            )
+                        ]
+                    )
+                ]
+            )
+        ]
+    )
+
+    trinket_2 = Trinket(
+        hero_class_requirements=[MOD_NAME],
+        rarity=TrinketRarityType.RARE,
+        str_inventory_title_trinket="往日幻影",
+        inv_trinket_image="trinket/inv_trinket+Scourge_3.png",
+        limit=1,
+        buffs=[
+            get_str_tooltip_buff(world_colour(text="“时间从未回头，今夜为了往昔回忆”\n")),
+            Buff(
+                stat_type=BuffType.DAMAGE_RECEIVED_PERCENT,
+                amount=0.15
+            ),
+            get_str_tooltip_buff(f"攻击：自身：获得1点{stress('恐惧值')}"),
+            get_str_tooltip_buff(f"攻击：自身：受到6点真实伤害"),
+            get_str_tooltip_buff(f"暴击：清除所有极巨化加成（20%%概率）"),
+        ],
+        special_effects=[
+            TrinketEffect(
+                trigger=TrinketTriggerType.ATTACK_SKILL,
+                effects=[
+                    charge_p1,
+                    Effect(
+                        target=EffectTarget.PERFORMER,
+                        health_damage=6,
+                        on_miss=True,
+                        has_description=False
+                    )
+                ]
+            ),
+            TrinketEffect(
+                trigger=TrinketTriggerType.ATTACK_CRIT,
+                effects=[
+                    get_clear_self_buff_source_effect(chance=0.2)
+                ]
+            )
+        ]
+    )
+
+    trinket_3 = Trinket(
+        hero_class_requirements=[MOD_NAME],
+        rarity=TrinketRarityType.VERY_RARE,
+        str_inventory_title_trinket="地狱之力战旗",
+        inv_trinket_image="trinket/inv_trinket+Scourge_4.png",
+        limit=1,
+        buffs=[
+            get_str_tooltip_buff(world_colour(text="“我即是新的领主，低头！”\n")),
+            Buff(
+                stat_type=BuffType.DISABLE_COMBAT_SKILL_ATTRIBUTE,
+                stat_sub_type=STDisableCombatSkillAttribute.GUARD,
+                amount=1,
+                has_description=False
+            ),
+            Buff(
+                stat_type=BuffType.STUN_CHANCE,
+                amount=-0.2
+            ),
+            Buff(
+                stat_type=BuffType.DEBUFF_CHANCE,
+                amount=-0.2
+            ),
+            Buff(
+                stat_type=BuffType.COMBAT_STAT_MULTIPLY,
+                stat_sub_type=STCombatStatMultiply.DAMAGE_LOW,
+                amount=-0.25
+            ),
+            Buff(
+                stat_type=BuffType.COMBAT_STAT_MULTIPLY,
+                stat_sub_type=STCombatStatMultiply.DAMAGE_HIGH,
+                amount=-0.25
+            ),
+            Buff(
+                stat_type=BuffType.STRESS_DMG_RECEIVED_PERCENT,
+                amount=0.2
+            ),
+            get_str_tooltip_buff(f"禁用{notable('坠入星界')}"),
+            get_str_tooltip_buff(f"近战攻击：获得3点{bleed('末日充能')}"),
+            get_str_tooltip_buff(f"暴击：清空所有{bleed('末日充能')}和{stress('恐惧值')}")
+        ],
+        special_effects=[
+            TrinketEffect(
+                trigger=TrinketTriggerType.ATTACK_SKILL,
+                effects=[
+                    Effect(
+                        target=EffectTarget.PERFORMER,
+                        duration=2,
+                        on_miss=True,
+                        tag=True
+                    )
+                ]
+            ),
+            TrinketEffect(
+                trigger=TrinketTriggerType.MELEE_ATTACK_SKILL,
+                effects=[
+                    get_set_mode_effect(modes_a[3], ensure_last=True, has_description=False)
+                ]
+            ),
+            TrinketEffect(
+                trigger=TrinketTriggerType.ATTACK_CRIT,
+                effects=[
+                    get_set_mode_effect(modes_a[0], ensure_last=True, has_description=False),
+                    clear_charge
+                ]
+            )
+        ]
+    )
+
+    trinket_set = TrinketSet(
+        str_inventory_set_title="领域",
+        buffs=[
+            Buff(
+                stat_type=BuffType.DAMAGE_REFLECT_PERCENT,
+                amount=0.3
+            )
+        ]
+    )
+
+    change_mode_b = get_set_mode_effect(mode_b, ensure_last=False)
+
+    trinket_4 = Trinket(
+        hero_class_requirements=[MOD_NAME],
+        rarity=TrinketRarityType.CRIMSON_COURT,
+        set_id=trinket_set,
+        limit=1,
+        str_inventory_title_trinket="一箱灵魂币",
+        inv_trinket_image="trinket/inv_trinket+Scourge_5.png",
+        buffs=[
+            Buff(
+                stat_type=BuffType.DAMAGE_RECEIVED_PERCENT,
+                amount=0.25
+            ),
+            Buff(
+                stat_type=BuffType.DISABLE_COMBAT_SKILL_ATTRIBUTE,
+                stat_sub_type=STDisableCombatSkillAttribute.GUARD,
+                amount=1,
+                has_description=False
+            ),
+            get_str_tooltip_buff(f"禁用{notable('坠入星界')}"),
+            Buff(
+                stat_type=BuffType.COMBAT_STAT_ADD,
+                stat_sub_type=STCombatStatAdd.ATTACK_RATING,
+                amount=0.15,
+                buff_rule=BuffRule(
+                    rule_type=BuffRuleType.RIPOSTE
+                )
+            ),
+            Buff(
+                stat_type=BuffType.COMBAT_STAT_ADD,
+                stat_sub_type=STCombatStatAdd.CRIT_CHANCE,
+                amount=1.5,
+                buff_rule=BuffRule(
+                    rule_type=BuffRuleType.RIPOSTE
+                )
+            )
+        ],
+        special_effects=[
+            TrinketEffect(
+                trigger=TrinketTriggerType.RANGED_ATTACK_SKILL,
+                effects=[
+                    change_mode_b
+                ]
+            )
+        ]
+    )
+
+    trinket_5 = Trinket(
+        hero_class_requirements=[MOD_NAME],
+        rarity=TrinketRarityType.CRIMSON_COURT,
+        set_id=trinket_set,
+        limit=1,
+        str_inventory_title_trinket="千年图书馆密瑟能核",
+        inv_trinket_image="trinket/inv_trinket+Scourge_6.png",
+        buffs=[
+            Buff(
+                stat_type=BuffType.DAMAGE_REFLECT_PERCENT,
+                amount=0.25
+            ),
+            Buff(
+                stat_type=BuffType.COMBAT_STAT_ADD,
+                stat_sub_type=STCombatStatAdd.DEFENSE_RATING,
+                amount=-0.15
+            ),
+            get_str_tooltip_buff("攻击：自身：刷新技能使用次数")
+        ],
+        special_effects=[
+            TrinketEffect(
+                trigger=TrinketTriggerType.ATTACK_SKILL,
+                effects=[
+                    Effect(
+                        target=EffectTarget.PERFORMER,
+                        refreshes_skill_uses=True,
+                        has_description=False
+                    )
+                ]
+            )
+        ]
+    )
+
+    trinket_6 = Trinket(
+        hero_class_requirements=[MOD_NAME],
+        rarity=TrinketRarityType.COMET,
+        shard=80,
+        limit=1,
+        str_inventory_title_trinket="燃烧怒火之护手",
+        inv_trinket_image="trinket/inv_trinket+Scourge_7.png",
+        buffs=[
+            get_str_tooltip_buff(world_colour(text="“这里最不缺的就是火啦~”\n")),
+            Buff(
+                stat_type=BuffType.RESISTANCE,
+                stat_sub_type=STResistance.BLEED,
+                amount=0.6
+            ),
+            Buff(
+                stat_type=BuffType.RESISTANCE,
+                stat_sub_type=STResistance.POISON,
+                amount=0.6
+            ),
+            Buff(
+                stat_type=BuffType.RESISTANCE,
+                stat_sub_type=STResistance.DEATH_BLOW,
+                amount=-0.1
+            ),
+            Buff(
+                stat_type=BuffType.COMBAT_STAT_MULTIPLY,
+                stat_sub_type=STCombatStatMultiply.DAMAGE_LOW,
+                amount=0.15,
+                buff_rule=BuffRule(
+                    rule_type=BuffRuleType.IN_RANK,
+                    rule_data_float=0
+                )
+            ),
+            Buff(
+                stat_type=BuffType.COMBAT_STAT_MULTIPLY,
+                stat_sub_type=STCombatStatMultiply.DAMAGE_HIGH,
+                amount=0.15,
+                buff_rule=BuffRule(
+                    rule_type=BuffRuleType.IN_RANK,
+                    rule_data_float=0
+                )
+            )
+        ]
+    )
+
+    trinket_7 = Trinket(
+        hero_class_requirements=[MOD_NAME],
+        rarity=TrinketRarityType.ANCESTRAL,
+        limit=1,
+        str_inventory_title_trinket="一纸老旧的契约",
+        inv_trinket_image="trinket/inv_trinket+Scourge_10.png",
+        buffs=[
+            get_str_tooltip_buff(world_colour(text="“你叫恩宠？真是个奇怪的名字……\n呵呵，在这里签名吧。”\n")),
+            Buff(
+                stat_type=BuffType.COMBAT_STAT_ADD,
+                stat_sub_type=STCombatStatAdd.PROTECTION_RATING,
+                amount=0.25
+            ),
+            Buff(
+                stat_type=BuffType.STRESS_HEAL_PERCENT,
+                amount=0.5
+            ),
+            Buff(
+                stat_type=BuffType.COMBAT_STAT_MULTIPLY,
+                stat_sub_type=STCombatStatMultiply.MAX_HP,
+                amount=-0.15
+            ),
+            Buff(
+                stat_type=BuffType.STRESS_DMG_RECEIVED_PERCENT,
+                amount=0.2
+            )
+        ]
+    )
+
+    trinket_8 = Trinket(
+        hero_class_requirements=[MOD_NAME],
+        rarity=rarity,
+        limit=1,
+        str_inventory_title_trinket="“泰拉蒂斯”",
+        inv_trinket_image="trinket/inv_trinket+Scourge_9.png",
+        buffs=[
+            get_str_tooltip_buff(world_colour(text="“末日降临的样子吗？这就是答案，它就在你眼前”\n")),
+            Buff(
+                stat_type=BuffType.DISABLE_COMBAT_SKILL_ATTRIBUTE,
+                stat_sub_type=STDisableCombatSkillAttribute.DAZE,
+                amount=-3,
+                has_description=False
+            ),
+            get_str_tooltip_buff(world_colour(text=f"{notable('坠入星界')}没有{stress('恐惧值')}限制")),
+            Buff(
+                stat_type=BuffType.STUN_CHANCE,
+                amount=0.4
+            ),
+            Buff(
+                stat_type=BuffType.HP_HEAL_PERCENT,
+                amount=-0.4
+            )
+        ]
+    )
+
     writer = get_dd_writer(MOD_NAME)
     writer.add_entry(project)
     writer.add_entry(hero)
+    writer.add_entry(world_colour)
+    writer.add_entries([
+        trinket_0, trinket_1, trinket_2, trinket_3, trinket_4, trinket_5, trinket_6, trinket_7, trinket_8
+    ])
     writer.export(MOD_NAME)

@@ -1,1 +1,257 @@
-{"skeleton": {"width": 1250, "height": 686, "hash": " ", "name": "armatureName", "spine": "2.1.27"}, "bones": [{"name": "fxskill"}, {"scaleX": 0.18, "scaleY": 0.18, "name": "bone", "parent": "fxskill"}, {"x": -120.4881, "y": 1334.0168, "name": "fxdot", "parent": "bone"}, {"x": -139.2914, "y": 1777.7748, "name": "fxhead", "parent": "bone"}, {"y": -0.0001, "name": "fxchest", "parent": "fxdot"}], "slots": [{"name": "Ground", "bone": "fxskill", "attachment": "Ground"}, {"name": "E3", "bone": "bone", "attachment": "E3"}, {"name": "E2", "bone": "bone", "attachment": "E2"}, {"name": "E1", "bone": "bone", "attachment": "E1"}, {"name": "c", "bone": "bone", "attachment": "c"}, {"name": "Clothes", "bone": "bone", "attachment": "Clothes"}], "skins": {"default": {"c": {"c": {"name": "c", "width": 692, "height": 558, "x": -115.33, "y": 963.61, "scaleX": 3.9971, "scaleY": 3.9982}}, "Clothes": {"Clothes": {"name": "Clothes", "width": 55, "height": 74, "x": -123.83, "y": 1192.61, "scaleX": 4.0182, "scaleY": 3.9865}}, "Ground": {"Ground": {"name": "Ground", "width": 90, "height": 16, "scaleX": 3.9889, "scaleY": 4.0625}}, "E3": {"E3": {"name": "E3", "width": 749, "height": 456, "x": 1532.67, "y": 1010.61, "scaleX": 3.9973, "scaleY": 4.0022}}, "E2": {"E2": {"name": "E2", "width": 1202, "height": 490, "x": 919.67, "y": 928.11, "scaleX": 4, "scaleY": 4}}, "E1": {"E1": {"name": "E1", "width": 1250, "height": 686, "x": 854.17, "y": 1271.61, "scaleX": 4.0008, "scaleY": 3.9985}}}}, "animations": {"a1_Scourge_A1": {"slots": {"E1": {"color": [{"time": 0, "curve": "stepped", "color": "FFFFFF00"}, {"time": 0.2667, "curve": [0, 0.6274256110191345, 0.75, 1], "color": "FFFFFF00"}, {"time": 0.5, "curve": "stepped", "color": "FFFFFFFF"}, {"time": 1.1667, "curve": [0.25, 0, 0.75, 1], "color": "FFFFFFFF"}, {"time": 1.8334, "color": "FFFFFF00"}]}, "E2": {"color": [{"time": 0, "curve": "stepped", "color": "FFFFFF00"}, {"time": 0.1, "curve": [0, 0.6274256110191345, 0.75, 1], "color": "FFFFFF00"}, {"time": 0.3333, "curve": "stepped", "color": "FFFFFFFF"}, {"time": 1, "curve": [0.25, 0, 0.75, 1], "color": "FFFFFFFF"}, {"time": 1.6667, "color": "FFFFFF00"}]}, "E3": {"color": [{"time": 0, "curve": "stepped", "color": "FFFFFF00"}, {"time": 0.2, "curve": [0, 0.6274256110191345, 0.75, 1], "color": "FFFFFF00"}, {"time": 0.4333, "curve": "stepped", "color": "FFFFFFFF"}, {"time": 1.1, "curve": [0.25, 0, 0.75, 1], "color": "FFFFFFFF"}, {"time": 1.7667, "color": "FFFFFF00"}]}}}}}
+{
+  "skeleton": {
+    "width": 1250,
+    "height": 686,
+    "hash": " ",
+    "name": "armatureName",
+    "spine": "2.1.27"
+  },
+  "bones": [
+    {
+      "name": "fxskill"
+    },
+    {
+      "scaleX": 0.18,
+      "scaleY": 0.18,
+      "name": "bone",
+      "parent": "fxskill"
+    },
+    {
+      "x": -120.4881,
+      "y": 1334.0168,
+      "name": "fxdot",
+      "parent": "bone"
+    },
+    {
+      "x": -139.2914,
+      "y": 1777.7748,
+      "name": "fxhead",
+      "parent": "bone"
+    },
+    {
+      "y": -0.0001,
+      "name": "fxchest",
+      "parent": "fxdot"
+    }
+  ],
+  "slots": [
+    {
+      "name": "Ground",
+      "bone": "fxskill",
+      "attachment": "Ground"
+    },
+    {
+      "name": "E3",
+      "bone": "bone",
+      "attachment": "E3"
+    },
+    {
+      "name": "E2",
+      "bone": "bone",
+      "attachment": "E2"
+    },
+    {
+      "name": "E1",
+      "bone": "bone",
+      "attachment": "E1"
+    },
+    {
+      "name": "c",
+      "bone": "bone",
+      "attachment": "c"
+    },
+    {
+      "name": "Clothes",
+      "bone": "bone",
+      "attachment": "Clothes"
+    }
+  ],
+  "skins": {
+    "default": {
+      "c": {
+        "c": {
+          "name": "c",
+          "width": 692,
+          "height": 558,
+          "x": -115.33,
+          "y": 963.61,
+          "scaleX": 3.9971,
+          "scaleY": 3.9982
+        }
+      },
+      "Clothes": {
+        "Clothes": {
+          "name": "Clothes",
+          "width": 55,
+          "height": 74,
+          "x": -123.83,
+          "y": 1192.61,
+          "scaleX": 4.0182,
+          "scaleY": 3.9865
+        }
+      },
+      "Ground": {
+        "Ground": {
+          "name": "Ground",
+          "width": 90,
+          "height": 16,
+          "scaleX": 3.9889,
+          "scaleY": 4.0625
+        }
+      },
+      "E3": {
+        "E3": {
+          "name": "E3",
+          "width": 749,
+          "height": 456,
+          "x": 1532.67,
+          "y": 1010.61,
+          "scaleX": 3.9973,
+          "scaleY": 4.0022
+        }
+      },
+      "E2": {
+        "E2": {
+          "name": "E2",
+          "width": 1202,
+          "height": 490,
+          "x": 919.67,
+          "y": 928.11,
+          "scaleX": 4,
+          "scaleY": 4
+        }
+      },
+      "E1": {
+        "E1": {
+          "name": "E1",
+          "width": 1250,
+          "height": 686,
+          "x": 854.17,
+          "y": 1271.61,
+          "scaleX": 4.0008,
+          "scaleY": 3.9985
+        }
+      }
+    }
+  },
+  "animations": {
+    "a1_Scourge_A1": {
+      "slots": {
+        "E1": {
+          "color": [
+            {
+              "time": 0,
+              "curve": "stepped",
+              "color": "FFFFFF00"
+            },
+            {
+              "time": 0.2667,
+              "curve": [
+                0,
+                0.6274256110191345,
+                0.75,
+                1
+              ],
+              "color": "FFFFFF00"
+            },
+            {
+              "time": 0.5,
+              "curve": "stepped",
+              "color": "FFFFFFFF"
+            },
+            {
+              "time": 1.1667,
+              "curve": [
+                0.25,
+                0,
+                0.75,
+                1
+              ],
+              "color": "FFFFFFFF"
+            },
+            {
+              "time": 1.8334,
+              "color": "FFFFFF00"
+            }
+          ]
+        },
+        "E2": {
+          "color": [
+            {
+              "time": 0,
+              "curve": "stepped",
+              "color": "FFFFFF00"
+            },
+            {
+              "time": 0.1,
+              "curve": [
+                0,
+                0.6274256110191345,
+                0.75,
+                1
+              ],
+              "color": "FFFFFF00"
+            },
+            {
+              "time": 0.3333,
+              "curve": "stepped",
+              "color": "FFFFFFFF"
+            },
+            {
+              "time": 1,
+              "curve": [
+                0.25,
+                0,
+                0.75,
+                1
+              ],
+              "color": "FFFFFFFF"
+            },
+            {
+              "time": 1.6667,
+              "color": "FFFFFF00"
+            }
+          ]
+        },
+        "E3": {
+          "color": [
+            {
+              "time": 0,
+              "curve": "stepped",
+              "color": "FFFFFF00"
+            },
+            {
+              "time": 0.2,
+              "curve": [
+                0,
+                0.6274256110191345,
+                0.75,
+                1
+              ],
+              "color": "FFFFFF00"
+            },
+            {
+              "time": 0.4333,
+              "curve": "stepped",
+              "color": "FFFFFFFF"
+            },
+            {
+              "time": 1.1,
+              "curve": [
+                0.25,
+                0,
+                0.75,
+                1
+              ],
+              "color": "FFFFFFFF"
+            },
+            {
+              "time": 1.7667,
+              "color": "FFFFFF00"
+            }
+          ]
+        }
+      }
+    }
+  }
+}

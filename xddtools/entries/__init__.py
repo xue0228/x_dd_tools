@@ -16,6 +16,6 @@ from xddtools.entries.camping_skill import CampingSkill, CampingSkillEffect
 from xddtools.entries.actor_dot import ActorDot, DurationElement
 from xddtools.entries.skill import Skill, ModeEffects, SkillInfo
 from xddtools.entries.hero import Resistance, Weapon, Armour, Generation, ActoutDisplay, OverstressedModify, \
-    ActivityModify, ExtraLoot, ExtraStackLimit, HeroLocalization, Mode, Hero
+    ActivityModify, ExtraLoot, ExtraStackLimit, HeroLocalization, Mode, Hero, HealthBar
 from xddtools.entries.bank import Bank
 from xddtools.entries.loot_monster import LootMonster

@@ -123,6 +123,8 @@ def get_localization_writer(
         "trinket_attack_skill_additional_effects_hit": "攻击命中：",
         "trinket_attack_skill_additional_effects_miss": "攻击未命中：",
         "trinket_ranged_attack_skill_additional_effects_miss": "远程攻击未命中：",
+        "trinket_ranged_attack_skill_additional_effects_hit_miss": "远程攻击：",
+        "trinket_ranged_attack_skill_additional_effects_hit": "远程攻击命中：",
         "trinket_friendly_skill_additional_effects": "友方技能：",
         "trinket_was_hit_additional_effects": "被击中：",
         "trinket_was_hit_all_monsters_additional_effects": "被击中：",

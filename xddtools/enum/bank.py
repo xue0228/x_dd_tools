@@ -50,6 +50,7 @@ class BankDir(Enum):
     VO_TOWN = "/vo/town"
     VO_TOWN_EVENT = "/vo/town_event"
     VO_TUTORIAL = "/vo/tutorial"
+    NONE = ""
 
     CUSTOM = "/custom"  # 不属于原版事件，仅用来存放音频，需要搭配 *.campaign.guid_overrides.json 文件使用
 

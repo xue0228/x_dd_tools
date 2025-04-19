@@ -327,7 +327,7 @@ class Skill(SkillEntry, BaseModel):
             if self.icon is None:
                 self.icon = "generic_move"
             if self.anim is None:
-                self.anim = "idle"
+                self.anim = "combat"
         elif self.skill_head_type == SkillHeadType.RIPOSTE_SKILL:
             if self.anim is None:
                 self.anim = "riposte"
