@@ -1,3 +1,4 @@
+import json
 import os
 from typing import List, Optional
 
@@ -8,8 +9,9 @@ from xddtools.entries.effect import Effect
 from xddtools.entries.localization import Localization
 from xddtools.entries.item import Item
 from xddtools.enum.bank import BankDir, BankSource
-from xddtools.path import ITEM_SAVE_DIR, ITEM_FILE_EXTENSION, DATA_PATH, ITEM_IMAGE_SAVE_DIR
-from xddtools.utils import resize_image_keep_ratio, get_rename_skel_dict_func
+from xddtools.path import ITEM_SAVE_DIR, ITEM_FILE_EXTENSION, DATA_PATH, ITEM_IMAGE_SAVE_DIR, PROVISION_SAVE_DIR, \
+    PROVISION_FILE_EXTENSION
+from xddtools.utils import resize_image_keep_ratio, get_rename_skel_dict_func, write_str_to_file
 
 
 class ItemWriter(BaseWriter):
@@ -85,4 +87,27 @@ class ItemWriter(BaseWriter):
             res.append(resize_image_keep_ratio(image_path, file))
 
         res.extend(super().export(root_dir))
+
+        raid = [[] for _ in range(6)]
+        store = [[] for _ in range(6)]
+        total = 0
+        for item in self._entries:
+            if item.raid_starting_item_lists is not None:
+                for i, num in enumerate(item.raid_starting_item_lists):
+                    if num is not None:
+                        raid[i].append(item.get_amount_entry(num))
+                        total += 1
+            if item.default_store_item_lists is not None:
+                for i, num in enumerate(item.default_store_item_lists):
+                    if num is not None:
+                        store[i].append(item.get_amount_entry(num))
+                        total += 1
+        if total > 0:
+            file = os.path.join(root_dir, PROVISION_SAVE_DIR, f"{self.prefix}{PROVISION_FILE_EXTENSION}")
+            tem = {
+                "raid_starting_length_inventory_item_lists": raid,
+                "default_store_inventory_item_lists": store
+            }
+            tem = json.dumps(tem, indent=2, ensure_ascii=True)
+            res.append(write_str_to_file(file, tem))
         return res

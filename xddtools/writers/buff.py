@@ -1,6 +1,6 @@
 from typing import List
 
-from xddtools.base import BaseWriter, Entry, BuffEntry, JsonData, get_entry_id
+from xddtools.base import BaseWriter, Entry, BuffEntry, JsonData, get_entry_id, ModeEntry
 from xddtools.entries.bank import Bank
 from xddtools.entries.animation import Animation
 from xddtools.entries.buff import Buff
@@ -28,7 +28,8 @@ class BuffWriter(JsonData, BaseWriter):
         res = []
         if isinstance(entry.stat_sub_type, Entry):
             res.append(entry.stat_sub_type)
-        if isinstance(entry.buff_rule.rule_data_string, Entry):
+        if isinstance(entry.buff_rule.rule_data_string, Entry) and \
+                not isinstance(entry.buff_rule.rule_data_string, ModeEntry):
             res.append(entry.buff_rule.rule_data_string)
         if isinstance(entry.fx, Animation):
             entry.fx.is_fx = True

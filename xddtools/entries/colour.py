@@ -34,7 +34,7 @@ class Colour(ColourEntry, BaseModel):
             if isinstance(self.rgba, (tuple, list)):
                 rgba = f"{self.rgba[0]} {self.rgba[1]} {self.rgba[2]} {self.rgba[3]}"
             else:
-                rgba = f"{self.rgba}"
+                rgba = f"{self.rgba.lower()}"
             res.append(f'.rgba {rgba}')
         if self.hvec4 is not None:
             if isinstance(self.hvec4, (tuple, list)):
@@ -59,6 +59,8 @@ class Colour(ColourEntry, BaseModel):
         return f"{{colour_start|{self.id()}}}{text}{{colour_end}}"
 
 
+pink = Colour(entry_id="pink", rgba="#FFC0CB")
+invisible = Colour(entry_id="invisible", rgba=(0, 0, 0, 0), default="")
 # base._colours.darkest
 button_highlight = Colour(entry_id="button_highlight", hvec4=(1.5, 1.5, 1.3, 1.0))
 red = Colour(entry_id="red", rgba="#ff3a3a")

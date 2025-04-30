@@ -61,5 +61,8 @@ ACTOR_DOT_FILE_EXTENSION = ".actor_dot.json"
 EXTRA_STACK_LIMIT_SAVE_DIR = os.path.join("inventory")
 EXTRA_STACK_LIMIT_FILE_EXTENSION = ".inventory.extra_stack_limits.darkest"
 
+PROVISION_SAVE_DIR = "campaign/provision"
+PROVISION_FILE_EXTENSION = ".provision.json"
+
 if __name__ == '__main__':
     print(BUFF_SAVE_DIR)

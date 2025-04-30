@@ -1,7 +1,9 @@
 /*.png
 /*.txt
-/examples/xhunter/
-/examples/xlove_token/
+/examples/xhunter/xhunter/
+/examples/xstress/xstress
+/examples/article/
+/examples/xlove/xlove/
 /examples/xhos/
 /examples/xhuihui/
 /examples/xjiangshi/
@@ -20,6 +22,7 @@ temp/
 /examples/*/*/*/*.png
 /examples/*/*/*/*.json
 /examples/*/*/*.png
+/examples/*/*.png
 /examples/*/*/*.wav
 /examples/*/*/*.bank
 /examples/*/*/*.fsb

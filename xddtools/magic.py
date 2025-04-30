@@ -239,23 +239,23 @@ def get_duration_localization(
         BuffDurationType.BEFORE_TURN,
         BuffDurationType.AFTER_TURN
     ]:
-        return f"（持续{duration}个回合）"
+        return f"(持续{duration}回合)"
     elif duration_type == BuffDurationType.COMBAT_END:
-        return f"（持续{duration}场战斗）"
+        return f"(持续{duration}战斗)"
     elif duration_type in [
         BuffDurationType.QUEST_COMPLETE,
         BuffDurationType.QUEST_END,
         BuffDurationType.QUEST_NOT_COMPLETE,
     ]:
-        return f"（持续{duration}个任务）"
+        return f"(持续{duration}任务)"
     elif duration_type == BuffDurationType.ACTIVITY_END:
-        return f"（持续{duration}个活动）"
+        return f"(持续{duration}活动)"
     elif duration_type == BuffDurationType.IDLE_START_TOWN_VISIT:
-        return f"（持续{duration}周）"
+        return f"(持续{duration}周)"
     elif duration_type == BuffDurationType.TILL_REMOVE:
-        return f"（直到移除）"
+        return f"(直到移除)"
     elif duration_type == BuffDurationType.AFTER_ROUND:
-        return f"（持续{duration}整轮）"
+        return f"(持续{duration}整轮)"
     else:
         return " "
 
@@ -471,6 +471,7 @@ def get_trinket_effect_sfx(
         effects=[
             Effect(
                 target=target,
+                has_description=False,
                 apply_once=True,
                 on_miss=True,
                 duration=1,

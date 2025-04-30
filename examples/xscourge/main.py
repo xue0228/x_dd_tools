@@ -10,11 +10,11 @@ AutoName.set_default_prefix(MOD_NAME)
 
 from xddtools.entries import Resistance, Hero, Weapon, Armour, ActivityModify, Mode, Animation, Effect, \
     HeroLocalization, Generation, Project, ActoutDisplay, Skill, SkillInfo, ModeEffects, Buff, BuffRule, ActorDot, \
-    DurationElement, Quirk, HealthBar, TrinketRarity, Trinket, TrinketEffect, TrinketSet
+    DurationElement, Quirk, HealthBar, TrinketRarity, Trinket, TrinketEffect, TrinketSet, RaidStartingItem
 from xddtools.enum import TagID, TownActivityType, QuirkType, EffectTarget, CurioResultType, ProjectTag, SkillType, \
     KeyStatus, BuffType, STCombatStatMultiply, BuffRuleType, BuffDurationType, STCombatStatAdd, BuffSource, \
     STDisableCombatSkillAttribute, STResistance, ActorDotUpdateDurationType, SkillHeadType, QuirkTag, \
-    TrinketAwardCategory, TrinketRarityType, TrinketTriggerType
+    TrinketAwardCategory, TrinketRarityType, TrinketTriggerType, ItemType, ItemID
 from xddtools.writers import get_dd_writer
 
 if __name__ == '__main__':
@@ -944,7 +944,7 @@ if __name__ == '__main__':
                 unimmobilize=True
             )])
         ],
-        fx=Animation(anim_dir="fx/actor_dot", hero_name=MOD_NAME, need_rename=False)
+        fx=Animation(anim_dir="fx/actor_dot", need_rename=False)
     )
 
     immobilize_effect = Effect(
@@ -1158,8 +1158,8 @@ if __name__ == '__main__':
                     ),
                     Effect(
                         target=EffectTarget.TARGET,
-                        chance=0.9+i*0.1,
-                        dot_bleed=1+(i//2),
+                        chance=0.9 + i * 0.1,
+                        dot_bleed=1 + (i // 2),
                         buff_duration_type=BuffDurationType.COMBAT_END,
                         duration=1
                     ),
@@ -1172,7 +1172,7 @@ if __name__ == '__main__':
                     ),
                     Effect(
                         target=EffectTarget.TARGET,
-                        chance=0.9+i*0.1,
+                        chance=0.9 + i * 0.1,
                         stun=1
                     )
                 ],
@@ -1324,6 +1324,13 @@ if __name__ == '__main__':
             attack_friendly_anim="riposte"
         ),
         health_bar=HealthBar(current_top="#FFC0CB"),
+        raid_starting_hero_items=[
+            RaidStartingItem(
+                item_type=ItemType.SUPPLY,
+                item_id=ItemID.SUPPLY_SKELETON_KEY,
+                item_amount=1
+            )
+        ],
         hero_localization=HeroLocalization(
             hero_class_name="灾厄",
             blacksmith_verbose="",

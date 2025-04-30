@@ -4,6 +4,8 @@ from abc import ABC, abstractmethod
 from enum import Enum
 from typing import List, Iterable, Optional, NoReturn, Union
 
+from loguru import logger
+
 from xddtools.utils import write_str_to_file
 
 
@@ -170,6 +172,7 @@ class ProxyWriter:
 
     def add_writer(self, writer: BaseWriter) -> NoReturn:
         self._writers.append(writer)
+        logger.info(f"add writer: {writer.__class__.__name__}")
 
     def add_writers(self, writers: Iterable[BaseWriter]) -> NoReturn:
         for writer in writers:
@@ -177,6 +180,7 @@ class ProxyWriter:
 
     def _add_entry(self, entry: Entry) -> NoReturn:
         entry_id = entry.id() + f"_{entry.__class__.__name__}"
+        logger.info(f"开始处理：{entry_id}")
 
         if entry_id not in self._ids:
             for writer in self._writers:
@@ -186,8 +190,12 @@ class ProxyWriter:
                         self._ids.add(entry_id)
                     for e in tem:
                         self._add_entry(e)
+                    logger.info(f"成功处理：{entry_id}")
                     return
             self._unsupported.append(entry)
+            logger.warning(f"未找到合适的writer：{entry_id}")
+        else:
+            logger.info(f"重复项：{entry_id}")
 
     def add_entry(self, entry: Entry) -> List[Entry]:
         self._unsupported = []
@@ -204,7 +212,12 @@ class ProxyWriter:
         res = []
         for writer in self._writers:
             if len(writer) > 0:
-                res.extend(writer.export(root_dir))
+                tem = writer.export(root_dir)
+                res.extend(tem)
+                tem = "\n".join(tem)
+                logger.info(f"writer {writer.__class__.__name__} 导出成功：\n{tem}")
+            else:
+                logger.warning(f"writer {writer.__class__.__name__} 没有内容")
         return res
 
 

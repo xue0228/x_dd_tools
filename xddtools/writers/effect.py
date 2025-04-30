@@ -28,8 +28,8 @@ class EffectWriter(BaseWriter):
             res.append(entry.spawn_target_actor_base_class_id)
         if isinstance(entry.disease, Entry):
             res.append(entry.disease)
-        if isinstance(entry.set_mode, Entry):
-            res.append(entry.set_mode)
+        # if isinstance(entry.set_mode, Entry):
+        #     res.append(entry.set_mode)
         if isinstance(entry.actor_dot, Entry):
             res.append(entry.actor_dot)
         if isinstance(entry.damage_source_data, Entry):

@@ -338,7 +338,7 @@ class Effect(EffectEntry, BaseModel):
         if self.use_item_id is not None:
             res.append(f'.use_item_id {get_entry_id(self.use_item_id)}')
         if self.use_item_type is not None:
-            res.append(f'use_item_type {self.use_item_type.value}')
+            res.append(f'.use_item_type {self.use_item_type.value}')
         if self.rank_target is not None:
             res.append(f'.rank_target {self.rank_target}')
         if self.clear_rank_target is not None:

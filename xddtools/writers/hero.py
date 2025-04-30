@@ -1,18 +1,19 @@
 import json
 import os
-from typing import List, Any, Dict, Optional
+from typing import List, Optional
 
 from xddtools.base import BaseWriter, Entry, HeroEntry, get_entry_id
+from xddtools.entries.actor_dot import ActorDot
+from xddtools.entries.animation import Animation
+from xddtools.entries.bank import Bank
 from xddtools.entries.colour import Colour
 from xddtools.entries.effect import Effect
-from xddtools.entries.bank import Bank
-from xddtools.entries.animation import Animation
 from xddtools.entries.hero import Hero, Mode
 from xddtools.entries.localization import Localization
 from xddtools.entries.skill import Skill, SkillInfo
 from xddtools.enum import BankDir, BankSource, SkillHeadType
 from xddtools.path import HERO_SAVE_DIR, HERO_UPGRADE_FILE_EXTENSION, HERO_UPGRADE_SAVE_DIR, \
-    EXTRA_STACK_LIMIT_SAVE_DIR, EXTRA_STACK_LIMIT_FILE_EXTENSION
+    EXTRA_STACK_LIMIT_SAVE_DIR, EXTRA_STACK_LIMIT_FILE_EXTENSION, PROVISION_FILE_EXTENSION, PROVISION_SAVE_DIR
 from xddtools.utils import write_str_to_file, resize_image
 
 
@@ -256,8 +257,9 @@ class HeroWriter(BaseWriter):
         # 暴击效果
         for effect in entry.crit_effects:
             if isinstance(effect, Effect):
-                if isinstance(effect.actor_dot, Animation):
-                    effect.actor_dot.hero_name = entry.id()
+                if isinstance(effect.actor_dot, ActorDot):
+                    if isinstance(effect.actor_dot.fx, Animation):
+                        effect.actor_dot.fx.hero_name = entry.id()
                 res.append(effect)
 
         # 生命变化
@@ -265,9 +267,21 @@ class HeroWriter(BaseWriter):
             for reaction in entry.hp_reactions:
                 for effect in reaction.effects:
                     if isinstance(effect, Effect):
-                        if isinstance(effect.actor_dot, Animation):
-                            effect.actor_dot.hero_name = entry.id()
+                        if isinstance(effect.actor_dot, ActorDot):
+                            if isinstance(effect.actor_dot.fx, Animation):
+                                effect.actor_dot.fx.hero_name = entry.id()
                         res.append(effect)
+
+        # 死亡效果
+        if entry.death_reactions is not None:
+            for reaction in entry.death_reactions:
+                for effect in reaction.effects:
+                    if isinstance(effect, Effect):
+                        if isinstance(effect.actor_dot, ActorDot):
+                            if isinstance(effect.actor_dot.fx, Animation):
+                                effect.actor_dot.fx.hero_name = entry.id()
+                        res.append(effect)
+
         # 技能
         for skill in entry.skills:  # type: Skill
             # 音效
@@ -393,16 +407,18 @@ class HeroWriter(BaseWriter):
                 if info.effect_ids is not None:
                     for item in info.effect_ids:
                         if isinstance(item, Effect):
-                            if isinstance(item.actor_dot, Animation):
-                                item.actor_dot.hero_name = entry.id()
+                            if isinstance(item.actor_dot, ActorDot):
+                                if isinstance(item.actor_dot.fx, Animation):
+                                    item.actor_dot.fx.hero_name = entry.id()
                             res.append(item)
                 if info.valid_modes_and_effects is not None:
                     for mode_effects in info.valid_modes_and_effects:
                         if mode_effects.effects is not None:
                             for item in mode_effects.effects:
                                 if isinstance(item, Effect):
-                                    if isinstance(item.actor_dot, Animation):
-                                        item.actor_dot.hero_name = entry.id()
+                                    if isinstance(item.actor_dot, ActorDot):
+                                        if isinstance(item.actor_dot.fx, Animation):
+                                            item.actor_dot.fx.hero_name = entry.id()
                                     res.append(item)
 
         # 过压修改
@@ -496,6 +512,12 @@ class HeroWriter(BaseWriter):
                 Colour(entry_id=f"tray_health_bar_{entry.id()}_current_top", rgba=entry.health_bar.current_top),
             ])
 
+        # 商店自带物品
+        if entry.raid_starting_hero_items is not None:
+            for hero_item in entry.raid_starting_hero_items:
+                if isinstance(hero_item.item_id, Entry):
+                    res.append(hero_item.item_id)
+
         return res
 
     def _export_one_hero(self, hero: Hero, root_dir: str) -> List[str]:
@@ -532,6 +554,18 @@ class HeroWriter(BaseWriter):
             res.append(write_str_to_file(
                 file_path=file,
                 content="\n".join(content)
+            ))
+
+        # 导出商店界面自动补给品
+        if hero.raid_starting_hero_items is not None:
+            tem = []
+            for hero_item in hero.raid_starting_hero_items:
+                tem.append(hero_item.get_dict())
+            tem = {"raid_starting_hero_class_item_lists": [{"hero_class": hero.id(), "item_lists": tem}]}
+            file = os.path.join(PROVISION_SAVE_DIR, f"hero_{hero.id()}{PROVISION_FILE_EXTENSION}")
+            res.append(write_str_to_file(
+                file_path=file,
+                content=json.dumps(tem, indent=2, ensure_ascii=True)
             ))
 
         # 导出weapon和armour图片

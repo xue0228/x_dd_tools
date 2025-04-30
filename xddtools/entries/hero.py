@@ -6,9 +6,10 @@ import numpy as np
 from pydantic import BaseModel, ConfigDict, Field, model_validator
 
 from xddtools.base import HeroEntry, SkillEntry, EffectEntry, TownEventEntry, get_entry_id, AnimationEntry, \
-    TraitEntry, LootTableEntry, ItemEntry, QuirkEntry, BuffEntry, ModeEntry, MonsterEntry, BankEntry, ColourEntry
+    TraitEntry, LootTableEntry, ItemEntry, QuirkEntry, BuffEntry, ModeEntry, MonsterEntry, BankEntry, ColourEntry, \
+    JsonData
 from xddtools.entries.skill import Skill, SkillInfo
-from xddtools.enum.buff_rule import TownActivityType, ItemType, MonsterClass, HeroClass, QuirkType
+from xddtools.enum.buff_rule import TownActivityType, ItemType, MonsterClass, HeroClass, QuirkType, ItemID
 from xddtools.enum.hero import DeathFx, TagID
 from xddtools.name import AutoName
 from xddtools.path import DATA_PATH
@@ -330,6 +331,23 @@ class HpReaction(BaseModel):
 
     def __str__(self):
         res = [f'hp_reaction: .hp_ratio {self.hp_ratio} .is_under {bool_to_lower_str(self.is_under)}']
+        if len(self.effects) > 0:
+            res.append(".effects")
+            for effect in self.effects:
+                res.append(f'"{get_entry_id(effect)}"')
+        return " ".join(res)
+
+
+class DeathReaction(BaseModel):
+    model_config = ConfigDict(frozen=False, strict=True, arbitrary_types_allowed=True)
+
+    target_allies: bool = False
+    target_enemies: bool = True
+    effects: Sequence[Union[EffectEntry, str]] = Field(default_factory=list)
+
+    def __str__(self):
+        res = [f'death_reaction: .target_allies {bool_to_lower_str(self.target_allies)} '
+               f'.target_enemies {bool_to_lower_str(self.target_enemies)}']
         if len(self.effects) > 0:
             res.append(".effects")
             for effect in self.effects:
@@ -728,6 +746,21 @@ class HealthBar(BaseModel):
     current_top: Union[str, Tuple[int, int, int, int]] = "#cd0000"
 
 
+class RaidStartingItem(JsonData, BaseModel):
+    model_config = ConfigDict(frozen=False, strict=True, arbitrary_types_allowed=True)
+
+    item_type: ItemType = ItemType.ESTATE
+    item_id: Union[ItemEntry, ItemID, str] = ""
+    item_amount: int = 1
+
+    def get_dict(self) -> dict:
+        return {
+            "type": self.item_type.value,
+            "id": get_entry_id(self.item_id),
+            "amount": self.item_amount
+        }
+
+
 class Hero(HeroEntry, BaseModel):
     model_config = ConfigDict(frozen=False, strict=True, arbitrary_types_allowed=True)
 
@@ -745,6 +778,7 @@ class Hero(HeroEntry, BaseModel):
     guild_header_image_path: Optional[str] = None
     portrait_roster_image_path: Optional[str] = None
     hp_reactions: Optional[Sequence[HpReaction]] = None
+    death_reactions: Optional[Sequence[DeathReaction]] = None
     weapon_golds: Tuple[int, int, int, int] = (750, 1750, 3000, 6000)
     armour_golds: Tuple[int, int, int, int] = (750, 1750, 3000, 6000)
     tags: Optional[Sequence[Union[TagID, str]]] = None
@@ -770,6 +804,7 @@ class Hero(HeroEntry, BaseModel):
     hero_localization: Optional[HeroLocalization] = None
     base_mode: Optional[ModeEntry] = None
     health_bar: Optional[HealthBar] = None
+    raid_starting_hero_items: Optional[Sequence[RaidStartingItem]] = None
 
     def _complete_weapons(self):
         if len(self.weapons) == 5:
@@ -954,6 +989,10 @@ class Hero(HeroEntry, BaseModel):
                 tem.append(f'quirk_modifier: .incompatible_class_ids {" ".join(quirk)}')
             res.append("\n".join(tem))
 
+        # 死亡特效
+        if self.death_reactions is not None:
+            res.append("\n".join([str(reaction) for reaction in self.death_reactions]))
+
         # 死门特效
         tem = []
         if self.deaths_door_buffs is not None and len(self.deaths_door_buffs) > 0:
@@ -1011,8 +1050,8 @@ class Hero(HeroEntry, BaseModel):
         res.append(str(self.generation))
 
         # 演出动画
-        if self.actout_display is not None:
-            res.append(str(self.actout_display))
+        # if self.actout_display is not None:
+        #     res.append(str(self.actout_display))
 
         return "\n\n".join(res)
 

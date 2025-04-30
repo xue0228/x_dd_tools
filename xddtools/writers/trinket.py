@@ -124,6 +124,8 @@ class TrinketWriter(JsonData, BaseWriter):
             res.append(entry.set_id)
         if isinstance(entry.rarity, Entry):
             res.append(entry.rarity)
+        if isinstance(entry.visual_rarity, Entry):
+            res.append(entry.visual_rarity)
         if entry.special_effects is not None:
             for item in entry.special_effects:
                 for effect in item.effects:

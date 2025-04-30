@@ -69,6 +69,7 @@ class Trinket(JsonData, TrinketEntry, BaseModel):
     hero_class_requirements: Optional[Sequence[Union[HeroEntry, HeroClass, str]]] = None
     set_id: Union[TrinketSetEntry, str, None] = None
     rarity: Union[TrinketRarityType, TrinketRarityEntry, str, None] = None
+    visual_rarity: Union[TrinketRarityType, TrinketRarityEntry, str, None] = None
     price: Optional[int] = None
     shard: Optional[int] = None
     limit: Optional[int] = None
@@ -98,7 +99,10 @@ class Trinket(JsonData, TrinketEntry, BaseModel):
         if self.set_id is not None:
             res["set_id"] = get_entry_id(self.set_id)
 
-        res["rarity"] = get_entry_id(self.rarity)
+        if self.rarity is not None:
+            res["rarity"] = get_entry_id(self.rarity)
+        if self.visual_rarity is not None:
+            res["visual_rarity"] = get_entry_id(self.visual_rarity)
 
         if self.price is not None:
             res["price"] = self.price

@@ -42,7 +42,9 @@ def process_exe(
         stdout=subprocess.PIPE,
         stderr=subprocess.PIPE,
         text=True,
-        cwd=cwd
+        cwd=cwd,
+        encoding="utf-8",
+        errors="ignore"
     )
     info = process.stdout.read()
     err = process.stderr.read()

@@ -42,7 +42,7 @@ class LootMonster(LootMonsterEntry, BaseModel):
               f'initiative: .number_of_turns_per_round 0\n' \
               f'monster_brain: .id default\n' \
               f'battle_modifier: .accelerate_stall_penalty False .disable_stall_penalty False .can_surprise False ' \
-              f'.can_be_surprised True .always_surprise False .always_be_surprised False .can_be_summon_rank True\n' \
+              f'.can_be_surprised True .always_surprise False .always_be_surprised False .can_be_summon_rank False\n' \
               f'wave_spawning: .prefers_front True\n' \
               f'spawn: .effects '
         if self.spawn_effects is not None:

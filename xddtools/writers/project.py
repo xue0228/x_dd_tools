@@ -36,7 +36,7 @@ class ProjectWriter(BaseWriter):
             else:
                 image_path = entry.preview_icon_image
             file = os.path.join(root_dir, "preview_icon.png")
-            res.extend(resize_image_keep_ratio(image_path, file, (512, 512)))
+            res.append(resize_image_keep_ratio(image_path, file, (512, 512)))
             return res
         return []
 

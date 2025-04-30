@@ -35,8 +35,8 @@ class Quirk(JsonData, QuirkEntry, BaseModel):
     analytics_enabled: bool = False
     show_explicit_buff_description: bool = False
     show_flavor_description: bool = True
-    is_explicit_buff_description_valid_in_character_sheet: bool = False
-    is_flavor_description_valid_in_tray_icon: bool = False
+    is_explicit_buff_description_valid_in_character_sheet: bool = True
+    is_flavor_description_valid_in_tray_icon: bool = True
     show_explicit_curio_tag_description: bool = False
     random_chance: float = 1
     is_positive: bool = True
