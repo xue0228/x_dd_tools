@@ -652,6 +652,7 @@ class ItemType(Enum):
     TRINKET = "trinket"  # 饰品
     TRINKET_UNLOCK = "trinket_unlock"  # 特殊饰品，目前只有焮炙护符属于此类
     JEWELLERY = "jewellery"  # 珠宝，这个分类不知是否真实存在，在汉化文件中只出现过一次 jewellerybronze_necklace
+    SHARD = "shard"  # 水晶碎片
 
 
 class ItemID(Enum):

@@ -1,6 +1,7 @@
 from typing import List, Union, Sequence, Optional
 
-from pydantic import BaseModel, ConfigDict, Field, field_validator
+from loguru import logger
+from pydantic import BaseModel, ConfigDict, Field, field_validator, model_validator
 
 from xddtools.base import LocalizationEntry, HeroEntry, QuirkEntry, get_entry_id, CampingSkillEntry
 from xddtools.entries.trait import Trait
@@ -18,13 +19,12 @@ class Localization(LocalizationEntry, BaseModel):
     entry_id: str = Field(..., min_length=1, pattern="^[a-zA-Z0-9_.+]+$")
     text: str
 
-    @field_validator("text")
-    @classmethod
-    def _check_text(cls, v: str):
-        tem = v.split("\n")
+    @model_validator(mode="after")
+    def _check_after(self):
+        tem = self.text.split("\n")
         if len(tem) > 3:
-            raise ValueError("Localization text can only contain up to 3 lines.")
-        return v
+            logger.warning(f"Localization {self.id()} has {len(tem)} lines.")
+        return self
 
 
 def get_hero_quirk_rejection_localization_entries(

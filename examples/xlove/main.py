@@ -1,9 +1,17 @@
-from constants import *
-from actouts import *
+import os
+
+MOD_NAME = "xlove"
+os.environ["AUTO_NAME_PREFIX"] = MOD_NAME
+
+from typing import List, Tuple, Union
+
+from xddtools.base import BuffEntry
 from xddtools import get_dd_writer
-from xddtools.entries import Project, Quirk, Item, Effect, UseItemChange
-from xddtools.entries.colour import pink, skill_unselectable
-from xddtools.enum import ProjectTag, QuirkClassification, QuirkTag, EffectTarget, ItemType, ItemID, STResistance
+from xddtools.entries import Project, Quirk, Item, UseItemChange
+from xddtools.entries.colour import pink, skill_unselectable, stun, bleed, blight, stress, heal_hp, debuff, move, guard
+from xddtools.enum import ProjectTag, QuirkClassification, QuirkTag, ItemType, ItemID, STResistance
+
+from actouts import *
 
 if __name__ == '__main__':
     project = Project(
@@ -34,7 +42,7 @@ if __name__ == '__main__':
         analytics_enabled=True,
         show_explicit_buff_description=True,
         show_flavor_description=True,
-        random_chance=0.5,
+        random_chance=1 - i * 0.1,
         is_positive=True,
         is_disease=False,
         classification=QuirkClassification.MENTAL,
@@ -105,16 +113,24 @@ if __name__ == '__main__':
             use_item_type=estate.item_type,
             use_item_id=estate
         ),
-        # purchase_gold_value=data[4],
-        purchase_gold_value=0,
+        purchase_gold_value=data[4],
+        # purchase_gold_value=0,
         sell_gold_value=int(data[4] * 0.1),
         base_stack_limit=data[5],
+        # base_stack_limit=99,
         default_store_item_lists=[None, 99, 99, 99, 99, 99]
     ) for i, data in enumerate(supplies_data)]
 
-    special_quirks_data = [
+    special_quirks_data: List[Tuple[
+        str, str, str,
+        List[BuffEntry], Union[ItemID, ItemType], List[BuffEntry],
+        List[CombatStartTurn], List[Reaction],
+        List[CombatStartTurn], List[Reaction],
+        List[str], List[str]
+    ]] = [
         # 名称、描述
-        (pink("誓约：残念！"), f"+3精准 +3闪避\n+8%伤害 +5%暴击 +2速度\n{pink('羁绊物品')}：圣水",
+        (pink("誓约：残念！"), f"+3精准 +3闪避 +8%伤害\n+5%暴击 +2速度\n"
+                         f"{pink('羁绊物品')}：圣水",
          # 进化版怪癖的图标、Buff
          "overlays/tray_quirk.Love_Grade_X2.png", [acc_3, def_3, dmg_l8, dmg_h8, crit_5, spd_2],
          # 羁绊物品、进化后额外Buff
@@ -122,27 +138,38 @@ if __name__ == '__main__':
          # 普通模式act_outs、进化后act_outs、进化台词普通到进化、进化台词进化到普通
          cst_x1, rec_x1, cst_x2, rec_x2, ["为吾主献出心脏！"], ["我的表现还不错吧~（脸红低头）"]),
 
-        (pink("誓约：不朽！"), f"+3精准 +5闪避 +5%伤害\n+3%暴击 +2速度 +10%防御\n{pink('羁绊物品')}：绷带",
+        (pink("誓约：不朽！"), f"+3精准 +5闪避 +5%伤害\n+3%暴击 +2速度 +10%防御\n"
+                         f"{pink('羁绊物品')}：绷带",
          "overlays/tray_quirk.Love_Grade_Y2.png", [acc_3, def_5, dmg_l5, dmg_h5, crit_3, spd_2, prot_10],
          ItemID.SUPPLY_BANDAGE, [buff_y_1, buff_y_2],
          cst_y1, rec_y1, cst_y2, rec_y2, ["虽然不想承认...但还是忍不住想守护你！"], ["别太得寸进尺了！（嘟嘴）"]),
 
-        (pink("誓约：！"), f"+3精准 +3闪避\n+8%伤害 +5%暴击 +2速度\n{pink('羁绊物品')}：圣水",
-         "overlays/tray_quirk.Love_Grade_X2.png", [acc_3, def_3, dmg_l8, dmg_h8, crit_5, spd_2],
-         ItemID.SUPPLY_HOLY_WATER, [buff_x_1, buff_x_2, buff_x_3],
-         cst_x1, rec_x1, cst_x2, rec_x2, ["我的魔法终于成功了！"], ["看来还是要再完善完善..."]),
-        (pink("誓约：！"), f"+3精准 +3闪避\n+8%伤害 +5%暴击 +2速度\n{pink('羁绊物品')}：圣水",
-         "overlays/tray_quirk.Love_Grade_X2.png", [acc_3, def_3, dmg_l8, dmg_h8, crit_5, spd_2],
-         ItemID.SUPPLY_HOLY_WATER, [buff_x_1, buff_x_2, buff_x_3],
-         cst_x1, rec_x1, cst_x2, rec_x2, ["不要小看读书人！（摘下眼镜）"], ["呜？被看到不淑女的样子了~（戴上眼镜）"]),
-        (pink("誓约：！"), f"+3精准 +3闪避\n+8%伤害 +5%暴击 +2速度\n{pink('羁绊物品')}：圣水",
-         "overlays/tray_quirk.Love_Grade_X2.png", [acc_3, def_3, dmg_l8, dmg_h8, crit_5, spd_2],
-         ItemID.SUPPLY_HOLY_WATER, [buff_x_1, buff_x_2, buff_x_3],
-         cst_x1, rec_x1, cst_x2, rec_x2, ["让汝们见识下神明真正的实力！"], ["呼呼，饿，想吃小鱼干~"]),
-        (pink("誓约：！"), f"+3精准 +3闪避\n+8%伤害 +5%暴击 +2速度\n{pink('羁绊物品')}：圣水",
-         "overlays/tray_quirk.Love_Grade_X2.png", [acc_3, def_3, dmg_l8, dmg_h8, crit_5, spd_2],
-         ItemID.SUPPLY_HOLY_WATER, [buff_x_1, buff_x_2, buff_x_3],
-         cst_x1, rec_x1, cst_x2, rec_x2, ["我的眼里只有领主呢！"], ["领主，今天怎么回来晚了？"])
+        (pink("誓约：魔法！"), f"+3精准 +3闪避 +5%伤害\n+3%暴击 +3速度 "
+                         f"+10% {stun('眩晕')}/{bleed('流血')}/{blight('腐蚀')}概率\n"
+                         f"{pink('羁绊物品')}：解毒剂",
+         "overlays/tray_quirk.Love_Grade_Z2.png",
+         [acc_3, def_3, dmg_l5, dmg_h5, crit_3, spd_3, stun_10_zhang, bleed_10, poison_10],
+         ItemID.SUPPLY_ANTIVENOM, [stun_10_first, bleed_10_first, poison_10_first, speed_2_first],
+         cst_z1, rec_z1, cst_z2, rec_z2, ["我的魔法终于成功了！"], ["看来还是要再完善完善..."]),
+
+        (pink("誓约：知识！"), f"+3精准 +5闪避 +5%伤害 +3%暴击 +2速度\n"
+                         f"+10%生命/{stress('压力')}{heal_hp('治疗')} +20% {heal_hp('愈合')}效果\n"
+                         f"{pink('羁绊物品')}：食物",
+         "overlays/tray_quirk.Love_Grade_M2.png", [acc_3, def_5, dmg_l5, dmg_h5, crit_3, spd_2,
+                                                   buff_m_1, buff_m_2, buff_m_3],
+         ItemType.PROVISION, [buff_m_4, buff_m_5, buff_m_6],
+         cst_m1, rec_m1, cst_m2, rec_m2, ["不要小看读书人！（摘下眼镜）"], ["呜？被看到不淑女的样子了~（戴上眼镜）"]),
+
+        (pink("誓约：神明！"), f"+5精准 +3闪避 +5%伤害\n+3%暴击 +2速度\n"
+                         f"+10% {debuff('减益')}/{move('位移')}概率\n{pink('羁绊物品')}：药草",
+         "overlays/tray_quirk.Love_Grade_O2.png", [acc_5, def_3, dmg_l5, dmg_h5, crit_3, spd_2, buff_o_1, buff_o_2],
+         ItemID.SUPPLY_MEDICINAL_HERBS, [buff_o_3],
+         cst_o1, rec_o1, cst_o2, rec_o2, ["让汝们见识下神明真正的实力！"], ["呼呼，饿，想吃小鱼干~"]),
+
+        (pink("誓约：恶魔！"), f"+5精准 +5闪避 +8%伤害\n+5%暴击 +3速度 无法被{guard('守护')}\n{pink('羁绊物品')}：鸦片酊",
+         "overlays/tray_quirk.Love_Grade_N2.png", [acc_5, def_5, dmg_l8, dmg_h8, crit_5, spd_3, buff_n_2],
+         ItemID.SUPPLY_LAUDANUM, [buff_n_1],
+         cst_n1, rec_n1, cst_n2, rec_n2, ["我的眼里只有领主呢！"], ["领主，今天怎么回来晚了？"])
     ]
 
     special_quirks = []
@@ -170,8 +197,9 @@ if __name__ == '__main__':
                 STResistance.DISEASE
             ]],
             analytics_enabled=True,
-            show_explicit_buff_description=True,
+            show_explicit_buff_description=False,
             show_flavor_description=True,
+            is_flavor_description_valid_in_tray_icon=False,
             random_chance=0,
             is_positive=True,
             is_disease=False,
@@ -182,6 +210,8 @@ if __name__ == '__main__':
             can_be_replaced_by_new_quirk=False,
             evolution_duration_min=31,
             evolution_duration_max=75,
+            # evolution_duration_min=5,
+            # evolution_duration_max=5,
             combat_start_turn_act_outs=data[6],
             reaction_act_outs=data[7],
             evolution_quirk_bark=data[10]
@@ -210,8 +240,9 @@ if __name__ == '__main__':
                 STResistance.DISEASE
             ]] + data[5],
             analytics_enabled=True,
-            show_explicit_buff_description=True,
+            show_explicit_buff_description=False,
             show_flavor_description=True,
+            is_flavor_description_valid_in_tray_icon=False,
             random_chance=0,
             is_positive=True,
             is_disease=False,
@@ -222,6 +253,8 @@ if __name__ == '__main__':
             can_be_replaced_by_new_quirk=False,
             evolution_duration_min=22,
             evolution_duration_max=30,
+            # evolution_duration_min=5,
+            # evolution_duration_max=5,
             combat_start_turn_act_outs=data[8],
             reaction_act_outs=data[9],
             evolution_quirk_bark=data[11]

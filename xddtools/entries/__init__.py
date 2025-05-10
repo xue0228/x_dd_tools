@@ -19,3 +19,4 @@ from xddtools.entries.hero import Resistance, Weapon, Armour, Generation, Actout
     ActivityModify, ExtraLoot, ExtraStackLimit, HeroLocalization, Mode, Hero, HealthBar, RaidStartingItem
 from xddtools.entries.bank import Bank
 from xddtools.entries.loot_monster import LootMonster
+from xddtools.entries.party_name import PartyName

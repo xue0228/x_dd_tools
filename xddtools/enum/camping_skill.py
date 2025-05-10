@@ -31,7 +31,7 @@ class CampingSkillBuffSubType(Enum):
     CAMPING_DMG_HIGH_BUFF_RANGED = "campingDMGHighBuffRanged"
 
     CAMPING_ACC_BUFF_MELEE = "campingACCBuffMelee"
-    CAMPING_CRIT_BUFF_MELEE = "campingCRITBuffMelee"  # 推测有
+    # CAMPING_CRIT_BUFF_MELEE = "campingCRITBuffMelee"  # 没有
     CAMPING_DMG_LOW_BUFF_MELEE = "campingDMGLowBuffMelee"
     CAMPING_DMG_HIGH_BUFF_MELEE = "campingDMGHighBuffMelee"
 

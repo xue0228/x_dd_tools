@@ -1,7 +1,9 @@
 /*.png
 /*.txt
+/*.psd
 /examples/xhunter/xhunter/
-/examples/xstress/xstress
+/examples/xstress/xstress/
+/examples/xarena/xarena/
 /examples/article/
 /examples/xlove/xlove/
 /examples/xhos/

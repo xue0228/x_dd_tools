@@ -6,8 +6,8 @@ from xddtools.enum import CombatStartTurnActOuts, ReactionActOuts
 cst_x1 = [
     CombatStartTurn(
         name=CombatStartTurnActOuts.NOTHING,
-        # chance=89
-        chance=0
+        chance=89
+        # chance=0
     ),
     CombatStartTurn(
         name=CombatStartTurnActOuts.ATTACK_FRIENDLY,
@@ -15,16 +15,8 @@ cst_x1 = [
         number_value=0.2,
         string_value=effect_x_1,
         act_out_barks=[
-            "你刀刃上的锈迹正在嘲笑领主的纹章！要么用敌人的动脉清洗它，要么我替你献给地牢的食铁虫！",
-            "每滴血都是写给领主的情书——你们甘心用墨水瓶的污渍玷污他的羊皮卷？",
-            "当我的裹尸布飘扬时，它必须浸透三十四种敌人的胆汁！而你们竟想让它成为投降的白旗？",
-            "闻到了吗？这腥甜是领主王座投射的影子！现在选择——做撑起王座的脊梁，还是被影子吞没的尘埃！",
-            "我的锁链只为两种事物作响：绞杀阻碍领主荣光的喉咙，或是鞭笞丧失战意的脊椎——选个悦耳的音符吧。",
-            "这道齿痕是北境巨狼的情诗，而你们颤抖的膝盖正在撰写给领主的羞辱十四行！要我用韵脚修正吗？",
-            "多美妙的胭脂！但只有用伏击者瞳孔研磨的颜料，才配装饰觐见领主时的妆容！",
-            "你护甲缝隙卡着的碎肉——是上次庆功宴的勋爵牛排？不，是时候用真正的新鲜战利品装点领主的宴席了！",
-            "知道吗？领主赐的这颗红宝石...会在怯懦者血流干时熄灭光泽。你们忍心让他的馈赠蒙尘？",
-            "多漂亮的战利品！但记住——唯有装满三十颗还在抽搐的心脏，我的献礼匣才配呈上领主的石像鬼台阶！"
+            "任何人都不许后退！",
+            "即使是鲜血淋漓，也誓死捍卫吾主！"
         ]
     ),
     CombatStartTurn(
@@ -32,13 +24,11 @@ cst_x1 = [
         chance=5,
         string_value=effect_x_2,
         act_out_barks=[
-            "看这喷涌的弧线——多像领主宴会上被打翻的勃艮第！现在我要用三十杯这样的美酒装点他的凯旋门！",
-            "他赐予的疤痕在发烫！现在每杀一人，这印记就替我发出一句未说出口的告白！",
-            "布料吸血的沙沙声…多像舞会时他手套摩挲我腰封的轻响！再来三十匹这样的绸缎可好？",
-            "铁锈味的胭脂最配战妆！等会面时，我要用三百种不同浓度的血色晕染他的族徽！",
-            "多优雅的天然项链！当我把这串骨铃挂在领主塔楼，风会替我演奏血腥奏鸣曲！",
-            "我的裙摆正在绘制玫瑰！等染完第九层花瓣，就够资格装饰他剑柄的雕纹！",
-            "心肌纤维的触感…像极了那夜他松开我发辫的力度！或许该收集百颗来编织新发饰？"
+            "无上吾主！万王之王！伟大旨意！启明恒星！",
+            "挡在吾主路前的，即使是神明我也杀给你看。",
+            "为了吾主！",
+            "吾主即是我存在的意义。",
+            "如果是没有吾主的世界，那就消失吧！"
         ]
     ),
     CombatStartTurn(
@@ -56,53 +46,29 @@ cst_x1 = [
         chance=1,
         string_value=effect_x_5,
         act_out_barks=[
-            '您说过"永远"是最锋利的誓言...但我肋骨间的腐烂声听得到吗？',
-            "我的刀刃只为您而染血——哪怕这血是从我自己心脏里流出来的。",
-            "您教我用刀刃书写誓言，如今却嫌墨迹里混了血？",
-            "那些被我劈成碎片的灵魂...真的比背叛者更该死吗？",
-            '当您说"够了"时——是指该停手...还是该换把更锋利的斧头？',
-            "他们说伤口会愈合，可镶着骨片的疤痕不是勋章吗？",
-            "您害怕我失控的瞬间...可那不是您亲自教会我的生存之道吗？",
-            "他们说我疯了...可只有清醒的人才看得懂您眼神里的命令啊领主！",
-            "请触摸我手腕的伤疤——这温度说明我仍在为您跳动，从未冷却。",
-            "那些血...不是为了证明自己有多疯狂，而是替您清理了所有潜在威胁！",
-            "您看我握刀的手——它从未犹豫过，就像从未怀疑过您一样。",
-            "我的腐烂气息，是否已成为了您的负担？",
-            "如果我的爱让您恐惧，请让我把心脏剖开——它只为您跳动。",
-            "他们说我疯了...可那不是因为您的眼神教我看清了爱的模样吗？",
+            "领主？还需要我吗？",
+            "领主！我没有背叛您！"
         ]
     )
 ]
 rec_x1 = [
     Reaction(
         name=ReactionActOuts.COMMENT_SELF_HIT,
-        # chance=0.1,
-        chance=1,
+        chance=0.1,
+        # chance=1,
         effect=effect_x_6,
         act_out_barks=[
-            "让他们记住：所有刺入我的伤口...最终都会变成插在他们胸膛的利剑。",
-            "疼痛是最好的老师...它教会我怎样才能更完美地为您清除障碍。",
-            '当刀刃卡进肋骨时...我才真正理解了"为您而死"的重量。',
-            "请看这染血的铠甲——它正在为您开出最妖艳的荆棘花。",
-            "让这伤口流淌您的名字...每个血珠都在为您的荣耀嘶吼！",
-            "他们的刀刺进我的瞬间...我却笑了，因为能用痛苦证明多爱您！",
-            "我的血液在地面写着情书——只有您看得懂这滚烫的墨迹！"
+            "您只管前进，我会为您承担一切痛楚，请不要停下脚步。",
+            "就算此身腐朽，此剑断裂，我也不会停止对吾主之敌的征讨！",
+            "我的光芒从未熄灭，吾主就在我的身边照耀！"
         ]
     ),
     Reaction(
         name=ReactionActOuts.COMMENT_ALLY_ATTACK_MISSED,
-        # chance=0.1,
-        chance=1,
+        chance=0.1,
+        # chance=1,
         effect=effect_x_7,
         act_out_barks=[
-            "听着白痴，要么用你的骨头为大人铺路，要么就成为路上的绊脚石——猜猜他更喜欢哪种？",
-            "害怕？当然，每次呼吸都能闻到腐烂的荣耀。但只要大人王座上的黑玫瑰盛开，我们就是最甜美的养料。",
-            "看看你那毫无章法的挥砍！这是屠戮弱者的剑术吗？是给奶狗啃剩的骨头！",
-            "记住！你们不是在挥舞玩具——每一下挥空都在背叛领主大人的王座！谁敢再犯？",
-            "听见了吗？那些挥空的剑声正在腐蚀胜利的钟鸣！现在...谁敢用懦弱玷污这时刻？",
-            "连武器都握不稳，你来这里难道是为了看戏吗？",
-            "哼，这样的表现怎配与我一同侍奉伟大的领主大人？",
-            "你的每一个错误都在将我们离领主大人的信任推开得更远。",
             "打起精神！你让我在吾主面前蒙羞！",
             "别松懈！吾主还在看着！"
         ]
@@ -111,8 +77,8 @@ rec_x1 = [
 cst_x2 = [
     CombatStartTurn(
         name=CombatStartTurnActOuts.NOTHING,
-        # chance=89
-        chance=0
+        chance=89
+        # chance=0
     ),
     CombatStartTurn(
         name=CombatStartTurnActOuts.ATTACK_FRIENDLY,
@@ -120,16 +86,8 @@ cst_x2 = [
         number_value=0.2,
         string_value=effect_x_1,
         act_out_barks=[
-            "你刀刃上的锈迹正在嘲笑领主的纹章！要么用敌人的动脉清洗它，要么我替你献给地牢的食铁虫！",
-            "每滴血都是写给领主的情书——你们甘心用墨水瓶的污渍玷污他的羊皮卷？",
-            "当我的裹尸布飘扬时，它必须浸透三十四种敌人的胆汁！而你们竟想让它成为投降的白旗？",
-            "闻到了吗？这腥甜是领主王座投射的影子！现在选择——做撑起王座的脊梁，还是被影子吞没的尘埃！",
-            "我的锁链只为两种事物作响：绞杀阻碍领主荣光的喉咙，或是鞭笞丧失战意的脊椎——选个悦耳的音符吧。",
-            "这道齿痕是北境巨狼的情诗，而你们颤抖的膝盖正在撰写给领主的羞辱十四行！要我用韵脚修正吗？",
-            "多美妙的胭脂！但只有用伏击者瞳孔研磨的颜料，才配装饰觐见领主时的妆容！",
-            "你护甲缝隙卡着的碎肉——是上次庆功宴的勋爵牛排？不，是时候用真正的新鲜战利品装点领主的宴席了！",
-            "知道吗？领主赐的这颗红宝石...会在怯懦者血流干时熄灭光泽。你们忍心让他的馈赠蒙尘？",
-            "多漂亮的战利品！但记住——唯有装满三十颗还在抽搐的心脏，我的献礼匣才配呈上领主的石像鬼台阶！"
+            "任何人都不许后退！",
+            "即使是鲜血淋漓，也誓死捍卫吾主！"
         ]
     ),
     CombatStartTurn(
@@ -137,13 +95,11 @@ cst_x2 = [
         chance=5,
         string_value=effect_x_2,
         act_out_barks=[
-            "看这喷涌的弧线——多像领主宴会上被打翻的勃艮第！现在我要用三十杯这样的美酒装点他的凯旋门！",
-            "他赐予的疤痕在发烫！现在每杀一人，这印记就替我发出一句未说出口的告白！",
-            "布料吸血的沙沙声…多像舞会时他手套摩挲我腰封的轻响！再来三十匹这样的绸缎可好？",
-            "铁锈味的胭脂最配战妆！等会面时，我要用三百种不同浓度的血色晕染他的族徽！",
-            "多优雅的天然项链！当我把这串骨铃挂在领主塔楼，风会替我演奏血腥奏鸣曲！",
-            "我的裙摆正在绘制玫瑰！等染完第九层花瓣，就够资格装饰他剑柄的雕纹！",
-            "心肌纤维的触感…像极了那夜他松开我发辫的力度！或许该收集百颗来编织新发饰？"
+            "无上吾主！万王之王！伟大旨意！启明恒星！",
+            "挡在吾主路前的，即使是神明我也杀给你看。",
+            "为了吾主！",
+            "吾主即是我存在的意义。",
+            "如果是没有吾主的世界，那就消失吧！"
         ]
     ),
     CombatStartTurn(
@@ -161,14 +117,7 @@ cst_x2 = [
         chance=1,
         string_value=effect_x_8,
         act_out_barks=[
-            "斩下你的头颅，只为向领主大人献礼！",
-            "为了领主大人——这一击，必取其命！",
-            "领主大人的意志不可违逆，你的末日到了！",
-            "请注视着我，领主大人——这一击，是我对您的誓言！",
-            "我所做的一切，只为成为您眼中最锋利的刀！",
-            "我不是什么英雄，只是您脚下的一柄剑、一颗心。",
-            "就算世界背叛您，我也将为您撕裂一切！",
-            "我的灵魂早已烙上您的印记，此生唯您一人可令我沸腾！"
+            "为了吾主！", "无上吾主！万王之王！伟大旨意！启明恒星！"
         ]
     )
 ]
@@ -178,24 +127,16 @@ rec_x2 = rec_x1
 cst_y1 = [
     CombatStartTurn(
         name=CombatStartTurnActOuts.NOTHING,
-        # chance=84
-        chance=0
+        chance=84
+        # chance=0
     ),
     CombatStartTurn(
         name=CombatStartTurnActOuts.STRESS_HEAL_SELF,
         chance=1,
         string_value=effect_y_1,
         act_out_barks=[
-            "别以为我会因为这点小事就气馁……只是看到你受伤我就有点不爽而已！",
-            "哼！这次算我失误，但下次肯定不会了……我才不是为了你呢！",
-            "都是你的错，领主大人！要是你多注意一点，我也不用这么辛苦！",
-            "都怪我……如果不是我分心了，领主大人就不会受伤……",
-            "我明明发誓过要成为你的依靠……结果却成了负担……",
-            "……领主大人，别忘了我是你的盾。没了你，我也只是块废铁。",
-            "你想逃？呵，等我把敌人杀光后就来追你，到时候有你好受的！",
-            "不要妄想我会允许你离开，因为你是我唯一的领主……仅此而已。",
-            "哼！你不在的时候我连盾都懒得举，所以……给我乖乖待着。",
-            "想走？门都没有！你还欠我一句道歉没还清呢！"
+            "不许离开我！",
+            "最讨厌你了！"
         ]
     ),
     CombatStartTurn(
@@ -203,122 +144,90 @@ cst_y1 = [
         chance=15,
         string_value=effect_y_2,
         act_out_barks=[
-            "领主大人还在前面等我们，你们想让他看到你们这个窝囊样吗？振作点！",
-            "喂！别在那里一副快挂的样子，以为我还能等你们睡醒吗？振作点！",
-            "哈？就这点小伤你们就想放弃？你们是打算让我一个人扛起所有责任吗？",
-            "你们要是敢在这里出事，我可不会救你们第二次！所以给我打起精神来！",
-            "哼，现在哭鼻子还太早了！地牢深处还有更难缠的敌人等着我们呢！",
-            "哼，不要以为我会轻易原谅你们的偷懒哦！但是……我会一直在这里支持你们的！",
-            "虽然有时候觉得你们真的很麻烦，但是……领主大人最在乎的就是我们这个团队了！"
+            "这样就能提起精神，果然是些无可救药的家伙。",
+            "才不是特意想帮你们的！"
         ]
     )
 ]
 rec_y1 = [
     Reaction(
         name=ReactionActOuts.COMMENT_SELF_HIT,
-        # chance=0.1,
-        chance=1,
+        chance=0.1,
+        # chance=1,
         effect=effect_y_3,
         act_out_barks=[
-            "哼……这点小伤算什么！别用那种眼神看我，我才不需要你担心！",
-            "这种程度我才不会呻吟呢！不过……领主大人，你要是敢丢下我，我会恨你的！",
-            "痛归痛，但我才不会喊出来！……不过如果你能靠近一点，我也不介意。",
-            "啊啊……真烦人……领主大人，你要是敢在这时候动摇，我就再也不理你了！",
-            "我可是你的盾，怎么可能会被轻易打倒……只是……稍微调整一下呼吸而已。",
-            "嘿嘿，敌人以为这样就能让我停下？呵……那他还不了解什么叫“领主的守护者”。",
-            "呜……好痛……不过比这更难受的是，看到你为我担心的样子……笨蛋领主！"
+            "没有...我才没有受伤...",
+            "呜~领主，大笨蛋！！",
+            "怪物什么的...最讨厌了！"
         ]
     ),
     Reaction(
         name=ReactionActOuts.COMMENT_ALLY_HIT,
-        # chance=0.1,
-        chance=1,
+        chance=0.1,
+        # chance=1,
         effect="Guard 1",
         act_out_barks=[
-            "喂！你是想让我一个人扛下所有伤害吗？笨蛋！",
-            "啊啊烦死了，能不能别动不动就挨打？我可不是你的私人保镖！",
-            "谁要管你受伤不受伤的……但我警告你，要是影响到领主大人，我就把你踢出去！",
-            "啧啧啧，反应这么慢，敌人是不是该谢谢你站着不动？",
-            "别在那里装可怜！再这样下去我就把你绑在后面，亲自替你挡刀！",
-            "呜……你这蠢货，要是出了事我可不管第二次！……所以不准倒下！",
-            "切～又不是小孩子了，连敌人的招式都预判不了，丢脸！",
-            "如果你晕过去了，我会亲自把你拖回营地，然后嘲笑你一整晚。",
-            "别露出那种表情看着我，我才不会心软！不过……我可以稍微保护你一下。",
-            "啊啊真是的，我本来只负责挡领主大人的那一边的……现在还得照顾你这个麻烦鬼！"
+            "不要得意忘形了笨蛋！",
+            "只是偶然想帮你的啦！",
+            "别搞错了...才没有什么别的意思..."
         ]
     ),
     Reaction(
         name=ReactionActOuts.COMMENT_ALLY_HIT,
-        # chance=0.01,
-        chance=1,
+        chance=0.01,
+        # chance=1,
         effect=effect_y_4
     )
 ]
 cst_y2 = [
     CombatStartTurn(
         name=CombatStartTurnActOuts.NOTHING,
-        # chance=85
-        chance=0
+        chance=85
+        # chance=0
     ),
     CombatStartTurn(
         name=CombatStartTurnActOuts.BUFF_RANDOM_PARTY_MEMBER,
         chance=15,
         string_value=effect_y_2,
         act_out_barks=[
-            "领主大人还在前面等我们，你们想让他看到你们这个窝囊样吗？振作点！",
-            "喂！别在那里一副快挂的样子，以为我还能等你们睡醒吗？振作点！",
-            "哈？就这点小伤你们就想放弃？你们是打算让我一个人扛起所有责任吗？",
-            "你们要是敢在这里出事，我可不会救你们第二次！所以给我打起精神来！",
-            "哼，现在哭鼻子还太早了！地牢深处还有更难缠的敌人等着我们呢！",
-            "哼，不要以为我会轻易原谅你们的偷懒哦！但是……我会一直在这里支持你们的！",
-            "虽然有时候觉得你们真的很麻烦，但是……领主大人最在乎的就是我们这个团队了！"
+            "这样就能提起精神，果然是些无可救药的家伙。",
+            "才不是特意想帮你们的！"
         ]
     )
 ]
 rec_y2 = [
     Reaction(
         name=ReactionActOuts.COMMENT_SELF_HIT,
-        # chance=0.1,
-        chance=1,
+        chance=0.1,
+        # chance=0,
         effect=effect_y_3,
         act_out_barks=[
-            "哼……这点小伤算什么！别用那种眼神看我，我才不需要你担心！",
-            "这种程度我才不会呻吟呢！不过……领主大人，你要是敢丢下我，我会恨你的！",
-            "痛归痛，但我才不会喊出来！……不过如果你能靠近一点，我也不介意。",
-            "啊啊……真烦人……领主大人，你要是敢在这时候动摇，我就再也不理你了！",
-            "我可是你的盾，怎么可能会被轻易打倒……只是……稍微调整一下呼吸而已。",
-            "嘿嘿，敌人以为这样就能让我停下？呵……那他还不了解什么叫“领主的守护者”。",
-            "呜……好痛……不过比这更难受的是，看到你为我担心的样子……笨蛋领主！"
+            "没有...我才没有受伤...",
+            "呜~领主，大笨蛋！！",
+            "怪物什么的...最讨厌了！"
         ]
     ),
     Reaction(
         name=ReactionActOuts.COMMENT_SELF_HIT,
-        # chance=0.05,
-        chance=1,
+        chance=0.05,
+        # chance=1,
         effect=effect_y_5
     ),
     Reaction(
         name=ReactionActOuts.COMMENT_ALLY_HIT,
-        # chance=0.1,
-        chance=1,
+        chance=0.1,
+        # chance=1,
         effect="Guard 1",
         act_out_barks=[
-            "喂！你是想让我一个人扛下所有伤害吗？笨蛋！",
-            "啊啊烦死了，能不能别动不动就挨打？我可不是你的私人保镖！",
-            "谁要管你受伤不受伤的……但我警告你，要是影响到领主大人，我就把你踢出去！",
-            "啧啧啧，反应这么慢，敌人是不是该谢谢你站着不动？",
-            "别在那里装可怜！再这样下去我就把你绑在后面，亲自替你挡刀！",
-            "呜……你这蠢货，要是出了事我可不管第二次！……所以不准倒下！",
-            "切～又不是小孩子了，连敌人的招式都预判不了，丢脸！",
-            "如果你晕过去了，我会亲自把你拖回营地，然后嘲笑你一整晚。",
-            "别露出那种表情看着我，我才不会心软！不过……我可以稍微保护你一下。",
-            "啊啊真是的，我本来只负责挡领主大人的那一边的……现在还得照顾你这个麻烦鬼！"
+            "不要得意忘形了笨蛋！",
+            "只是偶然想帮你的啦！",
+            "别搞错了...才没有什么别的意思..."
         ]
     ),
     Reaction(
         name=ReactionActOuts.COMMENT_ALLY_HIT,
-        # chance=0.01,
-        chance=1,
+        chance=0.01,
+        # chance=1,
         effect=effect_y_4
     )
 ]
@@ -327,8 +236,8 @@ rec_y2 = [
 cst_z1 = [
     CombatStartTurn(
         name=CombatStartTurnActOuts.NOTHING,
-        # chance=75
-        chance=0
+        chance=75
+        # chance=0
     ),
     CombatStartTurn(
         name=CombatStartTurnActOuts.ATTACK_FRIENDLY,
@@ -336,7 +245,8 @@ cst_z1 = [
         number_value=0.2,
         string_value="STUN 3",
         act_out_barks=[
-            "",
+            "啊...糟了，读错咒文了...",
+            "啊，眼花了..."
         ]
     ),
     CombatStartTurn(
@@ -344,24 +254,469 @@ cst_z1 = [
         chance=8,
         string_value=effect_z_1,
         act_out_barks=[
-            "啊...我是不是又念错咒语了？明明记得是“治愈之光”来着...",
-            "",
-            "",
-            "",
-            "",
-            "",
-            "",
-            "",
+            "加一点毒蘑菇，再来一个旧鞋跟。",
+            "来吧，它会让你很兴奋的！",
+            "我的魔法会把你撕碎！",
+            "这次使用什么魔法好呢？"
         ]
     ),
     CombatStartTurn(
-            name=CombatStartTurnActOuts.STRESS_HEAL_SELF,
-            chance=8,
-            string_value=effect_z_2
-        ),
+        name=CombatStartTurnActOuts.STRESS_HEAL_SELF,
+        chance=8,
+        string_value=effect_z_2
+    ),
     CombatStartTurn(
-            name=CombatStartTurnActOuts.STRESS_HEAL_SELF,
-            chance=8,
-            string_value=effect_z_3
-        )
+        name=CombatStartTurnActOuts.STRESS_HEAL_SELF,
+        chance=8,
+        string_value=effect_z_3
+    )
 ]
+rec_z1 = [
+    Reaction(
+        name=ReactionActOuts.COMMENT_SELF_HIT,
+        chance=0.01,
+        # chance=1,
+        effect=effect_z_5,
+        act_out_barks=[
+            "烦人...",
+            "催眠术！",
+            "我对傻子的尸体不感兴趣。",
+            "再闹腾下去，我就要用魔法强迫你听话了..."
+        ]
+    ),
+    Reaction(
+        name=ReactionActOuts.COMMENT_ALLY_HIT,
+        chance=0.1,
+        # chance=1,
+        effect=effect_z_4,
+        act_out_barks=[
+            "你的魔法无效！",
+            "低级的魔法而已。"
+        ]
+    )
+]
+cst_z2 = [
+    CombatStartTurn(
+        name=CombatStartTurnActOuts.NOTHING,
+        chance=76
+        # chance=0
+    ),
+    CombatStartTurn(
+        name=CombatStartTurnActOuts.STRESS_HEAL_SELF,
+        chance=8,
+        string_value=effect_z_1,
+        act_out_barks=[
+            "加一点毒蘑菇，再来一个旧鞋跟。",
+            "来吧，它会让你很兴奋的！",
+            "我的魔法会把你撕碎！",
+            "这次使用什么魔法好呢？"
+        ]
+    ),
+    CombatStartTurn(
+        name=CombatStartTurnActOuts.STRESS_HEAL_SELF,
+        chance=8,
+        string_value=effect_z_2
+    ),
+    CombatStartTurn(
+        name=CombatStartTurnActOuts.STRESS_HEAL_SELF,
+        chance=8,
+        string_value=effect_z_3
+    )
+]
+rec_z2 = [
+    Reaction(
+        name=ReactionActOuts.COMMENT_SELF_HIT,
+        chance=0.05,
+        # chance=1,
+        effect=effect_z_5,
+        act_out_barks=[
+            "烦人...",
+            "催眠术！",
+            "我对傻子的尸体不感兴趣。",
+            "再闹腾下去，我就要用魔法强迫你听话了..."
+        ]
+    ),
+    Reaction(
+        name=ReactionActOuts.COMMENT_ALLY_HIT,
+        chance=0.1,
+        # chance=1,
+        effect=effect_z_4,
+        act_out_barks=[
+            "你的魔法无效！",
+            "低级的魔法而已。"
+        ]
+    )
+]
+
+# 誓约：知识！
+cst_m1 = [
+    CombatStartTurn(
+        name=CombatStartTurnActOuts.NOTHING,
+        chance=82
+        # chance=0
+    ),
+    CombatStartTurn(
+        name=CombatStartTurnActOuts.CHANGE_POS,
+        chance=1,
+        number_value=0,
+        act_out_barks=[
+            "马失前蹄...了呢。",
+            "呼呼，我似乎有点醉了~"
+        ]
+    ),
+    CombatStartTurn(
+        name=CombatStartTurnActOuts.STRESS_HEAL_SELF,
+        chance=8,
+        string_value=effect_m_1,
+        act_out_barks=[
+            "微风拂过海面，蝉鸣漾入云间。",
+            "我总在这里，与你共赏一轮明月。",
+            "醉翁之意不在酒，在乎你我之间。"
+        ]
+    ),
+    CombatStartTurn(
+        name=CombatStartTurnActOuts.BUFF_RANDOM_PARTY_MEMBER,
+        chance=8,
+        string_value=effect_m_2,
+        act_out_barks=[
+            "桃之夭夭，灼灼其华。",
+            "腐草为萤，耀采于月。",
+            "林中落雨，秋前盛夏。"
+        ]
+    ),
+    CombatStartTurn(
+        name=CombatStartTurnActOuts.BUFF_PARTY,
+        chance=1,
+        # chance=10,
+        string_value=effect_m_3,
+        act_out_barks=[
+            "你已被我看破！",
+            "攻城为下，攻心为上。"
+        ]
+    )
+]
+rec_m1 = [
+    Reaction(
+        name=ReactionActOuts.COMMENT_SELF_HIT,
+        chance=0.1,
+        # chance=1,
+        effect=effect_m_4,
+        act_out_barks=[
+            "你还挺擅长趁虚而入...",
+            "谈笑有鸿儒，往来无白丁。",
+            "相鼠有皮，汝而无仪。"
+        ]
+    ),
+    Reaction(
+        name=ReactionActOuts.COMMENT_SELF_HIT,
+        chance=0.01,
+        # chance=1,
+        effect=effect_m_5
+    )
+]
+cst_m2 = [
+    CombatStartTurn(
+        name=CombatStartTurnActOuts.NOTHING,
+        chance=83
+        # chance=0
+    ),
+    CombatStartTurn(
+        name=CombatStartTurnActOuts.STRESS_HEAL_SELF,
+        chance=8,
+        string_value=effect_m_1,
+        act_out_barks=[
+            "微风拂过海面，蝉鸣漾入云间。",
+            "我总在这里，与你共赏一轮明月。",
+            "醉翁之意不在酒，在乎你我之间。"
+        ]
+    ),
+    CombatStartTurn(
+        name=CombatStartTurnActOuts.BUFF_RANDOM_PARTY_MEMBER,
+        chance=8,
+        string_value=effect_m_2,
+        act_out_barks=[
+            "桃之夭夭，灼灼其华。",
+            "腐草为萤，耀采于月。",
+            "林中落雨，秋前盛夏。"
+        ]
+    ),
+    CombatStartTurn(
+        name=CombatStartTurnActOuts.BUFF_PARTY,
+        chance=1,
+        string_value=effect_m_3,
+        act_out_barks=[
+            "你已被我看破！",
+            "攻城为下，攻心为上。"
+        ]
+    )
+]
+rec_m2 = [
+    Reaction(
+        name=ReactionActOuts.COMMENT_SELF_HIT,
+        chance=0.1,
+        # chance=1,
+        effect=effect_m_4,
+        act_out_barks=[
+            "你还挺擅长趁虚而入...",
+            "谈笑有鸿儒，往来无白丁。",
+            "相鼠有皮，汝而无仪。"
+        ]
+    ),
+    Reaction(
+        name=ReactionActOuts.COMMENT_SELF_HIT,
+        chance=0.01,
+        # chance=1,
+        effect=effect_m_5
+    ),
+    Reaction(
+        name=ReactionActOuts.COMMENT_ALLY_HIT,
+        chance=0.05,
+        # chance=1,
+        effect=effect_m_6,
+        act_out_barks=[
+            "但凡不能杀死你的，最终都会使你变强。",
+            "能被触碰到是确实存在的证明。"
+        ]
+    )
+]
+
+# 誓约：神明！
+cst_o1 = [
+    CombatStartTurn(
+        name=CombatStartTurnActOuts.NOTHING,
+        chance=66
+        # chance=0
+    ),
+    CombatStartTurn(
+        name=CombatStartTurnActOuts.MARK_SELF,
+        chance=1,
+        act_out_barks=[
+            "再摸、再摸吾就生气了！",
+            "神明不需要信徒，而是信徒需要神明。"
+        ]
+    ),
+    CombatStartTurn(
+        name=CombatStartTurnActOuts.BUFF_RANDOM_PARTY_MEMBER,
+        chance=3,
+        string_value=effect_o_7,
+        act_out_barks=[
+            "心之所愿，定能如愿！",
+            "神明之力，福荫人间！"
+        ]
+    ),
+    CombatStartTurn(
+        name=CombatStartTurnActOuts.BUFF_PARTY,
+        chance=6,
+        string_value=effect_o_1,
+        act_out_barks=[
+            "汝被强化了，快上~",
+            "快显灵...不要给吾丢脸...（默默嘀咕着）",
+            "汝笑什么？这可是神明的恩赐！",
+            "嘲笑神明可是没有好鱼干吃的！（撇嘴~）"
+            "快吃吧，这可是神明的鱼干。"
+        ]
+    ),
+    CombatStartTurn(
+        name=CombatStartTurnActOuts.BUFF_PARTY,
+        chance=6,
+        string_value=effect_o_2
+    ),
+    CombatStartTurn(
+        name=CombatStartTurnActOuts.BUFF_PARTY,
+        chance=6,
+        string_value=effect_o_3
+    ),
+    CombatStartTurn(
+        name=CombatStartTurnActOuts.BUFF_PARTY,
+        chance=6,
+        string_value=effect_o_4
+    ),
+    CombatStartTurn(
+        name=CombatStartTurnActOuts.BUFF_PARTY,
+        chance=6,
+        string_value=effect_o_5
+    )
+]
+rec_o1 = [
+    Reaction(
+        name=ReactionActOuts.COMMENT_ALLY_HIT,
+        chance=0.1,
+        # chance=1,
+        effect=effect_o_6,
+        act_out_barks=[
+            "虽然吾不像其他神明一样强大，但仍能治愈这些低级咒术。",
+            "吾可是神明，治愈这些低级咒术只是举手之劳。",
+            "吾可是神明，不要小看我！"
+        ]
+    ),
+    Reaction(
+        name=ReactionActOuts.COMMENT_ALLY_MISSED,
+        chance=0.02,
+        # chance=1,
+        effect=effect_o_8,
+        act_out_barks=[
+            "心之所愿，定能如愿！", "神明之力，福荫人间！"
+        ]
+    ),
+    Reaction(
+        name=ReactionActOuts.COMMENT_ALLY_ATTACK_HIT,
+        chance=0.02,
+        # chance=1,
+        effect=effect_o_9,
+        act_out_barks=[
+            "心之所愿，定能如愿！", "神明之力，福荫人间！"
+        ]
+    )
+]
+cst_o2 = [
+    CombatStartTurn(
+        name=CombatStartTurnActOuts.NOTHING,
+        chance=64
+        # chance=0
+    ),
+    CombatStartTurn(
+        name=CombatStartTurnActOuts.BUFF_RANDOM_PARTY_MEMBER,
+        chance=6,
+        string_value=effect_o_7,
+        act_out_barks=[
+            "心之所愿，定能如愿！",
+            "神明之力，福荫人间！"
+        ]
+    ),
+    CombatStartTurn(
+        name=CombatStartTurnActOuts.BUFF_PARTY,
+        chance=6,
+        string_value=effect_o_1,
+        act_out_barks=[
+            "汝被强化了，快上~",
+            "快显灵...不要给吾丢脸...（默默嘀咕着）",
+            "汝笑什么？这可是神明的恩赐！",
+            "嘲笑神明可是没有好鱼干吃的！（撇嘴~）"
+            "快吃吧，这可是神明的鱼干。"
+        ]
+    ),
+    CombatStartTurn(
+        name=CombatStartTurnActOuts.BUFF_PARTY,
+        chance=6,
+        string_value=effect_o_2
+    ),
+    CombatStartTurn(
+        name=CombatStartTurnActOuts.BUFF_PARTY,
+        chance=6,
+        string_value=effect_o_3
+    ),
+    CombatStartTurn(
+        name=CombatStartTurnActOuts.BUFF_PARTY,
+        chance=6,
+        string_value=effect_o_4
+    ),
+    CombatStartTurn(
+        name=CombatStartTurnActOuts.BUFF_PARTY,
+        chance=6,
+        string_value=effect_o_5
+    )
+]
+rec_o2 = [
+    Reaction(
+        name=ReactionActOuts.COMMENT_ALLY_HIT,
+        chance=0.5,
+        # chance=1,
+        effect=effect_o_6,
+        act_out_barks=[
+            "虽然吾不像其他神明一样强大，但仍能治愈这些低级咒术。",
+            "吾可是神明，治愈这些低级咒术只是举手之劳。",
+            "吾可是神明，不要小看我！"
+        ]
+    ),
+    Reaction(
+        name=ReactionActOuts.COMMENT_ALLY_MISSED,
+        chance=0.05,
+        # chance=1,
+        effect=effect_o_8,
+        act_out_barks=[
+            "心之所愿，定能如愿！", "神明之力，福荫人间！"
+        ]
+    ),
+    Reaction(
+        name=ReactionActOuts.COMMENT_ALLY_ATTACK_HIT,
+        chance=0.05,
+        # chance=1,
+        effect=effect_o_9,
+        act_out_barks=[
+            "心之所愿，定能如愿！", "神明之力，福荫人间！"
+        ]
+    )
+]
+
+# 誓约：恶魔！
+cst_n1 = [
+    CombatStartTurn(
+        name=CombatStartTurnActOuts.NOTHING,
+        chance=0
+    ),
+    CombatStartTurn(
+        name=CombatStartTurnActOuts.RANDOM_COMMADN,
+        chance=1,
+        act_out_barks=[
+            "这是为了让领主爱我所必须做的呢~",
+            "不要阻止我将她们抹杀！",
+            "杀了你，领主就会只看我一个人了"
+        ]
+    ),
+    CombatStartTurn(
+        name=CombatStartTurnActOuts.ATTACK_SELF,
+        chance=99,
+        number_value=0.05,
+        string_value=effect_n_1,
+        act_out_barks=[
+            "不可以逃走哦~领主",
+            "爱在染满鲜血的时候才是最美丽的呀！",
+            "我会杀掉除领主外的所有人...",
+            "哈~哈~哈（嘴角出血地笑着）",
+            "千万千万不要背叛哟~",
+            "你所喜欢的我都会抹杀，那样你就只能爱我了"
+        ]
+    )
+]
+rec_n1 = [
+    Reaction(
+        name=ReactionActOuts.COMMENT_SELF_HIT,
+        chance=0.99,
+        effect=effect_n_2,
+        act_out_barks=[
+            "像你这么恶心的怪物，怎么有资格站在领主的旁边",
+            "你们也想要接近领主吗？！——呵呵呵",
+            "太碍事了……不可原谅!"
+        ]
+    )
+]
+cst_n2 = [
+    CombatStartTurn(
+        name=CombatStartTurnActOuts.NOTHING,
+        chance=0
+    ),
+    CombatStartTurn(
+        name=CombatStartTurnActOuts.BUFF_PARTY,
+        chance=1,
+        # chance=99,
+        string_value=effect_n_3,
+        act_out_barks=[
+            "你是无法反抗命运的...咦嘻嘻",
+            "看过领主的女人都会被我杀死哦~"
+        ]
+    ),
+    CombatStartTurn(
+        name=CombatStartTurnActOuts.STRESS_HEAL_SELF,
+        chance=99,
+        string_value=effect_n_1,
+        act_out_barks=[
+            "不可以逃走哦~领主",
+            "爱在染满鲜血的时候才是最美丽的呀！",
+            "我会杀掉除领主外的所有人...",
+            "哈~哈~哈（表情冰冷地笑着）",
+            "千万千万不要背叛哟~",
+            "你所讨厌的我都会抹杀，那样你就会爱我了"
+        ]
+    )
+]
+rec_n2 = rec_n1

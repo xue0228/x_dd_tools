@@ -18,7 +18,7 @@ class AutoName:
                 "anim", "rarity", "trinket", "item",
                 "loot_table", "quirk", "camping_skill", "trait",
                 "mode", "sub_type", "set", "project",
-                "actor_dot", "hero", "loot_monster"
+                "actor_dot", "hero", "loot_monster", "party_name"
             )}
 
             # 动态生成并绑定方法

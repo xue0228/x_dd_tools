@@ -64,5 +64,9 @@ EXTRA_STACK_LIMIT_FILE_EXTENSION = ".inventory.extra_stack_limits.darkest"
 PROVISION_SAVE_DIR = "campaign/provision"
 PROVISION_FILE_EXTENSION = ".provision.json"
 
+PARTY_NAME_SAVE_DIR = "shared/party_name"
+PARTY_NAME_FILE_EXTENSION = ".party_name_library.json"
+
+
 if __name__ == '__main__':
     print(BUFF_SAVE_DIR)

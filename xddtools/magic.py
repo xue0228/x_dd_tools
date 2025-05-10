@@ -17,6 +17,12 @@ from xddtools.enum import EffectTarget, BuffType, STDisableCombatSkillAttribute,
 from xddtools.path import DATA_PATH
 from xddtools.utils import float_to_percent_int
 
+ALL_HEROES = ("bounty_hunter", "crusader", "vestal", "occultist",
+              "hellion", "grave_robber", "highwayman", "plague_doctor",
+              "jester", "leper", "arbalest", "man_at_arms",
+              "houndmaster", "abomination", "antiquarian", "musketeer",
+              "shieldbreaker", "flagellant")
+
 
 def get_str_tooltip_effect(
         text: str,
@@ -486,11 +492,7 @@ def get_trinket_effect_sfx(
 
 def copy_and_rename_hero_fx(hero_dir: str, heroes: Optional[Sequence[Union[HeroEntry, str]]] = None) -> List[str]:
     if heroes is None:
-        heroes = ("bounty_hunter", "crusader", "vestal", "occultist",
-                  "hellion", "grave_robber", "highwayman", "plague_doctor",
-                  "jester", "leper", "arbalest", "man_at_arms",
-                  "houndmaster", "abomination", "antiquarian", "musketeer",
-                  "shieldbreaker", "flagellant")
+        heroes = ALL_HEROES
     exist_hero = os.path.split(hero_dir)[-1]
     heroes = [get_entry_id(hero) for hero in heroes if hero != exist_hero]
 

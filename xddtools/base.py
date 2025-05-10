@@ -126,6 +126,10 @@ class BankEntry(Entry):
     pass
 
 
+class PartyNameEntry(Entry):
+    pass
+
+
 class BaseWriter(ABC):
     def __init__(self, prefix: str,
                  relative_save_dir: Optional[str] = None,
@@ -179,7 +183,12 @@ class ProxyWriter:
             self.add_writer(writer)
 
     def _add_entry(self, entry: Entry) -> NoReturn:
-        entry_id = entry.id() + f"_{entry.__class__.__name__}"
+        entry_id = entry.id()
+        if isinstance(entry, LootTableEntry):
+            entry_id = f"{entry_id}_{entry.difficulty}"
+            if entry.dungeon != "":
+                entry_id += f"_{get_entry_id(entry.dungeon)}"
+        entry_id += f"_{entry.__class__.__name__}"
         logger.info(f"开始处理：{entry_id}")
 
         if entry_id not in self._ids:
