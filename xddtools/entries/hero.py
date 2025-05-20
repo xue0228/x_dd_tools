@@ -6,9 +6,9 @@ import numpy as np
 from pydantic import BaseModel, ConfigDict, Field, model_validator
 
 from xddtools.base import HeroEntry, SkillEntry, EffectEntry, TownEventEntry, get_entry_id, AnimationEntry, \
-    TraitEntry, LootTableEntry, ItemEntry, QuirkEntry, BuffEntry, ModeEntry, MonsterEntry, BankEntry, ColourEntry, \
-    JsonData
+    TraitEntry, LootTableEntry, ItemEntry, QuirkEntry, BuffEntry, ModeEntry, MonsterEntry, BankEntry, JsonData
 from xddtools.entries.skill import Skill, SkillInfo
+from xddtools.enum import InnerFx
 from xddtools.enum.buff_rule import TownActivityType, ItemType, MonsterClass, HeroClass, QuirkType, ItemID
 from xddtools.enum.hero import DeathFx, TagID
 from xddtools.name import AutoName
@@ -261,8 +261,8 @@ class ActoutDisplay(BaseModel):
     model_config = ConfigDict(frozen=True, strict=True, arbitrary_types_allowed=True)
 
     attack_friendly_anim: Union[AnimationEntry, str, None] = None
-    attack_friendly_fx: Union[AnimationEntry, str, None] = None
-    attack_friendly_targchestfx: Union[AnimationEntry, str, None] = None
+    attack_friendly_fx: Union[InnerFx, AnimationEntry, str, None] = None
+    attack_friendly_targchestfx: Union[InnerFx, AnimationEntry, str, None] = None
     attack_friendly_sfx: Union[BankEntry, str, None] = None
 
     def __str__(self):
@@ -593,7 +593,7 @@ class HeroLocalization(BaseModel):
 
         if self.incompatible_self_party is not None:
             tem = get_bark_list(self.incompatible_self_party)
-            res.extend([(f"str_incompatible_party_{hero_name}_limit", bark) for bark in tem])
+            # res.extend([(f"str_incompatible_party_{hero_name}_limit", bark) for bark in tem])
             res.extend([(f"str_incompatible_party_member_{hero_name}_limit", bark) for bark in tem])
 
         res.extend([(f"{hero_name}+str_bark_startmoving", bark)
@@ -690,7 +690,7 @@ class Mode(ModeEntry, BaseModel):
     is_targetable: bool = True
     keep_rounds_in_ranks: bool = False
     stress_damage_per_turn: int = 0
-    is_bark_override: bool = False
+    str_bark_override: Union[Sequence[str], str, None] = None
     affliction_combat_skill_id: Union[SkillEntry, str, None] = None
     battle_complete_combat_skill_id: Union[SkillEntry, str, None] = None
     battle_complete_sfx: Union[BankEntry, str, None] = None  # 战斗结束后使用上一个参数变身时触发的音效
@@ -710,7 +710,7 @@ class Mode(ModeEntry, BaseModel):
     entry_id: str = Field(default_factory=lambda x: AutoName().new_mode(), frozen=True)
 
     def bark_override_id(self) -> Optional[str]:
-        if self.is_bark_override:
+        if self.str_bark_override:
             return f"str_{self.id()}_bark"
 
     def __str__(self):
@@ -724,7 +724,7 @@ class Mode(ModeEntry, BaseModel):
             res += " .is_targetable false"
         if self.keep_rounds_in_ranks:
             res += " .keep_rounds_in_ranks true"
-        if self.is_bark_override:
+        if self.str_bark_override is not None:
             res += f" .bark_override_id {self.bark_override_id()}"
         if self.affliction_combat_skill_id is not None:
             res += f" .affliction_combat_skill_id {get_entry_id(self.affliction_combat_skill_id)}"

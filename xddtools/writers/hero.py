@@ -160,6 +160,16 @@ class HeroWriter(BaseWriter):
                     entry_id=f"str_skill_mode_info_{mode.id()}",
                     text=mode.str_skill_mode_info
                 ))
+            if mode.str_bark_override is not None:
+                if isinstance(mode.str_bark_override, str):
+                    str_bark_override = [mode.str_bark_override]
+                else:
+                    str_bark_override = mode.str_bark_override
+                for bark in str_bark_override:
+                    res.append(Localization(
+                        entry_id=mode.bark_override_id(),
+                        text=bark
+                    ))
 
         # 基本模式动画
         mode: Optional[Mode] = entry.base_mode
@@ -550,7 +560,7 @@ class HeroWriter(BaseWriter):
             content = []
             for limit in hero.extra_stack_limit:
                 content.append(limit.info(hero.id()))
-            file = os.path.join(EXTRA_STACK_LIMIT_SAVE_DIR, f"{hero.id()}{EXTRA_STACK_LIMIT_FILE_EXTENSION}")
+            file = os.path.join(root_dir, EXTRA_STACK_LIMIT_SAVE_DIR, f"{hero.id()}{EXTRA_STACK_LIMIT_FILE_EXTENSION}")
             res.append(write_str_to_file(
                 file_path=file,
                 content="\n".join(content)
@@ -562,7 +572,7 @@ class HeroWriter(BaseWriter):
             for hero_item in hero.raid_starting_hero_items:
                 tem.append(hero_item.get_dict())
             tem = {"raid_starting_hero_class_item_lists": [{"hero_class": hero.id(), "item_lists": tem}]}
-            file = os.path.join(PROVISION_SAVE_DIR, f"hero_{hero.id()}{PROVISION_FILE_EXTENSION}")
+            file = os.path.join(root_dir, PROVISION_SAVE_DIR, f"hero_{hero.id()}{PROVISION_FILE_EXTENSION}")
             res.append(write_str_to_file(
                 file_path=file,
                 content=json.dumps(tem, indent=2, ensure_ascii=True)

@@ -2,7 +2,6 @@ import os
 
 from xddtools.entries import Animation
 
-
 if __name__ == '__main__':
     for anim in os.listdir("./"):
         if not os.path.isdir(anim):

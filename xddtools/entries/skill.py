@@ -221,7 +221,11 @@ class SkillInfo(BaseModel):
         }
         for k, v in default_false.items():
             if v:
-                res.append(f'.{k} true')
+                if k == "generation_guaranteed":
+                    if level == 0:
+                        res.append(f'.{k} true')
+                else:
+                    res.append(f'.{k} true')
         default_true = {
             "self_target_valid": self.self_target_valid,
             "is_crit_valid": self.is_crit_valid,

@@ -1,1 +1,456 @@
-{"skeleton": {"width": 851, "height": 600.02, "hash": " ", "name": "armatureName", "spine": "2.1.27"}, "bones": [{"name": "fxskill"}, {"scaleX": 0.18, "scaleY": 0.18, "name": "bone", "parent": "fxskill"}, {"x": 1185.1482, "y": 1155.8489, "name": "bone2", "parent": "bone"}, {"x": 48.3781, "y": 1083.5194, "name": "fxchest", "parent": "bone"}, {"x": 48.3781, "y": 1083.5194, "name": "fxdot", "parent": "bone"}, {"x": 145.0028, "y": 1574.6702, "name": "fxhead", "parent": "bone"}], "slots": [{"name": "Ground", "bone": "fxskill", "attachment": "Ground"}, {"name": "C", "bone": "bone", "attachment": "C"}, {"name": "Clothes", "bone": "bone", "attachment": "Clothes"}, {"name": "6", "bone": "bone", "attachment": "6"}, {"name": "5", "bone": "bone", "attachment": "5"}, {"name": "4", "bone": "bone", "attachment": "4"}, {"name": "3", "bone": "bone", "attachment": "3"}, {"name": "2", "bone": "bone", "attachment": "2"}, {"name": "1", "bone": "bone", "attachment": "1"}], "skins": {"default": {"1": {"1": {"name": "1", "width": 494, "height": 187, "x": -441.96, "y": 557.67, "scaleX": 4.002, "scaleY": 3.9947}}, "2": {"2": {"name": "2", "width": 197, "height": 151, "hull": 4, "triangles": [1, 0, 3, 2, 1, 3], "uvs": [1, 1, 0, 1, 0, 0, 1, 0], "edges": [0, 2, 2, 4, 4, 6, 6, 0], "vertices": [1321.53, 814.17, 533.53, 814.17, 533.53, 1419.17, 1321.53, 1419.17], "type": "mesh"}}, "3": {"3": {"name": "3", "width": 851, "height": 291, "x": -317.46, "y": 854.67, "scaleX": 4, "scaleY": 3.9966}}, "4": {"4": {"name": "4", "width": 194, "height": 366, "hull": 4, "triangles": [1, 0, 3, 2, 1, 3], "uvs": [1, 1, 0, 1, 0, 0, 1, 0], "edges": [0, 2, 2, 4, 4, 6, 6, 0], "vertices": [1652.53, 446.17, 877.53, 446.17, 877.53, 1909.17, 1652.53, 1909.17], "type": "mesh"}}, "5": {"5": {"name": "5", "width": 217, "height": 389, "hull": 4, "triangles": [1, 0, 3, 2, 1, 3], "uvs": [1, 1, 0, 1, 0, 0, 1, 0], "edges": [0, 2, 2, 4, 4, 6, 6, 0], "vertices": [1699.53, 400.17, 830.53, 400.17, 830.53, 1956.17, 1699.53, 1956.17], "type": "mesh"}}, "6": {"6": {"name": "6", "width": 241, "height": 241, "hull": 4, "triangles": [1, 0, 3, 2, 1, 3], "uvs": [1, 1, 0, 1, 0, 0, 1, 0], "edges": [0, 2, 2, 4, 4, 6, 6, 0], "vertices": [576.53, 364.17, -386.46, 364.17, -386.46, 1328.17, 576.53, 1328.17], "type": "mesh"}}, "Clothes": {"Clothes": {"name": "Clothes", "width": 67, "height": 68, "x": 64.04, "y": 1002.17, "scaleX": 4.0149, "scaleY": 4}}, "C": {"C": {"name": "C", "width": 547, "height": 503, "x": -335.46, "y": 855.67, "scaleX": 4, "scaleY": 4.002}}, "Ground": {"Ground": {"name": "Ground", "width": 90, "height": 16, "scaleX": 3.9889, "scaleY": 4.0625}}}}, "animations": {"n1": {"slots": {"2": {"color": [{"time": 0, "curve": "stepped", "color": "FFFFFF00"}, {"time": 0.1333, "curve": [0.25, 0, 0.75, 1], "color": "FFFFFF00"}, {"time": 0.5, "curve": "stepped", "color": "FFFFFFFF"}, {"time": 1, "curve": [0.25, 0, 0.75, 1], "color": "FFFFFFFF"}, {"time": 1.8333, "color": "FFFFFF00"}]}, "4": {"color": [{"time": 0, "curve": "stepped", "color": "FFFFFF00"}, {"time": 0.4667, "curve": [0.25, 0, 0.75, 1], "color": "FFFFFF00"}, {"time": 0.9334, "curve": "stepped", "color": "FFFFFFFF"}, {"time": 1.3334, "curve": [0.25, 0, 0.75, 1], "color": "FFFFFFFF"}, {"time": 2.1001, "color": "FFFFFF00"}]}, "5": {"color": [{"time": 0, "curve": "stepped", "color": "FFFFFF00"}, {"time": 0.2, "curve": [0.25, 0, 0.75, 1], "color": "FFFFFF00"}, {"time": 0.6667, "curve": "stepped", "color": "FFFFFFFF"}, {"time": 1.7, "curve": [0.25, 0, 0.75, 1], "color": "FFFFFFFF"}, {"time": 2.4667, "color": "FFFFFF00"}]}}}}}
+{
+  "skeleton": {
+    "width": 851,
+    "height": 600.02,
+    "hash": " ",
+    "name": "armatureName",
+    "spine": "2.1.27"
+  },
+  "bones": [
+    {
+      "name": "fxskill"
+    },
+    {
+      "scaleX": 0.18,
+      "scaleY": 0.18,
+      "name": "bone",
+      "parent": "fxskill"
+    },
+    {
+      "x": 1185.1482,
+      "y": 1155.8489,
+      "name": "bone2",
+      "parent": "bone"
+    },
+    {
+      "x": 48.3781,
+      "y": 1083.5194,
+      "name": "fxchest",
+      "parent": "bone"
+    },
+    {
+      "x": 48.3781,
+      "y": 1083.5194,
+      "name": "fxdot",
+      "parent": "bone"
+    },
+    {
+      "x": 145.0028,
+      "y": 1574.6702,
+      "name": "fxhead",
+      "parent": "bone"
+    }
+  ],
+  "slots": [
+    {
+      "name": "Ground",
+      "bone": "fxskill",
+      "attachment": "Ground"
+    },
+    {
+      "name": "C",
+      "bone": "bone",
+      "attachment": "C"
+    },
+    {
+      "name": "Clothes",
+      "bone": "bone",
+      "attachment": "Clothes"
+    },
+    {
+      "name": "6",
+      "bone": "bone",
+      "attachment": "6"
+    },
+    {
+      "name": "5",
+      "bone": "bone",
+      "attachment": "5"
+    },
+    {
+      "name": "4",
+      "bone": "bone",
+      "attachment": "4"
+    },
+    {
+      "name": "3",
+      "bone": "bone",
+      "attachment": "3"
+    },
+    {
+      "name": "2",
+      "bone": "bone",
+      "attachment": "2"
+    },
+    {
+      "name": "1",
+      "bone": "bone",
+      "attachment": "1"
+    }
+  ],
+  "skins": {
+    "default": {
+      "1": {
+        "1": {
+          "name": "1",
+          "width": 494,
+          "height": 187,
+          "x": -441.96,
+          "y": 557.67,
+          "scaleX": 4.002,
+          "scaleY": 3.9947
+        }
+      },
+      "2": {
+        "2": {
+          "name": "2",
+          "width": 197,
+          "height": 151,
+          "hull": 4,
+          "triangles": [
+            1,
+            0,
+            3,
+            2,
+            1,
+            3
+          ],
+          "uvs": [
+            1,
+            1,
+            0,
+            1,
+            0,
+            0,
+            1,
+            0
+          ],
+          "edges": [
+            0,
+            2,
+            2,
+            4,
+            4,
+            6,
+            6,
+            0
+          ],
+          "vertices": [
+            1321.53,
+            814.17,
+            533.53,
+            814.17,
+            533.53,
+            1419.17,
+            1321.53,
+            1419.17
+          ],
+          "type": "mesh"
+        }
+      },
+      "3": {
+        "3": {
+          "name": "3",
+          "width": 851,
+          "height": 291,
+          "x": -317.46,
+          "y": 854.67,
+          "scaleX": 4,
+          "scaleY": 3.9966
+        }
+      },
+      "4": {
+        "4": {
+          "name": "4",
+          "width": 194,
+          "height": 366,
+          "hull": 4,
+          "triangles": [
+            1,
+            0,
+            3,
+            2,
+            1,
+            3
+          ],
+          "uvs": [
+            1,
+            1,
+            0,
+            1,
+            0,
+            0,
+            1,
+            0
+          ],
+          "edges": [
+            0,
+            2,
+            2,
+            4,
+            4,
+            6,
+            6,
+            0
+          ],
+          "vertices": [
+            1652.53,
+            446.17,
+            877.53,
+            446.17,
+            877.53,
+            1909.17,
+            1652.53,
+            1909.17
+          ],
+          "type": "mesh"
+        }
+      },
+      "5": {
+        "5": {
+          "name": "5",
+          "width": 217,
+          "height": 389,
+          "hull": 4,
+          "triangles": [
+            1,
+            0,
+            3,
+            2,
+            1,
+            3
+          ],
+          "uvs": [
+            1,
+            1,
+            0,
+            1,
+            0,
+            0,
+            1,
+            0
+          ],
+          "edges": [
+            0,
+            2,
+            2,
+            4,
+            4,
+            6,
+            6,
+            0
+          ],
+          "vertices": [
+            1699.53,
+            400.17,
+            830.53,
+            400.17,
+            830.53,
+            1956.17,
+            1699.53,
+            1956.17
+          ],
+          "type": "mesh"
+        }
+      },
+      "6": {
+        "6": {
+          "name": "6",
+          "width": 241,
+          "height": 241,
+          "hull": 4,
+          "triangles": [
+            1,
+            0,
+            3,
+            2,
+            1,
+            3
+          ],
+          "uvs": [
+            1,
+            1,
+            0,
+            1,
+            0,
+            0,
+            1,
+            0
+          ],
+          "edges": [
+            0,
+            2,
+            2,
+            4,
+            4,
+            6,
+            6,
+            0
+          ],
+          "vertices": [
+            576.53,
+            364.17,
+            -386.46,
+            364.17,
+            -386.46,
+            1328.17,
+            576.53,
+            1328.17
+          ],
+          "type": "mesh"
+        }
+      },
+      "Clothes": {
+        "Clothes": {
+          "name": "Clothes",
+          "width": 67,
+          "height": 68,
+          "x": 64.04,
+          "y": 1002.17,
+          "scaleX": 4.0149,
+          "scaleY": 4
+        }
+      },
+      "C": {
+        "C": {
+          "name": "C",
+          "width": 547,
+          "height": 503,
+          "x": -335.46,
+          "y": 855.67,
+          "scaleX": 4,
+          "scaleY": 4.002
+        }
+      },
+      "Ground": {
+        "Ground": {
+          "name": "Ground",
+          "width": 90,
+          "height": 16,
+          "scaleX": 3.9889,
+          "scaleY": 4.0625
+        }
+      }
+    }
+  },
+  "animations": {
+    "n1": {
+      "slots": {
+        "2": {
+          "color": [
+            {
+              "time": 0,
+              "curve": "stepped",
+              "color": "FFFFFF00"
+            },
+            {
+              "time": 0.1333,
+              "curve": [
+                0.25,
+                0,
+                0.75,
+                1
+              ],
+              "color": "FFFFFF00"
+            },
+            {
+              "time": 0.5,
+              "curve": "stepped",
+              "color": "FFFFFFFF"
+            },
+            {
+              "time": 1,
+              "curve": [
+                0.25,
+                0,
+                0.75,
+                1
+              ],
+              "color": "FFFFFFFF"
+            },
+            {
+              "time": 1.8333,
+              "color": "FFFFFF00"
+            }
+          ]
+        },
+        "4": {
+          "color": [
+            {
+              "time": 0,
+              "curve": "stepped",
+              "color": "FFFFFF00"
+            },
+            {
+              "time": 0.4667,
+              "curve": [
+                0.25,
+                0,
+                0.75,
+                1
+              ],
+              "color": "FFFFFF00"
+            },
+            {
+              "time": 0.9334,
+              "curve": "stepped",
+              "color": "FFFFFFFF"
+            },
+            {
+              "time": 1.3334,
+              "curve": [
+                0.25,
+                0,
+                0.75,
+                1
+              ],
+              "color": "FFFFFFFF"
+            },
+            {
+              "time": 2.1001,
+              "color": "FFFFFF00"
+            }
+          ]
+        },
+        "5": {
+          "color": [
+            {
+              "time": 0,
+              "curve": "stepped",
+              "color": "FFFFFF00"
+            },
+            {
+              "time": 0.2,
+              "curve": [
+                0.25,
+                0,
+                0.75,
+                1
+              ],
+              "color": "FFFFFF00"
+            },
+            {
+              "time": 0.6667,
+              "curve": "stepped",
+              "color": "FFFFFFFF"
+            },
+            {
+              "time": 1.7,
+              "curve": [
+                0.25,
+                0,
+                0.75,
+                1
+              ],
+              "color": "FFFFFFFF"
+            },
+            {
+              "time": 2.4667,
+              "color": "FFFFFF00"
+            }
+          ]
+        }
+      }
+    }
+  }
+}

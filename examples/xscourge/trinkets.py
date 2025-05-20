@@ -1,0 +1,409 @@
+from constants import MOD_NAME
+from effects import charge_p1, clear_charge
+from modes import modes_a, mode_b
+from xddtools.entries import TrinketRarity, Colour, Trinket, Buff, TrinketEffect, Effect, TrinketSet, BuffRule
+from xddtools.entries.colour import stress, notable, bleed
+from xddtools.enum import TrinketAwardCategory, TrinketRarityType, BuffType, STCombatStatAdd, STCombatStatMultiply, \
+    TrinketTriggerType, EffectTarget, STDisableCombatSkillAttribute, BuffRuleType, STResistance
+from xddtools.magic import get_str_tooltip_buff, get_clear_self_buff_source_effect, get_set_mode_effect
+
+rarity = TrinketRarity(
+    award_category=TrinketAwardCategory.TROPHY,
+    trinket_rarity_title="世界",
+    rarity_image="trinket/rarity_Scourge_World.png"
+)
+
+world_colour = Colour(rgba=(202, 66, 117, 255), entry_id=rarity.id())
+trinket_0 = Trinket(
+    hero_class_requirements=[MOD_NAME],
+    rarity=TrinketRarityType.COMMON,
+    str_inventory_title_trinket="德罗姆的建言",
+    inv_trinket_image="trinket/inv_trinket+Scourge_1.png",
+    limit=1,
+    buffs=[
+        get_str_tooltip_buff(world_colour(text="“别忘了有空时来看看我”\n")),
+        Buff(
+            stat_type=BuffType.COMBAT_STAT_ADD,
+            stat_sub_type=STCombatStatAdd.DAMAGE_LOW,
+            has_description=False,
+            amount=5
+        ),
+        Buff(
+            stat_type=BuffType.COMBAT_STAT_ADD,
+            stat_sub_type=STCombatStatAdd.DAMAGE_HIGH,
+            has_description=False,
+            amount=-5
+        ),
+        get_str_tooltip_buff("+5最小攻击\n-5最大攻击"),
+        Buff(
+            stat_type=BuffType.COMBAT_STAT_ADD,
+            stat_sub_type=STCombatStatAdd.ATTACK_RATING,
+            amount=0.05
+        ),
+        Buff(
+            stat_type=BuffType.STRESS_DMG_RECEIVED_PERCENT,
+            amount=0.1
+        )
+    ]
+)
+
+trinket_1 = Trinket(
+    hero_class_requirements=[MOD_NAME],
+    rarity=TrinketRarityType.UNCOMMON,
+    str_inventory_title_trinket="一罐能量饮料",
+    inv_trinket_image="trinket/inv_trinket+Scourge_2.png",
+    limit=1,
+    buffs=[
+        get_str_tooltip_buff(world_colour(text="“饮料里的能量也是能量！”\n")),
+        Buff(
+            stat_type=BuffType.COMBAT_STAT_ADD,
+            stat_sub_type=STCombatStatAdd.SPEED_RATING,
+            amount=-6
+        ),
+        Buff(
+            stat_type=BuffType.COMBAT_STAT_MULTIPLY,
+            stat_sub_type=STCombatStatMultiply.DAMAGE_LOW,
+            amount=-0.5
+        ),
+        Buff(
+            stat_type=BuffType.COMBAT_STAT_MULTIPLY,
+            stat_sub_type=STCombatStatMultiply.DAMAGE_HIGH,
+            amount=-0.5
+        )
+    ],
+    special_effects=[
+        TrinketEffect(
+            trigger=TrinketTriggerType.ATTACK_SKILL,
+            effects=[
+                Effect(
+                    target=EffectTarget.PERFORMER_GROUP,
+                    heal=2,
+                    apply_once=True
+                ),
+                Effect(
+                    target=EffectTarget.PERFORMER_GROUP,
+                    chance=0.5,
+                    duration=3,
+                    apply_once=True,
+                    buff_ids=[
+                        Buff(
+                            stat_type=BuffType.HP_HEAL_RECEIVED_PERCENT,
+                            amount=0.25
+                        )
+                    ]
+                ),
+                Effect(
+                    target=EffectTarget.PERFORMER,
+                    chance=0.5,
+                    duration=3,
+                    apply_once=True,
+                    buff_ids=[
+                        Buff(
+                            stat_type=BuffType.HP_HEAL_PERCENT,
+                            amount=0.25
+                        )
+                    ]
+                )
+            ]
+        )
+    ]
+)
+
+trinket_2 = Trinket(
+    hero_class_requirements=[MOD_NAME],
+    rarity=TrinketRarityType.RARE,
+    str_inventory_title_trinket="往日幻影",
+    inv_trinket_image="trinket/inv_trinket+Scourge_3.png",
+    limit=1,
+    buffs=[
+        get_str_tooltip_buff(world_colour(text="“时间从未回头，今夜为了往昔回忆”\n")),
+        Buff(
+            stat_type=BuffType.DAMAGE_RECEIVED_PERCENT,
+            amount=0.15
+        ),
+        get_str_tooltip_buff(f"攻击：自身：获得1点{stress('恐惧值')}"),
+        get_str_tooltip_buff(f"攻击：自身：受到6点真实伤害"),
+        get_str_tooltip_buff(f"暴击：清除所有极巨化加成（20%%概率）"),
+    ],
+    special_effects=[
+        TrinketEffect(
+            trigger=TrinketTriggerType.ATTACK_SKILL,
+            effects=[
+                charge_p1,
+                Effect(
+                    target=EffectTarget.PERFORMER,
+                    health_damage=6,
+                    on_miss=True,
+                    has_description=False
+                )
+            ]
+        ),
+        TrinketEffect(
+            trigger=TrinketTriggerType.ATTACK_CRIT,
+            effects=[
+                get_clear_self_buff_source_effect(chance=0.2)
+            ]
+        )
+    ]
+)
+
+trinket_3 = Trinket(
+    hero_class_requirements=[MOD_NAME],
+    rarity=TrinketRarityType.VERY_RARE,
+    str_inventory_title_trinket="地狱之力战旗",
+    inv_trinket_image="trinket/inv_trinket+Scourge_4.png",
+    limit=1,
+    buffs=[
+        get_str_tooltip_buff(world_colour(text="“我即是新的领主，低头！”\n")),
+        Buff(
+            stat_type=BuffType.DISABLE_COMBAT_SKILL_ATTRIBUTE,
+            stat_sub_type=STDisableCombatSkillAttribute.GUARD,
+            amount=1,
+            has_description=False
+        ),
+        Buff(
+            stat_type=BuffType.STUN_CHANCE,
+            amount=-0.2
+        ),
+        Buff(
+            stat_type=BuffType.DEBUFF_CHANCE,
+            amount=-0.2
+        ),
+        Buff(
+            stat_type=BuffType.COMBAT_STAT_MULTIPLY,
+            stat_sub_type=STCombatStatMultiply.DAMAGE_LOW,
+            amount=-0.25
+        ),
+        Buff(
+            stat_type=BuffType.COMBAT_STAT_MULTIPLY,
+            stat_sub_type=STCombatStatMultiply.DAMAGE_HIGH,
+            amount=-0.25
+        ),
+        Buff(
+            stat_type=BuffType.STRESS_DMG_RECEIVED_PERCENT,
+            amount=0.2
+        ),
+        get_str_tooltip_buff(f"禁用{notable('坠入星界')}"),
+        get_str_tooltip_buff(f"近战攻击：获得3点{bleed('末日充能')}"),
+        get_str_tooltip_buff(f"暴击：清空所有{bleed('末日充能')}和{stress('恐惧值')}")
+    ],
+    special_effects=[
+        TrinketEffect(
+            trigger=TrinketTriggerType.ATTACK_SKILL,
+            effects=[
+                Effect(
+                    target=EffectTarget.PERFORMER,
+                    duration=2,
+                    on_miss=True,
+                    tag=True
+                )
+            ]
+        ),
+        TrinketEffect(
+            trigger=TrinketTriggerType.MELEE_ATTACK_SKILL,
+            effects=[
+                get_set_mode_effect(modes_a[3], order=4, has_description=False)
+            ]
+        ),
+        TrinketEffect(
+            trigger=TrinketTriggerType.ATTACK_CRIT,
+            effects=[
+                get_set_mode_effect(modes_a[0], order=4, has_description=False),
+                clear_charge
+            ]
+        )
+    ]
+)
+
+trinket_set = TrinketSet(
+    str_inventory_set_title="领域",
+    buffs=[
+        Buff(
+            stat_type=BuffType.DAMAGE_REFLECT_PERCENT,
+            amount=0.3
+        )
+    ]
+)
+
+change_mode_b = get_set_mode_effect(mode_b)
+
+trinket_4 = Trinket(
+    hero_class_requirements=[MOD_NAME],
+    rarity=TrinketRarityType.CRIMSON_COURT,
+    set_id=trinket_set,
+    limit=1,
+    str_inventory_title_trinket="一箱灵魂币",
+    inv_trinket_image="trinket/inv_trinket+Scourge_5.png",
+    buffs=[
+        Buff(
+            stat_type=BuffType.DAMAGE_RECEIVED_PERCENT,
+            amount=0.25
+        ),
+        Buff(
+            stat_type=BuffType.DISABLE_COMBAT_SKILL_ATTRIBUTE,
+            stat_sub_type=STDisableCombatSkillAttribute.GUARD,
+            amount=1,
+            has_description=False
+        ),
+        get_str_tooltip_buff(f"禁用{notable('坠入星界')}"),
+        Buff(
+            stat_type=BuffType.COMBAT_STAT_ADD,
+            stat_sub_type=STCombatStatAdd.ATTACK_RATING,
+            amount=0.15,
+            buff_rule=BuffRule(
+                rule_type=BuffRuleType.RIPOSTE
+            )
+        ),
+        Buff(
+            stat_type=BuffType.COMBAT_STAT_ADD,
+            stat_sub_type=STCombatStatAdd.CRIT_CHANCE,
+            amount=1.5,
+            buff_rule=BuffRule(
+                rule_type=BuffRuleType.RIPOSTE
+            )
+        )
+    ],
+    special_effects=[
+        TrinketEffect(
+            trigger=TrinketTriggerType.RANGED_ATTACK_SKILL,
+            effects=[
+                change_mode_b
+            ]
+        )
+    ]
+)
+
+trinket_5 = Trinket(
+    hero_class_requirements=[MOD_NAME],
+    rarity=TrinketRarityType.CRIMSON_COURT,
+    set_id=trinket_set,
+    limit=1,
+    str_inventory_title_trinket="千年图书馆密瑟能核",
+    inv_trinket_image="trinket/inv_trinket+Scourge_6.png",
+    buffs=[
+        Buff(
+            stat_type=BuffType.DAMAGE_REFLECT_PERCENT,
+            amount=0.25
+        ),
+        Buff(
+            stat_type=BuffType.COMBAT_STAT_ADD,
+            stat_sub_type=STCombatStatAdd.DEFENSE_RATING,
+            amount=-0.15
+        ),
+        get_str_tooltip_buff("攻击：自身：刷新技能使用次数")
+    ],
+    special_effects=[
+        TrinketEffect(
+            trigger=TrinketTriggerType.ATTACK_SKILL,
+            effects=[
+                Effect(
+                    target=EffectTarget.PERFORMER,
+                    refreshes_skill_uses=True,
+                    has_description=False
+                )
+            ]
+        )
+    ]
+)
+
+trinket_6 = Trinket(
+    hero_class_requirements=[MOD_NAME],
+    rarity=TrinketRarityType.COMET,
+    shard=80,
+    limit=1,
+    str_inventory_title_trinket="燃烧怒火之护手",
+    inv_trinket_image="trinket/inv_trinket+Scourge_7.png",
+    buffs=[
+        get_str_tooltip_buff(world_colour(text="“这里最不缺的就是火啦~”\n")),
+        Buff(
+            stat_type=BuffType.RESISTANCE,
+            stat_sub_type=STResistance.BLEED,
+            amount=0.6
+        ),
+        Buff(
+            stat_type=BuffType.RESISTANCE,
+            stat_sub_type=STResistance.POISON,
+            amount=0.6
+        ),
+        Buff(
+            stat_type=BuffType.RESISTANCE,
+            stat_sub_type=STResistance.DEATH_BLOW,
+            amount=-0.1
+        ),
+        Buff(
+            stat_type=BuffType.COMBAT_STAT_MULTIPLY,
+            stat_sub_type=STCombatStatMultiply.DAMAGE_LOW,
+            amount=0.15,
+            buff_rule=BuffRule(
+                rule_type=BuffRuleType.IN_RANK,
+                rule_data_float=0
+            )
+        ),
+        Buff(
+            stat_type=BuffType.COMBAT_STAT_MULTIPLY,
+            stat_sub_type=STCombatStatMultiply.DAMAGE_HIGH,
+            amount=0.15,
+            buff_rule=BuffRule(
+                rule_type=BuffRuleType.IN_RANK,
+                rule_data_float=0
+            )
+        )
+    ]
+)
+
+trinket_7 = Trinket(
+    hero_class_requirements=[MOD_NAME],
+    rarity=TrinketRarityType.ANCESTRAL,
+    limit=1,
+    str_inventory_title_trinket="一纸老旧的契约",
+    inv_trinket_image="trinket/inv_trinket+Scourge_10.png",
+    buffs=[
+        get_str_tooltip_buff(world_colour(text="“你叫恩宠？真是个奇怪的名字……\n呵呵，在这里签名吧。”\n")),
+        Buff(
+            stat_type=BuffType.COMBAT_STAT_ADD,
+            stat_sub_type=STCombatStatAdd.PROTECTION_RATING,
+            amount=0.25
+        ),
+        Buff(
+            stat_type=BuffType.STRESS_HEAL_PERCENT,
+            amount=0.5
+        ),
+        Buff(
+            stat_type=BuffType.COMBAT_STAT_MULTIPLY,
+            stat_sub_type=STCombatStatMultiply.MAX_HP,
+            amount=-0.15
+        ),
+        Buff(
+            stat_type=BuffType.STRESS_DMG_RECEIVED_PERCENT,
+            amount=0.2
+        )
+    ]
+)
+
+trinket_8 = Trinket(
+    hero_class_requirements=[MOD_NAME],
+    rarity=rarity,
+    limit=1,
+    str_inventory_title_trinket="“泰拉蒂斯”",
+    inv_trinket_image="trinket/inv_trinket+Scourge_9.png",
+    buffs=[
+        get_str_tooltip_buff(world_colour(text="“末日降临的样子吗？这就是答案，它就在你眼前”\n")),
+        Buff(
+            stat_type=BuffType.DISABLE_COMBAT_SKILL_ATTRIBUTE,
+            stat_sub_type=STDisableCombatSkillAttribute.DAZE,
+            amount=-3,
+            has_description=False
+        ),
+        get_str_tooltip_buff(world_colour(text=f"{notable('坠入星界')}没有{stress('恐惧值')}限制")),
+        Buff(
+            stat_type=BuffType.STUN_CHANCE,
+            amount=0.4
+        ),
+        Buff(
+            stat_type=BuffType.HP_HEAL_PERCENT,
+            amount=-0.4
+        )
+    ]
+)
+
+trinkets = [trinket_1, trinket_2, trinket_3, trinket_4, trinket_5, trinket_6, trinket_7, trinket_8]

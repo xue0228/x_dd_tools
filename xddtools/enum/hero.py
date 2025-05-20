@@ -11,6 +11,8 @@ class TagID(Enum):
     TRAINING_RING = "training_ring"
     LIBRARY = "library"
     OUTSIDERS_BONFIRE = "outsiders_bonfire"
+    THEATER = "theater"
+    ALTAR_OF_LIGHT = "altar_of_light"
 
 
 class DeathFx(Enum):

@@ -61,12 +61,12 @@ class TraitWriter(JsonData, BaseWriter):
                 entry_id=entry_id,
                 text=entry.str_trait_name,
             ))
-        # if entry.str_trait_description is not None:
-        #     entry_id = f"str_{overstress}_description_{entry.id()}"
-        #     res.append(Localization(
-        #         entry_id=entry_id,
-        #         text=entry.str_trait_description,
-        #     ))
+        if entry.str_trait_description is not None:
+            entry_id = f"str_{overstress}_description_{entry.id()}"
+            res.append(Localization(
+                entry_id=entry_id,
+                text=entry.str_trait_description,
+            ))
         if entry.str_trait_barks is not None:
             if isinstance(entry.str_trait_barks, str):
                 barks = [entry.str_trait_barks]
@@ -85,6 +85,28 @@ class TraitWriter(JsonData, BaseWriter):
                 barks = entry.str_stress_camp
             for bark in barks:
                 entry_id = f"str_bark_stress_camp_{entry.id()}"
+                res.append(Localization(
+                    entry_id=entry_id,
+                    text=bark,
+                ))
+        if entry.str_heart_attack is not None:
+            if isinstance(entry.str_heart_attack, str):
+                barks = [entry.str_heart_attack]
+            else:
+                barks = entry.str_heart_attack
+            for bark in barks:
+                entry_id = f"str_heart_attack_{entry.id()}"
+                res.append(Localization(
+                    entry_id=entry_id,
+                    text=bark,
+                ))
+        if entry.str_trigger_curio is not None:
+            if isinstance(entry.str_trigger_curio, str):
+                barks = [entry.str_trigger_curio]
+            else:
+                barks = entry.str_trigger_curio
+            for bark in barks:
+                entry_id = f"trigger_curio_{overstress}_{entry.id()}"
                 res.append(Localization(
                     entry_id=entry_id,
                     text=bark,

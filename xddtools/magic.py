@@ -3,7 +3,7 @@ import hashlib
 import os
 import re
 import shutil
-from typing import Optional, Iterable, List, Union, Tuple, Sequence
+from typing import Optional, Iterable, List, Union, Tuple, Sequence, Dict
 
 from PIL import Image, ImageDraw, ImageFont
 from pydantic import BaseModel, ConfigDict
@@ -17,6 +17,7 @@ from xddtools.enum import EffectTarget, BuffType, STDisableCombatSkillAttribute,
 from xddtools.path import DATA_PATH
 from xddtools.utils import float_to_percent_int
 
+# 原版18个职业
 ALL_HEROES = ("bounty_hunter", "crusader", "vestal", "occultist",
               "hellion", "grave_robber", "highwayman", "plague_doctor",
               "jester", "leper", "arbalest", "man_at_arms",
@@ -24,20 +25,41 @@ ALL_HEROES = ("bounty_hunter", "crusader", "vestal", "occultist",
               "shieldbreaker", "flagellant")
 
 
+def get_effect_order_dict(order: int = 3) -> Dict[str, Optional[bool]]:
+    """
+    获得指定优先级的 Effect 参数字典
+    :param order: 0最高优先级，第一批执行
+    :return:
+    """
+    res = {
+        "skill_instant": False,
+        "queue": True,
+        "push": None
+    }
+    if order == 0:
+        res["skill_instant"] = True
+    elif order == 1:
+        res["queue"] = False
+    elif order == 2:
+        res["queue"] = False
+        res["push"] = 0
+    elif order == 3:
+        pass
+    elif order == 4:
+        res["push"] = 0
+    else:
+        raise ValueError("order is not supported,only 0-4")
+    return res
+
+
 def get_str_tooltip_effect(
         text: str,
-        target: EffectTarget = EffectTarget.PERFORMER,
-        on_hit: bool = True,
-        on_miss: bool = True,
-        skill_instant: bool = True
+        target: EffectTarget = EffectTarget.PERFORMER
 ) -> Effect:
     """
     为 skill 添加文本提示
     :param text:
     :param target:
-    :param on_hit:
-    :param on_miss:
-    :param skill_instant:
     :return:
     """
     return Effect(
@@ -47,9 +69,9 @@ def get_str_tooltip_effect(
             stat_sub_type=AutoName().new_sub_type(),
             buff_stat_tooltip=text
         )],
-        on_hit=on_hit,
-        on_miss=on_miss,
-        skill_instant=skill_instant,
+        on_hit=True,
+        on_miss=True,
+        skill_instant=True,
         apply_once=True
     )
 
@@ -93,7 +115,7 @@ def get_number_tooltip_buff(
         stat_sub_type=sub_type,
         buff_stat_tooltip=text,
         amount=amount,
-        remove_if_not_active=True,
+        # remove_if_not_active=True,
         is_clear_debuff_valid=False,
     )
 
@@ -140,11 +162,16 @@ def get_cd_tag_effect(cd_type: STDisableCombatSkillAttribute = STDisableCombatSk
     return effect
 
 
-def get_clear_self_buff_source_effect(buff_source: BuffSource = BuffSource.NEVER_AGAIN, chance: float = 1.0) -> Effect:
+def get_clear_self_buff_source_effect(
+        buff_source: BuffSource = BuffSource.NEVER_AGAIN,
+        chance: float = 1.0,
+        order: int = 3
+) -> Effect:
     """
     完全驱散自身所有属于 buff_source 来源的 buff
     :param buff_source:
     :param chance:
+    :param order:
     :return:
     """
     return Effect(
@@ -153,7 +180,8 @@ def get_clear_self_buff_source_effect(buff_source: BuffSource = BuffSource.NEVER
         on_miss=True,
         steal_buff_source_type=buff_source,
         has_description=False,
-        apply_once=True
+        apply_once=True,
+        **get_effect_order_dict(order)
     )
 
 
@@ -172,7 +200,8 @@ def get_cd_charge_effect(
         buff_duration_type: BuffDurationType = BuffDurationType.QUEST_END,
         duration: int = 1,
         on_hit: bool = True,
-        on_miss: bool = True
+        on_miss: bool = True,
+        order: int = 3
 ) -> Effect:
     """
     给技能 CD 充能，需要搭配禁用技能的 quirk 和 get_clear_self_buff_source_effect 函数一起使用
@@ -184,6 +213,7 @@ def get_cd_charge_effect(
     :param duration:
     :param on_miss:
     :param on_hit:
+    :param order:
     :return:
     """
     positive = 0
@@ -198,7 +228,8 @@ def get_cd_charge_effect(
         on_hit=on_hit,
         on_miss=on_miss,
         has_description=False,
-        apply_once=True
+        apply_once=True,
+        **get_effect_order_dict(order)
     )
 
     buffs = []
@@ -269,8 +300,17 @@ def get_duration_localization(
 def get_steal_target_max_life_effects(
         amount: int,
         buff_duration_type=BuffDurationType.COMBAT_END,
-        duration=3
+        duration: int = 3,
+        order: int = 3
 ) -> List[Effect]:
+    """
+    生命偷取所需的所有 Effect
+    :param amount:
+    :param buff_duration_type:
+    :param duration:
+    :param order:
+    :return:
+    """
     return [
         Effect(
             target=EffectTarget.PERFORMER,
@@ -286,7 +326,8 @@ def get_steal_target_max_life_effects(
                     duration_type=buff_duration_type,
                     duration=duration
                 ),
-            ]
+            ],
+            **get_effect_order_dict(order)
         ),
         Effect(
             target=EffectTarget.TARGET,
@@ -303,7 +344,8 @@ def get_steal_target_max_life_effects(
                     duration_type=buff_duration_type,
                     duration=duration
                 ),
-            ]
+            ],
+            **get_effect_order_dict(order)
         ),
         get_str_tooltip_effect(f"{debuff('偷取')}目标{amount}点{heal_hp('最大生命')}"
                                f"{skill_unselectable(get_duration_localization(buff_duration_type, duration))}")
@@ -313,7 +355,7 @@ def get_steal_target_max_life_effects(
 def get_suck_blood_effects(
         heal_percent: float,
         has_description: bool = True
-):
+) -> List[Effect]:
     """
     需要搭配 skill 中的 damage_heal_base_class_ids 属性使用
     :param heal_percent: 生命偷取比例
@@ -327,6 +369,7 @@ def get_suck_blood_effects(
         Effect(
             target=EffectTarget.PERFORMER,
             skill_instant=True,
+            apply_once=True,
             has_description=False,
             buff_ids=[
                 Buff(
@@ -347,8 +390,15 @@ def get_hero_fx_sfx_buff(
         hero: Union[HeroEntry, str],
         fx_dir: Optional[str] = None,
         sfx: Optional[BankEntry] = None,
-        duration: int = -1
+        # duration: int = -1
 ) -> Buff:
+    """
+    用于指定英雄的特效Buff
+    :param hero:
+    :param fx_dir:
+    :param sfx:
+    :return:
+    """
     if fx_dir is None and sfx is None:
         raise ValueError("fx_dir and sfx cannot be both None")
 
@@ -359,7 +409,7 @@ def get_hero_fx_sfx_buff(
         stat_type=BuffType.UPGRADE_DISCOUNT,
         stat_sub_type=AutoName().new_sub_type(),
         has_description=False,
-        duration=duration,
+        # duration=duration,
         fx=Animation(
             anim_dir=fx_dir,
             is_fx=True,
@@ -482,7 +532,7 @@ def get_trinket_effect_sfx(
                 on_miss=True,
                 duration=1,
                 buff_ids=[
-                    get_hero_fx_sfx_buff(hero, sfx=sfx, duration=1)
+                    get_hero_fx_sfx_buff(hero, sfx=sfx)
                 ]
             )
         ]
@@ -532,24 +582,24 @@ def get_set_mode_effect(
         has_description: bool = True,
         on_hit: bool = True,
         on_miss: bool = True,
-        ensure_last: bool = True
+        order: int = 1
 ):
     return Effect(
         target=EffectTarget.PERFORMER,
         chance=100,
-        push=0 if ensure_last else None,
         set_mode=mode,
         on_hit=on_hit,
         on_miss=on_miss,
         apply_once=True,
-        queue=True if ensure_last else False,
-        has_description=has_description
+        has_description=has_description,
+        **get_effect_order_dict(order)
     )
 
 
 if __name__ == '__main__':
-    res = copy_and_rename_hero_fx(r"D:\Users\Desktop\x_dd_tools\examples\xhos\xhos\heroes\xjiangshi")
-    print(res)
+    print(get_effect_order_dict(5))
+    # res = copy_and_rename_hero_fx(r"D:\Users\Desktop\x_dd_tools\examples\xhos\xhos\heroes\xjiangshi")
+    # print(res)
 
     # AutoName.set_default_prefix("xue")
     # t1 = get_number_tooltip_buff("魔力值：%d", amount=1)

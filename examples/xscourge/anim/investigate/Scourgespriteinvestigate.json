@@ -85,5 +85,7 @@
       }
     }
   },
-  "animations": {"investigate": {}}
+  "animations": {
+    "investigate": {}
+  }
 }

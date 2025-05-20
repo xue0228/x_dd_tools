@@ -111,6 +111,17 @@ class QuirkWriter(JsonData, BaseWriter):
                 entry_id=entry_id,
                 text=entry.str_ui_entering,
             ))
+        if entry.str_trigger_curio is not None:
+            if isinstance(entry.str_trigger_curio, str):
+                barks = [entry.str_trigger_curio]
+            else:
+                barks = entry.str_trigger_curio
+            for bark in barks:
+                entry_id = f"trigger_curio_quirk_{entry.id()}"
+                res.append(Localization(
+                    entry_id=entry_id,
+                    text=bark,
+                ))
 
         return res
 

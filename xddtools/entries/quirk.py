@@ -69,6 +69,7 @@ class Quirk(JsonData, QuirkEntry, BaseModel):
     str_quirk_name: Optional[str] = None
     str_quirk_description: Optional[str] = None
     str_ui_entering: Optional[str] = None
+    str_trigger_curio: Union[Sequence[str], str, None] = None
     evolution_quirk_bark: Union[Sequence[str], str, None] = None
 
     entry_id: str = Field(default_factory=lambda x: AutoName().new_quirk(), frozen=True)
