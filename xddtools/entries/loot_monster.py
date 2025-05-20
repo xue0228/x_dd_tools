@@ -15,21 +15,24 @@ class LootMonster(LootMonsterEntry, BaseModel):
     count: int = 1
     sfx: Optional[BankEntry] = None
     spawn_effects: Optional[Sequence[Union[EffectEntry, str]]] = None
+    kill_self: bool = True
     entry_id: str = Field(default_factory=lambda x: AutoName().new_loot_monster(), frozen=True)
 
     @model_validator(mode="after")
     def _check_after(self):
-        if self.spawn_effects is None:
+        if self.spawn_effects is None and self.kill_self:
             self.spawn_effects = [Effect(
                 target=EffectTarget.PERFORMER,
                 kill_enemy_types=self.id()
             )]
         else:
             tem = [effect for effect in self.spawn_effects]
-            tem.append(Effect(
-                target=EffectTarget.PERFORMER,
-                kill_enemy_types=self.id()
-            ))
+            if self.kill_self:
+                tem.append(Effect(
+                    target=EffectTarget.PERFORMER,
+                    kill_enemy_types=self.id()
+                ))
+            self.spawn_effects = tem
         return self
 
     def info(self) -> str:
