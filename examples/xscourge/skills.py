@@ -13,6 +13,7 @@ from effects import tooltip_effect_1, tooltip_effect_3, tooltip_effect_4, bleed_
     effect_clear_riposte, effect_extra_round
 from modes import modes_a, mode_c, mode_b
 from xddtools.entries import Skill, Animation, SkillInfo, ModeEffects
+from xddtools.entries.colour import invisible
 from xddtools.enum import SkillType, SkillHeadType
 from xddtools.target import LAUNCH_12, Target, ENEMY_GROUP_12, LAUNCH_ANY, ALL_ENEMY, SELF, LAUNCH_34, \
     ENEMY_GROUP_234
@@ -22,7 +23,7 @@ skill_1 = Skill(
     skill_type=SkillType.MELEE,
     launch=LAUNCH_12,
     target=Target("123"),
-    skill_name="耀斑",
+    skill_name=f"耀斑{invisible('​​​​​​​​​​﻿​​​​​​​​​​​​​​​﻿​​​​​​​​​​​​​​​﻿​​​​​​​​​​​​​​​﻿​​​​​​​​​​​​​​​﻿​​​​​​​​​​​​​​​﻿​​​​​​​​​​​​​​​﻿​​​​​​​​​​​​​​​﻿​​​​​​​​​​​​​​​﻿​​​​​​​​​​​​​​​﻿​​​​​​​​​​​​​​​﻿​​​​​​​​​​​​​​​﻿​​​​​​​​​​​​​​​﻿​​​​​​​​​​​​​​​﻿​​​​​​​​​​​​​​​﻿​​​​​​​​​​​​​​​﻿​​​​​​​​​​​​​​​﻿​​​​​​​​​​​​​​​﻿​​​​​​​​​​​​​​​﻿​​​​​​​​​​​​​​​﻿​​​​​​​​​​​​​​​﻿​​​​​​​​​​​​​​​﻿​​​​​​​​​​​​​​​﻿​​​​​​​​​​​​​​​﻿​​​​​​​​​​​​​​​﻿​​​​​​​​​​​​​​​﻿​​​​​​​​​​​​​​​﻿​​​​​​​​​​​​​​​﻿​​​​​​​​​​​​​​​﻿​​​​​​​​​​​​​​​﻿​​​​​​​​​​​​​​​﻿​​​​​​​​​​​​​​​﻿​​​​​​​​​​​​​​​﻿​​​​​​​​​​​​​​​﻿​​​​​​​​​​​​​​​﻿​​​​​​​​​​​​​​​﻿​​​​​​​​​​​​​​​﻿​​​​​​​​​​​​​​​﻿​​​​​​​​​​​​​​​﻿​​​​​​​​​​​​​​​﻿​​​​​​​​​​​​​​​﻿​​​​​​​​​​​​​​​﻿​​​​​​​​​​​​​​​﻿​​​​​​​​​​​​​​​﻿​​​​​​​​​​​​​​​﻿​​​​​​​​​​​​​​​﻿​​​​​​​​​​​​​​​﻿​​​​​​​​​​​​​​​﻿​​​​​​​​​​​​​​​﻿​​​​​​​​​​​​​​​﻿​​​​​')}",
     upgrade_tree_name="耀斑",
     icon_image="hero/Scourge.ability.1.png",
     anim=Animation(anim_dir="anim/skill_a1"),
@@ -91,6 +92,8 @@ skill_2 = Skill(
     targchestfx=Animation(anim_dir="fx/skill_a2_targchestfx"),
     hit_sfx="audio/Scourge_SK2 {b5831aa6-8776-46ac-9376-994ec2b3c64c}.wav",
     miss_sfx="audio/Scourge_SK2 {b5831aa6-8776-46ac-9376-994ec2b3c64c}.wav",
+    condensed_tooltip_effects=True,
+    condensed_tooltip_effects_per_line=2,
     skill_info=[
         SkillInfo(
             atk=0.9 + i * 0.05,

@@ -11,7 +11,7 @@ from xddtools.base import LootMonsterEntry, LootTableEntry, EffectEntry, get_ent
 class LootMonster(LootMonsterEntry, BaseModel):
     model_config = ConfigDict(frozen=False, strict=True, arbitrary_types_allowed=True)
 
-    loot: Union[LootTableEntry, str]
+    loot: Union[LootTableEntry, str, None] = None
     count: int = 1
     sfx: Optional[BankEntry] = None
     spawn_effects: Optional[Sequence[Union[EffectEntry, str]]] = None
@@ -33,6 +33,8 @@ class LootMonster(LootMonsterEntry, BaseModel):
                     kill_enemy_types=self.id()
                 ))
             self.spawn_effects = tem
+        if self.spawn_effects is not None and len(self.spawn_effects) > 4:
+            raise ValueError("Too many spawn effects,four max")
         return self
 
     def info(self) -> str:
@@ -41,7 +43,7 @@ class LootMonster(LootMonsterEntry, BaseModel):
               f'stats: .hp 1 .def 0% .prot 0 .spd 1 ' \
               f'.stun_resist 0% .poison_resist 0% .bleed_resist 0% .debuff_resist 0% .move_resist 0%\n' \
               f'personality: .prefskill -1\n' \
-              f'loot: .code "{get_entry_id(self.loot)}" .count {self.count}\n' \
+              f'loot: .code "{get_entry_id(self.loot) if self.loot is not None else ""}" .count {self.count}\n' \
               f'initiative: .number_of_turns_per_round 0\n' \
               f'monster_brain: .id default\n' \
               f'battle_modifier: .accelerate_stall_penalty False .disable_stall_penalty False .can_surprise False ' \

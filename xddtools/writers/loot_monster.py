@@ -2,6 +2,7 @@ import os.path
 from typing import List, Optional
 
 from xddtools.base import BaseWriter, Entry, LootMonsterEntry
+from xddtools.entries import Localization
 from xddtools.entries.bank import Bank
 from xddtools.entries.animation import Animation
 from xddtools.entries.loot_monster import LootMonster
@@ -48,6 +49,11 @@ class LootMonsterWriter(BaseWriter):
             anim_dir=os.path.join(DATA_PATH, "template/fx/loot_monster"),
             monster_name=entry.id(),
             need_rename=False
+        ))
+
+        res.append(Localization(
+            entry_id=f"str_monstername_{entry.id()}_A",
+            text=""
         ))
 
         return res

@@ -2,7 +2,7 @@ from constants import skill_b1, skill_b2, skill_b3, skill_a1, skill_a2, skill_a3
 from modes import modes_a, mode_c
 from quirks import quirk
 from xddtools.entries import Effect, Buff, BuffRule, ActorDot, DurationElement, Animation
-from xddtools.entries.colour import bleed, buff, mark, heal_hp, riposte, stress, move, stun, blight
+from xddtools.entries.colour import bleed, buff, mark, heal_hp, riposte, stress, move, stun, blight, invisible
 from xddtools.enum import EffectTarget, BuffType, STCombatStatAdd, STCombatStatMultiply, BuffRuleType, \
     STDisableCombatSkillAttribute, BuffDurationType, BuffSource, CurioResultType, KeyStatus, STResistance, \
     ActorDotUpdateDurationType, ActorStatus
@@ -298,7 +298,7 @@ tooltip_effect_1 = get_str_tooltip_effect(f"攻击命中：获得1点{bleed('末
 tooltip_effect_2 = get_str_tooltip_effect(f"攻击命中：获得2点{bleed('末日充能')}\n攻击：获得2点{stress('恐惧值')}")
 tooltip_effect_3 = get_str_tooltip_effect(f"攻击命中：强化另一武器/小概率触发{buff('连携')}")
 tooltip_effect_4 = get_str_tooltip_effect(f"{bleed('末日充能')}：对{mark('标记')}最大攻击力+30%%/60%%/90%%/120%%")
-tooltip_effect_5 = get_str_tooltip_effect(f"{bleed('末日充能')}：{heal_hp('生命偷取')}+20%%/30%%/40%%/50%%")
+tooltip_effect_5 = get_str_tooltip_effect(f"{bleed('末日充能')}：{heal_hp('生命偷取')}+20%%/30%%/40%%/50%%{invisible('​​​​​​​​​​﻿​​​​​​​​​​​​​​​﻿​​​​​​​​​​​​​​​﻿​​​​​​​​​​​​​​​﻿​​​​​​​​​​​​​​​﻿​​​​​​​​​​​​​​​﻿​​​​​​​​​​​​​​​﻿​​​​​​​​​​​​​​​﻿​​​​​​​​​​​​​​​﻿​​​​​​​​​​​​​​​﻿​​​​​​​​​​​​​​​﻿​​​​​​​​​​​​​​​﻿​​​​​​​​​​​​​​​﻿​​​​​​​​​​​​​​​﻿​​​​​​​​​​​​​​​﻿​​​​​​​​​​​​​​​﻿​​​​​​​​​​​​​​​﻿​​​​​​​​​​​​​​​﻿​​​​​​​​​​​​​​​﻿​​​​​​​​​​​​​​​﻿​​​​​​​​​​​​​​​﻿​​​​​​​​​​​​​​​﻿​​​​​​​​​​​​​​​﻿​​​​​​​​​​​​​​​﻿​​​​​​​​​​​​​​​﻿​​​​​​​​​​​​​​​﻿​​​​​​​​​​​​​​​﻿​​​​​​​​​​​​​​​﻿​​​​​​​​​​​​​​​﻿​​​​​​​​​​​​​​​﻿​​​​​​​​​​​​​​​﻿​​​​​​​​​​​​​​​﻿​​​​​​​​​​​​​​​﻿​​​​​​​​​​​​​​​﻿​​​​​​​​​​​​​​​﻿​​​​​​​​​​​​​​​﻿​​​​​​​​​​​​​​​﻿​​​​​​​​​​​​​​​﻿​​​​​​​​​​​​​​​﻿​​​​​​​​​​​​​​​﻿​​​​​​​​​​​​​​​﻿​​​​​​​​​​​​​​​﻿​​​​​​​​​​​​​​​﻿​​​​​​​​​​​​​​​﻿​​​​​​​​​​​​​​​﻿​​​​​​​​​​​​​​​﻿​​​​​​​​​​​​​​​﻿​​​​​​​​​​​​​​​﻿​​​​​​​​​​​​​​​﻿​​​​​​​​​​​​​​​﻿​​​​​')}")
 tooltip_effect_6 = get_str_tooltip_effect(f"{bleed('末日充能')}：队伍攻击力+0/1/2/3")
 tooltip_effect_7 = get_str_tooltip_effect(f"{bleed('末日充能')}：队伍闪避+0/3/6/9")
 tooltip_effect_8 = get_str_tooltip_effect(f"{riposte('反击')}命中额外获得1回合")
