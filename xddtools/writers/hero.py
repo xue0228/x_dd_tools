@@ -292,6 +292,15 @@ class HeroWriter(BaseWriter):
                                 effect.actor_dot.fx.hero_name = entry.id()
                         res.append(effect)
 
+        # 死门效果
+        if entry.enter_effects is not None:
+            for effect in entry.enter_effects:
+                if isinstance(effect, Effect):
+                    if isinstance(effect.actor_dot, ActorDot):
+                        if isinstance(effect.actor_dot.fx, Animation):
+                            effect.actor_dot.fx.hero_name = entry.id()
+                    res.append(effect)
+
         # 技能
         for skill in entry.skills:  # type: Skill
             # 音效

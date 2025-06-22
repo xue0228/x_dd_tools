@@ -16,6 +16,7 @@ from xddtools.writers.hero import HeroWriter
 from xddtools.writers.bank import BankWriter
 from xddtools.writers.loot_monster import LootMonsterWriter
 from xddtools.writers.party_name import PartyNameWriter
+from xddtools.writers.town_event import TownEventWriter
 
 
 def get_dd_writer(prefix: str) -> ProxyWriter:
@@ -38,6 +39,7 @@ def get_dd_writer(prefix: str) -> ProxyWriter:
             HeroWriter(prefix),
             LootMonsterWriter(prefix),
             PartyNameWriter(prefix),
+            TownEventWriter(prefix),
             get_colour_writer(prefix),
             get_localization_writer(prefix)
         ]

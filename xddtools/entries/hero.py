@@ -786,7 +786,7 @@ class Hero(HeroEntry, BaseModel):
     deaths_door_buffs: Optional[Sequence[Union[BuffEntry, str]]] = None
     recovery_buffs: Optional[Sequence[Union[BuffEntry, str]]] = None
     recovery_heart_attack_buffs: Optional[Sequence[Union[BuffEntry, str]]] = None
-    enter_effects: Optional[Sequence[Union[BuffEntry, str]]] = None
+    enter_effects: Optional[Sequence[Union[EffectEntry, str]]] = None
     enter_effect_round_cooldown: int = 6
     can_select_combat_skills: bool = True
     number_of_selected_combat_skills_max: int = 4

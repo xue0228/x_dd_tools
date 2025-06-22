@@ -20,3 +20,4 @@ from xddtools.entries.hero import Resistance, Weapon, Armour, Generation, Actout
 from xddtools.entries.bank import Bank
 from xddtools.entries.loot_monster import LootMonster
 from xddtools.entries.party_name import PartyName
+from xddtools.entries.town_event import TownEvent, TownEventData

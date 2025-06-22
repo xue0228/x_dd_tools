@@ -421,19 +421,27 @@ def get_hero_fx_sfx_buff(
 
 
 def get_summon_loot_monster_effect(
-        loot_monster: Union[LootMonsterEntry, str]
+        loot_monster: Union[LootMonsterEntry, str],
+        target: EffectTarget = EffectTarget.PERFORMER,
+        chance: float = 1,
+        queue: bool = True,
+        on_hit: bool = True,
+        on_miss: bool = True
 ) -> Effect:
     return Effect(
-        target=EffectTarget.TARGET,
+        target=target,
+        chance=chance,
         summon_count=1,
         summon_can_spawn_loot=True,
-        summon_monsters=[f"{get_entry_id(loot_monster)}_A"],
+        summon_monsters=[loot_monster],
         summon_chances=[1],
         summon_ranks=["01234"],
         summon_does_roll_initiatives=False,
-        on_miss=True,
+        on_hit=on_hit,
+        on_miss=on_miss,
         apply_once=True,
-        has_description=False
+        has_description=False,
+        queue=queue
     )
 
 

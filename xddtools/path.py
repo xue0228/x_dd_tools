@@ -67,6 +67,10 @@ PROVISION_FILE_EXTENSION = ".provision.json"
 PARTY_NAME_SAVE_DIR = "shared/party_name"
 PARTY_NAME_FILE_EXTENSION = ".party_name_library.json"
 
+TOWN_EVENT_SAVE_DIR = "campaign/town_events"
+TOWN_EVENT_FILE_EXTENSION = ".town_events.events.json"
+TOWN_EVENT_IMAGE_SAVE_DIR = "campaign/town/town_event"
+
 
 if __name__ == '__main__':
     print(BUFF_SAVE_DIR)

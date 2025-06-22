@@ -1,7 +1,7 @@
 from constants import MOD_NAME
 from hero import hero
 from trinkets import trinkets, world_colour
-from xddtools import get_dd_writer
+from xddtools import get_dd_writer, AutoName
 from xddtools.entries import Project
 from xddtools.enum import ProjectTag
 

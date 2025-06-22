@@ -2,7 +2,7 @@ import os.path
 from typing import List, Optional
 
 from xddtools.base import BaseWriter, Entry, LootMonsterEntry
-from xddtools.entries import Localization
+from xddtools.entries import Localization, Effect, ActorDot
 from xddtools.entries.bank import Bank
 from xddtools.entries.animation import Animation
 from xddtools.entries.loot_monster import LootMonster
@@ -32,7 +32,10 @@ class LootMonsterWriter(BaseWriter):
             res.append(entry.loot)
         if entry.spawn_effects is not None:
             for effect in entry.spawn_effects:
-                if isinstance(effect, Entry):
+                if isinstance(effect, Effect):
+                    if isinstance(effect.actor_dot, ActorDot):
+                        if isinstance(effect.actor_dot.fx, Animation):
+                            effect.actor_dot.fx.monster_name = entry.id()
                     res.append(effect)
 
         if isinstance(entry.sfx, Bank):

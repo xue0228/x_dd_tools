@@ -30,7 +30,8 @@ class LootMonster(LootMonsterEntry, BaseModel):
             if self.kill_self:
                 tem.append(Effect(
                     target=EffectTarget.PERFORMER,
-                    kill_enemy_types=self.id()
+                    kill_enemy_types=self.id(),
+                    on_miss=True
                 ))
             self.spawn_effects = tem
         if self.spawn_effects is not None and len(self.spawn_effects) > 4:

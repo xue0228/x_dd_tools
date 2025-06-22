@@ -4,7 +4,7 @@ from typing import Optional, Union, Sequence, Sequence, List
 from pydantic import BaseModel, ConfigDict, Field
 
 from xddtools.base import EffectEntry, QuirkEntry, Entry, HeroEntry, MonsterEntry, TrinketEntry, BuffEntry, ItemEntry, \
-    get_entry_id, ModeEntry, ActorDotEntry
+    get_entry_id, ModeEntry, ActorDotEntry, LootMonsterEntry
 from xddtools.entries.buff import HealSource, BuffDurationType
 from xddtools.entries.buff_rule import MonsterClass, HeroClass, MonsterType, QuirkType, ItemType
 from xddtools.enum.buff import BuffType
@@ -117,7 +117,7 @@ class Effect(EffectEntry, BaseModel):
     rank_target: Optional[Target] = None
     clear_rank_target: Optional[Target] = None
 
-    summon_monsters: Optional[Sequence[str]] = None
+    summon_monsters: Optional[Sequence[Union[LootMonsterEntry, str]]] = None
     summon_chances: Optional[Sequence[float]] = None
     summon_ranks: Optional[Sequence[Union[Target, str]]] = None
     summon_limits: Optional[Sequence[int]] = None
@@ -347,7 +347,7 @@ class Effect(EffectEntry, BaseModel):
         if self.summon_monsters is not None and len(self.summon_monsters) > 0:
             res.append(".summon_monsters")
             for item in self.summon_monsters:
-                res.append(f'{item}')
+                res.append(f'{item if isinstance(item, str) else get_entry_id(item) + "_A"}')
         if self.summon_chances is not None and len(self.summon_chances) > 0:
             res.append(".summon_chances")
             for item in self.summon_chances:

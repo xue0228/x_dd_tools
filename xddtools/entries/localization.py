@@ -1,7 +1,7 @@
 from typing import List, Union, Sequence, Optional
 
 from loguru import logger
-from pydantic import BaseModel, ConfigDict, Field, field_validator, model_validator
+from pydantic import BaseModel, ConfigDict, Field, model_validator
 
 from xddtools.base import LocalizationEntry, HeroEntry, QuirkEntry, get_entry_id, CampingSkillEntry
 from xddtools.entries.trait import Trait
@@ -616,7 +616,7 @@ def get_hero_trait_selfish_localization_entries(
         change_pos_back=change_pos_back,
         ignore_command=ignore_command,
         random_command=random_command,
-        cmoment_self_hit=comment_self_hit,
+        comment_self_hit=comment_self_hit,
         comment_ally_attack_hit=comment_ally_attack_hit,
         comment_ally_attack_missed=comment_ally_attack_missed,
         block_camping_skill_performer=block_camping_skill_performer,

@@ -46,6 +46,10 @@ class EffectWriter(BaseWriter):
             for effect in entry.riposte_effect:
                 if isinstance(effect, Entry):
                     res.append(effect)
+        if entry.summon_monsters is not None:
+            for monster in entry.summon_monsters:
+                if isinstance(monster, Entry):
+                    res.append(monster)
 
         for bark in get_bark_list(entry.barks):
             res.append(Localization(
